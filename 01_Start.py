@@ -21,17 +21,17 @@ locale.setlocale(locale.LC_TIME, 'es_ES')
 
 if platform.system() == 'Windows':
 
-    os.chdir('C:/Users/pport/OneDrive/Projects/macrofinancial dash/')
+    os.chdir('C:/Users/pport/OneDrive/Projects/Macrofinancial-dashboard/')
 
 if platform.system() == 'Darwin':
 
-    os.chdir('/Users/pportocarrero/OneDrive/Projects/macrofinancial dash/')
+    os.chdir('/Users/pportocarrero/OneDrive/Projects/Macrofinancial-dashboard/')
 
 # LOAD DATA AND OTHER CONFIGS
 
 sp_500 = pd.read_feather('mercados/sp_500')  # S&P 500
 
-sp_500_intraday = pd.read_feather('mercados/sp_500_intraday')  # S&P 500 INTRADAY
+# sp_500_intraday = pd.read_feather('mercados/sp_500_intraday')  # S&P 500 INTRADAY
 
 dji_index = pd.read_feather('mercados/dji_index')  # DOW JONES
 
@@ -69,7 +69,7 @@ soybean_fut = pd.read_feather('mercados/soybean_futures')  # SOYBEAN FUTURES
 
 corn_fut = pd.read_feather('mercados/corn_futures')  # CORN FUTURES
 
-usd_pen = pd.read_feather('mercados/usd_pen')  # USD/PEN
+usd_pen = pd.read_excel('mercados/usd_pen.xlsx')  # USD/PEN
 
 # COLORS AND CONFIGS
 
@@ -237,91 +237,35 @@ kpi2[3].metric('USD/PEN', 'S/ ' + str(usd_pen_latest) + ' /US$', str(delta_usd_p
 
 ###########
 
-# kpi3 = st.columns(4)
-
-# with kpi3[0]:
-
-#    if delta_sp_500 > 0:
-#        sentiment_sp = 'good'
-#    elif delta_sp_500 == 0:
-#        sentiment_sp = 'neutral'
-#    elif delta_sp_500 < 0:
-#        sentiment_sp = 'bad'
-
-#    hc.info_card(title='S&P 500', content=str(sp_500_latest) + ' pts \n' + str(delta_sp_500_pct) + ' (' + f'{delta_sp_500:.2f}' + ' pts)', sentiment=sentiment_sp)
-
-# with kpi2[1]:
-
-#    if delta_dji > 0:
-#        sentiment_dji = 'good'
-#    elif delta_dji == 0:
-#        sentiment_dji = 'neutral'
-#    elif delta_dji < 0:
-#        sentiment_dji = 'bad'
-
-#    hc.info_card(title='Dow Jones 30', content=str(delta_dji_pct) + ' (' + f'{delta_dji:.2f}' + ' pts)', sentiment=sentiment_dji)
-
 # ÍNDICES BURSÁTILES Y DE RENTA FIJA
 
 st.subheader('Índices bursátiles y de renta fija')
 
 # S&P 500 y DJI
 
-eq1, eq2 = st.columns(2)
+eq = st.columns(2)
 
-with eq1:
+with eq[0]:
 
-    st.markdown('**Principales índices bursátiles**')
+    st.markdown('**S&P 500**')
 
-    new_date_sp = pd.to_datetime(sp_500['Date'])
-
-    new_date_sp = [d.strftime('%d %b %Y') for d in new_date_sp]
-
-    sp_chart = st.selectbox('Seleccione el tipo de gráfico', ('Gráfico de línea', 'Gráfico OHLC + Volumen'))
+    sp_chart = st.selectbox('Seleccione el tipo de gráfico', ('Gráfico de línea', 'Gráfico OHLC + Volumen'), key='sp_key')
 
     if sp_chart == 'Gráfico de línea':
 
-        fig_equities = make_subplots(specs=[[{"secondary_y": True}]])
+        fig_sp500 = go.Figure()
 
-        fig_equities.add_trace(
-            go.Line(
-                name='S&P 500 (izq.)',
+        fig_sp500.add_trace(
+            go.Scatter(
+                name='S&P 500',
                 x=sp_500['Date'],
                 y=sp_500['Close'],
-                line=dict(color=color_rojo),
-                showlegend=True
-            ),
-            secondary_y=False
+                line=dict(color='blue'),
+                fill='tozeroy'
+            )
         )
 
-        fig_equities.add_trace(
-            go.Line(
-                name='Dow Jones (der.)',
-                x=dji_index['Date'],
-                y=dji_index['Close'],
-                line=dict(color=color_azul),
-                showlegend=True
-            ),
-            secondary_y=True
-        )
-
-        fig_equities.add_vrect(
-            x0='2001-03-01',
-            x1='2001-11-01',
-            fillcolor=color_gris,
-            opacity=0.25,
-            line_width=0
-        )
-
-        fig_equities.add_vrect(
-            x0='2007-12-01',
-            x1='2009-06-01',
-            fillcolor=color_gris,
-            opacity=0.25,
-            line_width=0
-        )
-
-        fig_equities.add_vrect(
+        fig_sp500.add_vrect(
             x0='2020-02-01',
             x1='2020-04-01',
             fillcolor=color_gris,
@@ -329,21 +273,23 @@ with eq1:
             line_width=0
         )
 
-        fig_equities.update_layout(
-            {'plot_bgcolor': color_blanco, 'paper_bgcolor': color_blanco},
+        fig_sp500.update_layout(
+            # {'plot_bgcolor': color_blanco, 'paper_bgcolor': color_blanco},
             # font=dict(family=font_name),
             # font_size=14,
             margin=dict(l=0, r=0, t=0, b=0),
-            legend=dict(orientation="h", valign="bottom", xanchor="left", x=0, y=-0.13)
+            # legend=dict(orientation="h", valign="bottom", xanchor="left", x=0, y=-0.13),
+            hovermode='x unified',
+            yaxis = dict(tickformat=',.1f'),
         )
 
-        fig_equities.update_xaxes(
+        fig_sp500.update_xaxes(
             rangebreaks=[dict(bounds=["sat", "mon"])],
             rangeselector=dict(
                 buttons=list([
                     dict(count=3, label='3D', step='day', stepmode='backward'),
-                    dict(count=5, label='1S', step='day', stepmode='backward'),
                     dict(count=1, label='1M', step='month', stepmode='backward'),
+                    dict(count=3, label='3M', step='month', stepmode='backward'),
                     dict(count=6, label='6M', step='month', stepmode='backward'),
                     dict(count=1, label='YTD', step='year', stepmode='todate'),
                     dict(count=1, label='1A', step='year', stepmode='backward'),
@@ -351,69 +297,56 @@ with eq1:
                 ]))
         )
 
-        fig_equities.update_yaxes(title_text='Puntos', secondary_y=False)
+        fig_sp500.update_yaxes(title_text='Puntos')
 
-        fig_equities.update_yaxes(title_text='Puntos', secondary_y=True)
-
-        st.plotly_chart(fig_equities, use_container_width=True)
+        st.plotly_chart(fig_sp500, use_container_width=True)
 
     elif sp_chart == 'Gráfico OHLC + Volumen':
 
-        fig_equities = make_subplots(
-            specs=[[{"secondary_y": True}]]
-        )
+        fig_sp500 = go.Figure()
 
-        fig_equities.add_trace(
+        fig_sp500.add_trace(
             go.Candlestick(
                 x=sp_500['Date'],
                 open=sp_500['Open'],
                 high=sp_500['High'],
                 low=sp_500['Low'],
                 close=sp_500['Close'],
-                name='S&P 500 (izq.)',
-                showlegend=True,
-                increasing_line_color=color_azul,
-                decreasing_line_color=color_rojo
-            ),
-            secondary_y=False
+                name='S&P 500',
+                increasing_line_color='green',
+                decreasing_line_color='red'
+            )
         )
 
-        fig_equities.add_trace(
-            go.Candlestick(
-                x=dji_index['Date'],
-                open=dji_index['Open'],
-                high=dji_index['High'],
-                low=dji_index['Low'],
-                close=dji_index['Close'],
-                name='Dow Jones (der.)',
-                showlegend=True,
-                increasing_line_color=color_azul_oscuro,
-                decreasing_line_color=color_rojo_claro
-            ),
-            secondary_y=True
+        fig_sp500.add_vrect(
+            x0='2020-02-01',
+            x1='2020-04-01',
+            fillcolor=color_gris,
+            opacity=0.25,
+            line_width=0
         )
 
-        fig_equities.update_yaxes(title_text='Puntos', secondary_y=False)
+        fig_sp500.update_yaxes(title_text='Puntos')
 
-        fig_equities.update_yaxes(title_text='Puntos', secondary_y=True)
+        fig_sp500.update(layout_xaxis_rangeslider_visible=False)
 
-        fig_equities.update(layout_xaxis_rangeslider_visible=False)
-
-        fig_equities.update_layout(
-            {'plot_bgcolor': color_blanco, 'paper_bgcolor': color_blanco},
+        fig_sp500.update_layout(
+            # {'plot_bgcolor': 'black', 'paper_bgcolor': 'black'},
             # font=dict(family=font_name),
             # font_size=14,
             margin=dict(l=0, r=0, t=0, b=0),
-            legend=dict(orientation="h", valign="bottom", xanchor="left", x=0, y=-0.13)
+            # legend=dict(orientation="h", valign="bottom", xanchor="left", x=0, y=-0.13)
+            hovermode='x unified',
+            yaxis=dict(tickformat=',.1f'),
         )
 
-        fig_equities.update_xaxes(
+        fig_sp500.update_xaxes(
             rangebreaks=[dict(bounds=["sat", "mon"])],
             rangeselector=dict(
                 buttons=list([
                     dict(count=3, label='3D', step='day', stepmode='backward'),
-                    dict(count=5, label='1S', step='day', stepmode='backward'),
                     dict(count=1, label='1M', step='month', stepmode='backward'),
+                    dict(count=3, label='3M', step='month', stepmode='backward'),
                     dict(count=6, label='6M', step='month', stepmode='backward'),
                     dict(count=1, label='YTD', step='year', stepmode='todate'),
                     dict(count=1, label='1A', step='year', stepmode='backward'),
@@ -421,18 +354,137 @@ with eq1:
                 ]))
         )
 
-        st.plotly_chart(fig_equities, use_container_width=True)
+        st.plotly_chart(fig_sp500, use_container_width=True)
+
+    with st.expander('Más información:'):
+
+        st.write('''
+            Fuente: Yahoo! Finance.
+            
+            El índice S&P 500 es considerado como el mejor barómetro de las compañías de alta capitalización en Estados Unidos. El índice incluye 500 compañías públicas de diferentes sectores de la economía y cubre aproximadamente el 80% del total de capitalización de mercado disponible. El S&P 500 es un índice bursátil ponderado en base a la capitalización de mercado de las compañías que la componen. De acuerdo a la Encuesta anual de activos, se estima que US$ 13 billones están indexados o comparados a este índice.
+            ''')
+
+with eq[1]:
+
+    st.markdown('**Dow Jones Industrial Average**')
+
+    dji_chart = st.selectbox('Seleccione el tipo de gráfico', ('Gráfico de línea', 'Gráfico OHLC + Volumen'), key='dji_key')
+
+    if dji_chart == 'Gráfico de línea':
+
+        fig_dji = go.Figure()
+
+        fig_dji.add_trace(
+            go.Scatter(
+                name='Dow Jones 30',
+                x=dji_index['Date'],
+                y=dji_index['Close'],
+                line=dict(color='blue'),
+                fill='tozeroy'
+            )
+        )
+
+        fig_dji.add_vrect(
+            x0='2020-02-01',
+            x1='2020-04-01',
+            fillcolor=color_gris,
+            opacity=0.25,
+            line_width=0
+        )
+
+        fig_dji.update_layout(
+            # {'plot_bgcolor': color_blanco, 'paper_bgcolor': color_blanco},
+            # font=dict(family=font_name),
+            # font_size=14,
+            margin=dict(l=0, r=0, t=0, b=0),
+            # legend=dict(orientation="h", valign="bottom", xanchor="left", x=0, y=-0.13),
+            hovermode='x unified',
+            yaxis=dict(tickformat=',.1f'),
+        )
+
+        fig_dji.update_xaxes(
+            rangebreaks=[dict(bounds=["sat", "mon"])],
+            rangeselector=dict(
+                buttons=list([
+                    dict(count=3, label='3D', step='day', stepmode='backward'),
+                    dict(count=1, label='1M', step='month', stepmode='backward'),
+                    dict(count=3, label='3M', step='month', stepmode='backward'),
+                    dict(count=6, label='6M', step='month', stepmode='backward'),
+                    dict(count=1, label='YTD', step='year', stepmode='todate'),
+                    dict(count=1, label='1A', step='year', stepmode='backward'),
+                    dict(label='Máx.', step='all')
+                ]))
+        )
+
+        fig_dji.update_yaxes(title_text='Puntos')
+
+        st.plotly_chart(fig_dji, use_container_width=True)
+
+    elif dji_chart == 'Gráfico OHLC + Volumen':
+
+        fig_dji = go.Figure()
+
+        fig_dji.add_trace(
+            go.Candlestick(
+                x=dji_index['Date'],
+                open=dji_index['Open'],
+                high=dji_index['High'],
+                low=dji_index['Low'],
+                close=dji_index['Close'],
+                name='Dow Jones 30',
+                increasing_line_color='green',
+                decreasing_line_color='red'
+            )
+        )
+
+        fig_dji.add_vrect(
+            x0='2020-02-01',
+            x1='2020-04-01',
+            fillcolor=color_gris,
+            opacity=0.25,
+            line_width=0
+        )
+
+        fig_dji.update_yaxes(title_text='Puntos')
+
+        fig_dji.update(layout_xaxis_rangeslider_visible=False)
+
+        fig_dji.update_layout(
+            # {'plot_bgcolor': 'black', 'paper_bgcolor': 'black'},
+            # font=dict(family=font_name),
+            # font_size=14,
+            margin=dict(l=0, r=0, t=0, b=0),
+            # legend=dict(orientation="h", valign="bottom", xanchor="left", x=0, y=-0.13)
+            hovermode='x unified',
+            yaxis=dict(tickformat=',.1f'),
+        )
+
+        fig_dji.update_xaxes(
+            rangebreaks=[dict(bounds=["sat", "mon"])],
+            rangeselector=dict(
+                buttons=list([
+                    dict(count=3, label='3D', step='day', stepmode='backward'),
+                    dict(count=1, label='1M', step='month', stepmode='backward'),
+                    dict(count=3, label='3M', step='month', stepmode='backward'),
+                    dict(count=6, label='6M', step='month', stepmode='backward'),
+                    dict(count=1, label='YTD', step='year', stepmode='todate'),
+                    dict(count=1, label='1A', step='year', stepmode='backward'),
+                    dict(label='Máx.', step='all')
+                ]))
+        )
+
+        st.plotly_chart(fig_dji, use_container_width=True)
 
     with st.expander('Más información:'):
         st.write('''
-            Fuente: Federal Reserve Bank of St. Louis (Federal Reserve Economic Data).
-            
-            El índice S&P 500 es considerado como el mejor barómetro de las compañías de alta capitalización en Estados Unidos. El índice incluye 500 compañías públicas de diferentes sectores de la economía y cubre aproximadamente el 80% del total de capitalización de mercado disponible. El S&P 500 es un índice bursátil ponderado en base a la capitalización de mercado de las compañías que la componen. De acuerdo a la Encuesta anual de activos, se estima que US$ 13 billones están indexados o comparados a este índice.
-            
-            El Dow Jones Industrial Average is un indicador ponderado por el precio de 30 compañías 'blue-chip' norteamericanas. Este índice cubre todas las industrias con la excepción de transportes y servicios públicos.
-            ''')
+                Fuente: Yahoo! Finance.
 
-with eq2:
+                El Dow Jones Industrial Average es un indicador ponderado por el precio de 30 compañías 'blue-chip' norteamericanas. Este índice cubre todas las industrias con la excepción de transportes y servicios públicos.
+                ''')
+
+eq1 = st.columns(2)
+
+with eq1[0]:
 
     st.markdown('**Nasdaq 100**')
 
