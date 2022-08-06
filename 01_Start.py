@@ -237,6 +237,241 @@ kpi2[3].metric('USD/PEN', 'S/ ' + str(usd_pen_latest) + ' /US$', str(delta_usd_p
 
 ###########
 
+# FUNCTION TO CREATE AREA CHART
+def line_chart(name, ticker_id, y_axis, us_recession=False):
+
+    import plotly.graph_objects as go
+
+    import streamlit as st
+
+    if us_recession is True:
+
+        fig = go.Figure()
+
+        fig.add_trace(
+            go.Scatter(
+                name=name,
+                x=ticker_id['Date'],
+                y=ticker_id['Close'],
+                line=dict(color='blue'),
+                fill='tozeroy'
+            )
+        )
+
+        fig.add_vrect(
+            x0='2020-02-01',
+            x1='2020-04-01',
+            fillcolor='rgb(127,127,127)',
+            opacity=0.25,
+            line_width=0
+        )
+
+        fig.update_layout(
+            margin=dict(l=0, r=0, t=0, b=0),
+            hovermode='x unified',
+            yaxis=dict(tickformat=',.1f'),
+        )
+
+        fig.update_xaxes(
+            rangebreaks=[dict(bounds=["sat", "mon"])],
+            rangeselector=dict(
+                buttons=list([
+                    dict(count=3, label='3D', step='day', stepmode='backward'),
+                    dict(count=1, label='1M', step='month', stepmode='backward'),
+                    dict(count=3, label='3M', step='month', stepmode='backward'),
+                    dict(count=6, label='6M', step='month', stepmode='backward'),
+                    dict(count=1, label='YTD', step='year', stepmode='todate'),
+                    dict(count=1, label='1A', step='year', stepmode='backward'),
+                    dict(label='Máx.', step='all')
+                ]))
+        )
+
+        fig.update_yaxes(title_text=y_axis)
+
+        return st.plotly_chart(fig, use_container_width=True)
+
+    elif us_recession is False:
+
+        fig = go.Figure()
+
+        fig.add_trace(
+            go.Scatter(
+                name=name,
+                x=ticker_id['Date'],
+                y=ticker_id['Close'],
+                line=dict(color='blue'),
+                fill='tozeroy'
+            )
+        )
+
+        fig.update_layout(
+            margin=dict(l=0, r=0, t=0, b=0),
+            hovermode='x unified',
+            yaxis=dict(tickformat=',.1f'),
+        )
+
+        fig.update_xaxes(
+            rangebreaks=[dict(bounds=["sat", "mon"])],
+            rangeselector=dict(
+                buttons=list([
+                    dict(count=3, label='3D', step='day', stepmode='backward'),
+                    dict(count=1, label='1M', step='month', stepmode='backward'),
+                    dict(count=3, label='3M', step='month', stepmode='backward'),
+                    dict(count=6, label='6M', step='month', stepmode='backward'),
+                    dict(count=1, label='YTD', step='year', stepmode='todate'),
+                    dict(count=1, label='1A', step='year', stepmode='backward'),
+                    dict(label='Máx.', step='all')
+                ]))
+        )
+
+        fig.update_yaxes(title_text=y_axis)
+
+        return st.plotly_chart(fig, use_container_width=True)
+
+###########
+
+# CREATE FUNCTION FOR CANDLESTICK CHARTS
+
+def olhc_chart(name, ticker_id, us_recession=False):
+
+    import plotly.graph_objects as go
+
+    from plotly.subplots import make_subplots
+
+    import streamlit as st
+
+    if us_recession is True:
+
+        fig = make_subplots(
+            rows=2,
+            cols=1,
+            shared_xaxes=True,
+            vertical_spacing=0.03,
+            row_width=[0.2, 0.7]
+        )
+
+        fig.add_trace(
+            go.Candlestick(
+                x=ticker_id['Date'],
+                open=ticker_id['Open'],
+                high=ticker_id['High'],
+                low=ticker_id['Low'],
+                close=ticker_id['Close'],
+                name=name,
+                increasing_line_color='green',
+                decreasing_line_color='red',
+                showlegend=False
+            ),
+            row=1,
+            col=1
+        )
+
+        fig.add_trace(
+            go.Bar(
+                x=ticker_id['Date'],
+                y=ticker_id['Volume'],
+                showlegend=False,
+                name='Volumen'
+            ),
+            row=2,
+            col=1
+        )
+
+        fig.add_vrect(
+            x0='2020-02-01',
+            x1='2020-04-01',
+            fillcolor='rgb(127,127,127)',
+            opacity=0.25,
+            line_width=0
+        )
+
+        fig.update(layout_xaxis_rangeslider_visible=False)
+
+        fig.update_layout(
+            margin=dict(l=0, r=0, t=0, b=0),
+            hovermode='x unified',
+            yaxis=dict(tickformat=',.1f'),
+        )
+
+        fig.update_xaxes(
+            rangebreaks=[dict(bounds=["sat", "mon"])],
+            rangeselector=dict(
+                buttons=list([
+                    dict(count=3, label='3D', step='day', stepmode='backward'),
+                    dict(count=1, label='1M', step='month', stepmode='backward'),
+                    dict(count=3, label='3M', step='month', stepmode='backward'),
+                    dict(count=6, label='6M', step='month', stepmode='backward'),
+                    dict(count=1, label='YTD', step='year', stepmode='todate'),
+                    dict(count=1, label='1A', step='year', stepmode='backward'),
+                    dict(label='Máx.', step='all')
+                ]))
+        )
+
+        return st.plotly_chart(fig, use_container_width=True)
+
+    elif us_recession is False:
+
+        fig = make_subplots(
+            rows=2,
+            cols=1,
+            shared_xaxes=True,
+            vertical_spacing=0.03,
+            row_width=[0.2, 0.7]
+        )
+
+        fig.add_trace(
+            go.Candlestick(
+                x=ticker_id['Date'],
+                open=ticker_id['Open'],
+                high=ticker_id['High'],
+                low=ticker_id['Low'],
+                close=ticker_id['Close'],
+                name=name,
+                increasing_line_color='green',
+                decreasing_line_color='red',
+                showlegend=False
+            ),
+            row=1,
+            col=1
+        )
+
+        fig.add_trace(
+            go.Bar(
+                x=ticker_id['Date'],
+                y=ticker_id['Volume'],
+                showlegend=False,
+                name='Volumen'
+            ),
+            row=2,
+            col=1
+        )
+
+        fig.update(layout_xaxis_rangeslider_visible=False)
+
+        fig.update_layout(
+            margin=dict(l=0, r=0, t=0, b=0),
+            hovermode='x unified',
+            yaxis=dict(tickformat=',.1f'),
+        )
+
+        fig.update_xaxes(
+            rangebreaks=[dict(bounds=["sat", "mon"])],
+            rangeselector=dict(
+                buttons=list([
+                    dict(count=3, label='3D', step='day', stepmode='backward'),
+                    dict(count=1, label='1M', step='month', stepmode='backward'),
+                    dict(count=3, label='3M', step='month', stepmode='backward'),
+                    dict(count=6, label='6M', step='month', stepmode='backward'),
+                    dict(count=1, label='YTD', step='year', stepmode='todate'),
+                    dict(count=1, label='1A', step='year', stepmode='backward'),
+                    dict(label='Máx.', step='all')
+                ]))
+        )
+
+        return st.plotly_chart(fig, use_container_width=True)
+
+###########
+
 # ÍNDICES BURSÁTILES Y DE RENTA FIJA
 
 st.subheader('Índices bursátiles y de renta fija')
@@ -253,116 +488,19 @@ with eq[0]:
 
     if sp_chart == 'Gráfico de línea':
 
-        fig_sp500 = go.Figure()
-
-        fig_sp500.add_trace(
-            go.Scatter(
-                name='S&P 500',
-                x=sp_500['Date'],
-                y=sp_500['Close'],
-                line=dict(color='blue'),
-                fill='tozeroy'
-            )
-        )
-
-        fig_sp500.add_vrect(
-            x0='2020-02-01',
-            x1='2020-04-01',
-            fillcolor=color_gris,
-            opacity=0.25,
-            line_width=0
-        )
-
-        fig_sp500.update_layout(
-            # {'plot_bgcolor': color_blanco, 'paper_bgcolor': color_blanco},
-            # font=dict(family=font_name),
-            # font_size=14,
-            margin=dict(l=0, r=0, t=0, b=0),
-            # legend=dict(orientation="h", valign="bottom", xanchor="left", x=0, y=-0.13),
-            hovermode='x unified',
-            yaxis = dict(tickformat=',.1f'),
-        )
-
-        fig_sp500.update_xaxes(
-            rangebreaks=[dict(bounds=["sat", "mon"])],
-            rangeselector=dict(
-                buttons=list([
-                    dict(count=3, label='3D', step='day', stepmode='backward'),
-                    dict(count=1, label='1M', step='month', stepmode='backward'),
-                    dict(count=3, label='3M', step='month', stepmode='backward'),
-                    dict(count=6, label='6M', step='month', stepmode='backward'),
-                    dict(count=1, label='YTD', step='year', stepmode='todate'),
-                    dict(count=1, label='1A', step='year', stepmode='backward'),
-                    dict(label='Máx.', step='all')
-                ]))
-        )
-
-        fig_sp500.update_yaxes(title_text='Puntos')
-
-        st.plotly_chart(fig_sp500, use_container_width=True)
+        line_chart('S&P 500', sp_500, 'Puntos', True)
 
     elif sp_chart == 'Gráfico OHLC + Volumen':
 
-        fig_sp500 = go.Figure()
-
-        fig_sp500.add_trace(
-            go.Candlestick(
-                x=sp_500['Date'],
-                open=sp_500['Open'],
-                high=sp_500['High'],
-                low=sp_500['Low'],
-                close=sp_500['Close'],
-                name='S&P 500',
-                increasing_line_color='green',
-                decreasing_line_color='red'
-            )
-        )
-
-        fig_sp500.add_vrect(
-            x0='2020-02-01',
-            x1='2020-04-01',
-            fillcolor=color_gris,
-            opacity=0.25,
-            line_width=0
-        )
-
-        fig_sp500.update_yaxes(title_text='Puntos')
-
-        fig_sp500.update(layout_xaxis_rangeslider_visible=False)
-
-        fig_sp500.update_layout(
-            # {'plot_bgcolor': 'black', 'paper_bgcolor': 'black'},
-            # font=dict(family=font_name),
-            # font_size=14,
-            margin=dict(l=0, r=0, t=0, b=0),
-            # legend=dict(orientation="h", valign="bottom", xanchor="left", x=0, y=-0.13)
-            hovermode='x unified',
-            yaxis=dict(tickformat=',.1f'),
-        )
-
-        fig_sp500.update_xaxes(
-            rangebreaks=[dict(bounds=["sat", "mon"])],
-            rangeselector=dict(
-                buttons=list([
-                    dict(count=3, label='3D', step='day', stepmode='backward'),
-                    dict(count=1, label='1M', step='month', stepmode='backward'),
-                    dict(count=3, label='3M', step='month', stepmode='backward'),
-                    dict(count=6, label='6M', step='month', stepmode='backward'),
-                    dict(count=1, label='YTD', step='year', stepmode='todate'),
-                    dict(count=1, label='1A', step='year', stepmode='backward'),
-                    dict(label='Máx.', step='all')
-                ]))
-        )
-
-        st.plotly_chart(fig_sp500, use_container_width=True)
+        olhc_chart('S&P 500', sp_500, True)
 
     with st.expander('Más información:'):
 
         st.write('''
-            Fuente: Yahoo! Finance.
+        Fuente: Yahoo! Finance.
             
-            El índice S&P 500 es considerado como el mejor barómetro de las compañías de alta capitalización en Estados Unidos. El índice incluye 500 compañías públicas de diferentes sectores de la economía y cubre aproximadamente el 80% del total de capitalización de mercado disponible. El S&P 500 es un índice bursátil ponderado en base a la capitalización de mercado de las compañías que la componen. De acuerdo a la Encuesta anual de activos, se estima que US$ 13 billones están indexados o comparados a este índice.
-            ''')
+        El índice S&P 500 es considerado como el mejor barómetro de las compañías de alta capitalización en Estados Unidos. El índice incluye 500 compañías públicas de diferentes sectores de la economía y cubre aproximadamente el 80% del total de capitalización de mercado disponible. El S&P 500 es un índice bursátil ponderado en base a la capitalización de mercado de las compañías que la componen. De acuerdo a la Encuesta anual de activos, se estima que US$ 13 billones están indexados o comparados a este índice.
+        ''')
 
 with eq[1]:
 
@@ -372,115 +510,19 @@ with eq[1]:
 
     if dji_chart == 'Gráfico de línea':
 
-        fig_dji = go.Figure()
-
-        fig_dji.add_trace(
-            go.Scatter(
-                name='Dow Jones 30',
-                x=dji_index['Date'],
-                y=dji_index['Close'],
-                line=dict(color='blue'),
-                fill='tozeroy'
-            )
-        )
-
-        fig_dji.add_vrect(
-            x0='2020-02-01',
-            x1='2020-04-01',
-            fillcolor=color_gris,
-            opacity=0.25,
-            line_width=0
-        )
-
-        fig_dji.update_layout(
-            # {'plot_bgcolor': color_blanco, 'paper_bgcolor': color_blanco},
-            # font=dict(family=font_name),
-            # font_size=14,
-            margin=dict(l=0, r=0, t=0, b=0),
-            # legend=dict(orientation="h", valign="bottom", xanchor="left", x=0, y=-0.13),
-            hovermode='x unified',
-            yaxis=dict(tickformat=',.1f'),
-        )
-
-        fig_dji.update_xaxes(
-            rangebreaks=[dict(bounds=["sat", "mon"])],
-            rangeselector=dict(
-                buttons=list([
-                    dict(count=3, label='3D', step='day', stepmode='backward'),
-                    dict(count=1, label='1M', step='month', stepmode='backward'),
-                    dict(count=3, label='3M', step='month', stepmode='backward'),
-                    dict(count=6, label='6M', step='month', stepmode='backward'),
-                    dict(count=1, label='YTD', step='year', stepmode='todate'),
-                    dict(count=1, label='1A', step='year', stepmode='backward'),
-                    dict(label='Máx.', step='all')
-                ]))
-        )
-
-        fig_dji.update_yaxes(title_text='Puntos')
-
-        st.plotly_chart(fig_dji, use_container_width=True)
+        line_chart('Dow Jones 30', dji_index, 'Puntos', True)
 
     elif dji_chart == 'Gráfico OHLC + Volumen':
 
-        fig_dji = go.Figure()
-
-        fig_dji.add_trace(
-            go.Candlestick(
-                x=dji_index['Date'],
-                open=dji_index['Open'],
-                high=dji_index['High'],
-                low=dji_index['Low'],
-                close=dji_index['Close'],
-                name='Dow Jones 30',
-                increasing_line_color='green',
-                decreasing_line_color='red'
-            )
-        )
-
-        fig_dji.add_vrect(
-            x0='2020-02-01',
-            x1='2020-04-01',
-            fillcolor=color_gris,
-            opacity=0.25,
-            line_width=0
-        )
-
-        fig_dji.update_yaxes(title_text='Puntos')
-
-        fig_dji.update(layout_xaxis_rangeslider_visible=False)
-
-        fig_dji.update_layout(
-            # {'plot_bgcolor': 'black', 'paper_bgcolor': 'black'},
-            # font=dict(family=font_name),
-            # font_size=14,
-            margin=dict(l=0, r=0, t=0, b=0),
-            # legend=dict(orientation="h", valign="bottom", xanchor="left", x=0, y=-0.13)
-            hovermode='x unified',
-            yaxis=dict(tickformat=',.1f'),
-        )
-
-        fig_dji.update_xaxes(
-            rangebreaks=[dict(bounds=["sat", "mon"])],
-            rangeselector=dict(
-                buttons=list([
-                    dict(count=3, label='3D', step='day', stepmode='backward'),
-                    dict(count=1, label='1M', step='month', stepmode='backward'),
-                    dict(count=3, label='3M', step='month', stepmode='backward'),
-                    dict(count=6, label='6M', step='month', stepmode='backward'),
-                    dict(count=1, label='YTD', step='year', stepmode='todate'),
-                    dict(count=1, label='1A', step='year', stepmode='backward'),
-                    dict(label='Máx.', step='all')
-                ]))
-        )
-
-        st.plotly_chart(fig_dji, use_container_width=True)
+        olhc_chart('Dow Jones 30', dji_index, True)
 
     with st.expander('Más información:'):
-        st.write('''
-                Fuente: Yahoo! Finance.
 
-                El Dow Jones Industrial Average es un indicador ponderado por el precio de 30 compañías 'blue-chip' norteamericanas. Este índice cubre todas las industrias con la excepción de transportes y servicios públicos.
-                ''')
+        st.write('''
+        Fuente: Yahoo! Finance.
+
+        El Dow Jones Industrial Average es un indicador ponderado por el precio de 30 compañías 'blue-chip' norteamericanas. Este índice cubre todas las industrias con la excepción de transportes y servicios públicos.
+        ''')
 
 eq1 = st.columns(2)
 
@@ -492,448 +534,67 @@ with eq1[0]:
 
     if nasdaq_chart == 'Gráfico de línea':
 
-        fig_nasdaq = go.Figure()
-
-        fig_nasdaq.add_trace(
-            go.Line(
-                name='Índice Nasdaq 100',
-                x=nasdaq_100['Date'],
-                y=nasdaq_100['Close'],
-                line=dict(color=color_rojo)
-            ))
-
-        fig_nasdaq.update_layout(
-            {'plot_bgcolor': color_blanco, 'paper_bgcolor': color_blanco},
-            # font=dict(family='arial'),
-            # font_size=14,
-            margin=dict(l=0, r=0, t=0, b=0)
-        )
-
-        fig_nasdaq.add_vrect(
-            x0='2001-03-01',
-            x1='2001-11-01',
-            fillcolor=color_gris,
-            opacity=0.25,
-            line_width=0
-        )
-
-        fig_nasdaq.add_vrect(
-            x0='2007-12-01',
-            x1='2009-06-01',
-            fillcolor=color_gris,
-            opacity=0.25,
-            line_width=0
-        )
-
-        fig_nasdaq.add_vrect(
-            x0='2020-02-01',
-            x1='2020-04-01',
-            fillcolor=color_gris,
-            opacity=0.25,
-            line_width=0
-        )
-
-        fig_nasdaq.update_yaxes(title='Puntos')
-
-        fig_nasdaq.update_xaxes(
-            title='Fecha',
-            # rangeslider_visible=True,
-            rangeselector=dict(
-                buttons=list([
-                    dict(count=3, label='3D', step='day', stepmode='backward'),
-                    dict(count=5, label='1S', step='day', stepmode='backward'),
-                    dict(count=1, label='1M', step='month', stepmode='backward'),
-                    dict(count=6, label='6M', step='month', stepmode='backward'),
-                    dict(count=1, label='YTD', step='year', stepmode='todate'),
-                    dict(count=1, label='1A', step='year', stepmode='backward'),
-                    dict(label='Máx.', step='all')
-                ]))
-        )
-
-        st.plotly_chart(fig_nasdaq, use_container_width=True)
+        line_chart('Nasdaq 100', nasdaq_100, 'Puntos', True)
 
     elif nasdaq_chart == 'Gráfico OHLC + Volumen':
 
-        fig_nasdaq = make_subplots(
-            rows=2,
-            cols=1,
-            shared_xaxes=True,
-            vertical_spacing=0.03,
-            # subplot_titles=('OLHC', 'Volumen'),
-            row_width=[0.2, 0.7]
-        )
-
-        fig_nasdaq.add_trace(
-            go.Candlestick(
-                x=nasdaq_100['Date'],
-                open=nasdaq_100['Open'],
-                high=nasdaq_100['High'],
-                low=nasdaq_100['Low'],
-                close=nasdaq_100['Close'],
-                name='OLHC',
-                showlegend=False
-            ),
-            row=1,
-            col=1
-        )
-
-        fig_nasdaq.add_trace(
-            go.Bar(
-                x=nasdaq_100['Date'],
-                y=nasdaq_100['Volume'],
-                showlegend=False,
-                name='Volumen'
-            ),
-            row=2,
-            col=1
-        )
-
-        fig_nasdaq.update(layout_xaxis_rangeslider_visible=False)
-
-        fig_nasdaq.update_layout(
-            {'plot_bgcolor': color_blanco, 'paper_bgcolor': color_blanco},
-            font=dict(family='arial'),
-            font_size=12,
-            margin=dict(l=0, r=0, t=0, b=0)
-        )
-
-        fig_nasdaq.update_xaxes(
-            rangebreaks=[dict(bounds=["sat", "mon"])],
-            rangeselector=dict(
-                buttons=list([
-                    dict(count=3, label='3D', step='day', stepmode='backward'),
-                    dict(count=5, label='1S', step='day', stepmode='backward'),
-                    dict(count=1, label='1M', step='month', stepmode='backward'),
-                    dict(count=6, label='6M', step='month', stepmode='backward'),
-                    dict(count=1, label='YTD', step='year', stepmode='todate'),
-                    dict(count=1, label='1A', step='year', stepmode='backward'),
-                    dict(label='Máx.', step='all')
-                ]))
-        )
-
-        st.plotly_chart(fig_nasdaq, use_container_width=True)
+        olhc_chart('Nasdaq 100', nasdaq_100, True)
 
     with st.expander('Más información:'):
-        st.write('''
-            Fuente: Federal Reserve Bank of St. Louis (Federal Reserve Economic Data).
-            
-            El Nasdaq 100 es un índice basado en una canasta de 100 acciones de las empresas que más actividad tienen en la bolsa de valores Nasdaq. El índice incluye empresas de varios sectores, a excepción de las financieras. El índice se calcula en base a la ponderación de la capitalización de las empresas.
-            ''')
 
-# Nasdaq 100 y Russell
+        st.write('''
+        Fuente: Federal Reserve Bank of St. Louis (Federal Reserve Economic Data).
+            
+        El Nasdaq 100 es un índice basado en una canasta de 100 acciones de las empresas que más actividad tienen en la bolsa de valores Nasdaq. El índice incluye empresas de varios sectores, a excepción de las financieras. El índice se calcula en base a la ponderación de la capitalización de las empresas.
+        ''')
+
+with eq1[1]:
+
+    st.markdown('**Russell 3000**')
+
+    russell_chart = st.selectbox('Seleccione el tipo de gráfico', ('Gráfico de línea', 'Gráfico OHLC + Volumen'), key='russell_3000_key')
+
+    if russell_chart == 'Gráfico de línea':
+
+        line_chart('Russell 3000', russell_3000, 'Puntos', True)
+
+    elif russell_chart == 'Gráfico OHLC + Volumen':
+
+        olhc_chart('Russell 3000', russell_3000, True)
+
+    with st.expander('Más información:'):
+
+        st.write('''
+        Fuente: Yahoo! Finance.
+
+        Por su parte, el índice Russell 3000 es un índice bursátil ponderado por capitalización de mercado que provee exposición a todo el mercado bursátil norteamericano. Este índice sigue el desempeño de las 3 mil empresas norteamericanas públicas con mayor capitalización en el mercado, que representa el 97% de todas las empresas incorporadas en EE.UU. que cotizan en el mercado bursátil norteamericano.
+        ''')
 
 eq3, eq4 = st.columns(2)
 
 with eq3:
 
-    st.markdown('**Índices de Volatilidad**')
+    st.markdown('**Russell 2000**')
 
-    fig_volatility = go.Figure()
+    russell_2000_chart = st.selectbox('Seleccione el tipo de gráfico', ('Gráfico de línea', 'Gráfico OHLC + Volumen'), key='russell_2000_key')
 
-    fig_volatility.add_trace(
-        go.Line(
-            name='Índice VIX',
-            x=vix_index['Date'],
-            y=vix_index['Close'],
-            line=dict(color=color_azul)
-        )
-    )
+    if russell_2000_chart == 'Gráfico de línea':
 
-    fig_volatility.add_trace(
-        go.Line(
-            name='Índice MOVE',
-            x=move_index['Date'],
-            y=move_index['Close'],
-            line=dict(color=color_rojo)
-        ))
+        line_chart('Russell 2000', russell_2000, 'Puntos', True)
 
-    fig_volatility.add_vrect(
-        x0='2001-03-01',
-        x1='2001-11-01',
-        fillcolor=color_gris,
-        opacity=0.25,
-        line_width=0
-    )
+    elif russell_2000_chart == 'Gráfico OHLC + Volumen':
 
-    fig_volatility.add_vrect(
-        x0='2007-12-01',
-        x1='2009-06-01',
-        fillcolor=color_gris,
-        opacity=0.25,
-        line_width=0
-    )
-
-    fig_volatility.add_vrect(
-        x0='2020-02-01',
-        x1='2020-04-01',
-        fillcolor=color_gris,
-        opacity=0.25,
-        line_width=0
-    )
-
-    fig_volatility.update_layout(
-        {'plot_bgcolor': color_blanco, 'paper_bgcolor': color_blanco},
-        font=dict(family='arial'),
-        font_size=14,
-        legend=dict(orientation="h", x=0, y=-0.12),
-        margin=dict(l=0, r=0, t=0, b=0)
-    )
-
-    fig_volatility.update_yaxes(title='US$')
-
-    fig_volatility.update_xaxes(
-        title='Fecha',
-        # rangeslider_visible=True,
-        rangeselector=dict(
-            buttons=list([
-                dict(count=3, label='3D', step='day', stepmode='backward'),
-                dict(count=5, label='1S', step='day', stepmode='backward'),
-                dict(count=1, label='1M', step='month', stepmode='backward'),
-                dict(count=6, label='6M', step='month', stepmode='backward'),
-                dict(count=1, label='YTD', step='year', stepmode='todate'),
-                dict(count=1, label='1A', step='year', stepmode='backward'),
-                dict(label='Máx.', step='all')
-            ]))
-    )
-
-    st.plotly_chart(fig_volatility, use_container_width=True)
-
-    with st.expander('Más información'):
-        st.write('''
-            Fuente: Federal Reserve Bank of St. Louis (Federal Reserve Economic Data).
-           
-            El índice VIX es una estimación destinada a producir una medida constante de la volatilidad esperada a 30 días del mercado bursátil norteamericano. Esta medida se deriva del precio "mid" de opciones call y put del índice S&P 500 a tiempo real. A nivel global, es una de las medidas de volatilidad más importantes -- ampliamente citada y seguida por medios especializados, así como por participantes del mercado como un indicador de seguimiento.
-            
-            El índice MOVE es una reconocida medida de la volatilidad de tasas de interés en EE.UU. que sigue el movimiento de la volatilidad implícita del rendimiento de instrumentos del Tesoro norteamericano a través de los precios vigentes de opciones a 1 mes de bonos del Tesoro norteamericano a 2, 5, 10 y 30 años.
-            
-            Es una media ponderada del rendimiento constante a 2, 5, 10 y 30 años de los bonos del Tesoro norteamericano con los siguientes pesos: 20%, 20%, 40% y 20%, respectivamente.
-            ''')
-
-with eq4:
-
-    st.markdown('**S&P/BVL Perú General**')
-
-    fig_bvl_gen = go.Figure()
-
-    fig_bvl_gen.add_trace(
-        go.Line(
-            name='S&P/BVL Perú General',
-            x=bvl_gen['Date'],
-            y=bvl_gen['Close'],
-            line=dict(color=color_rojo)
-        ))
-
-    fig_bvl_gen.update_layout(
-        {'plot_bgcolor': color_blanco, 'paper_bgcolor': color_blanco},
-        font=dict(family='arial'),
-        font_size=14,
-        margin=dict(l=0, r=0, t=0, b=0)
-    )
-
-    fig_bvl_gen.update_yaxes(title='Puntos')
-
-    fig_bvl_gen.update_xaxes(
-        title='Fecha',
-        # rangeslider_visible=True,
-        rangeselector=dict(
-            buttons=list([
-                dict(count=3, label='3D', step='day', stepmode='backward'),
-                dict(count=5, label='1S', step='day', stepmode='backward'),
-                dict(count=1, label='1M', step='month', stepmode='backward'),
-                dict(count=6, label='6M', step='month', stepmode='backward'),
-                dict(count=1, label='YTD', step='year', stepmode='todate'),
-                dict(count=1, label='1A', step='year', stepmode='backward'),
-                dict(label='Máx.', step='all')
-            ]))
-    )
-
-    st.plotly_chart(fig_bvl_gen, use_container_width=True)
-
-    with st.expander('Más información'):
-        st.write('''
-            Fuente: Banco Central de Reserva del Perú.
-            
-            El índice S&P/BVL Peru General ha sido diseñado para ser el referente amplio de la BVL. Es un índice ponderado por capitalización ajustada por free-float (mínima de S/ 33 millones), que incluye requisitos adicionales de liquidez y frecuencia de negociación para sus constituyentes. Desde la alianza S&P/BVL, la cartera del índice ha estado compuesta por no menos de 33 y no más de 41 acciones. Además, este índice incluye acciones de cada uno de los 5 sectores de la familia de índices S&P/BVL, destacando el minero y el financiero como los de mayor ponderación. El índice se rebalancea en setiembre de cada año y se repondera (límite de 25% por constituyente y 10% para las compañías que obtienen menos del 50% de sus ingresos de fuentes peruanas) en los meses de marzo, junio y diciembre. La BVL difunde diariamente en sus publicaciones el S&P/BVL Peru General de retorno total, es decir, que incluye la reinversión de los beneficios distribuidos.
-            ''')
-
-# VIX y FTSE 100
-
-eq5, eq6 = st.columns(2)
-
-with eq5:
-
-    st.markdown('**Índices Russell**')
-
-    russell_chart = st.selectbox('Seleccione el tipo de gráfico', ('Gráfico de línea', 'Gráfico OHLC + Volumen'), key='russell_key')
-
-    if russell_chart == 'Gráfico de línea':
-
-        fig_russell = go.Figure()
-
-        fig_russell.add_trace(
-            go.Line(
-                name='Russell 3000',
-                x=russell_3000['Date'],
-                y=russell_3000['Close'],
-                line=dict(color=color_rojo)
-            ))
-
-        fig_russell.add_trace(
-            go.Line(
-                name='Russell 2000',
-                x=russell_2000['Date'],
-                y=russell_2000['Close'],
-                line=dict(color=color_azul)
-            )
-        )
-
-        fig_russell.add_vrect(
-            x0='2001-03-01',
-            x1='2001-11-01',
-            fillcolor=color_gris,
-            opacity=0.25,
-            line_width=0
-        )
-
-        fig_russell.add_vrect(
-            x0='2007-12-01',
-            x1='2009-06-01',
-            fillcolor=color_gris,
-            opacity=0.25,
-            line_width=0
-        )
-
-        fig_russell.add_vrect(
-            x0='2020-02-01',
-            x1='2020-04-01',
-            fillcolor=color_gris,
-            opacity=0.25,
-            line_width=0
-        )
-
-        fig_russell.update_layout(
-            {'plot_bgcolor': color_blanco, 'paper_bgcolor': color_blanco},
-            font=dict(family='arial'),
-            font_size=14,
-            margin=dict(l=0, r=0, t=0, b=0),
-            legend=dict(orientation="h", valign="bottom", xanchor="left", x=0, y=-0.13)
-        )
-
-        fig_russell.update_yaxes(title='Puntos')
-
-        fig_russell.update_xaxes(
-            title='Fecha',
-            # rangeslider_visible=True,
-            rangeselector=dict(
-                buttons=list([
-                    dict(count=3, label='3D', step='day', stepmode='backward'),
-                    dict(count=5, label='1S', step='day', stepmode='backward'),
-                    dict(count=1, label='1M', step='month', stepmode='backward'),
-                    dict(count=6, label='6M', step='month', stepmode='backward'),
-                    dict(count=1, label='YTD', step='year', stepmode='todate'),
-                    dict(count=1, label='1A', step='year', stepmode='backward'),
-                    dict(label='Máx.', step='all')
-                ]))
-        )
-
-        st.plotly_chart(fig_russell, use_container_width=True)
-
-    elif russell_chart == 'Gráfico OHLC + Volumen':
-
-        fig_russell = make_subplots(
-            rows=2,
-            cols=1,
-            shared_xaxes=True,
-            vertical_spacing=0.03,
-            # subplot_titles=('OLHC', 'Volumen'),
-            row_width=[0.2, 0.7]
-        )
-
-        fig_russell.add_trace(
-            go.Candlestick(
-                x=russell_2000['Date'],
-                open=russell_2000['Open'],
-                high=russell_2000['High'],
-                low=russell_2000['Low'],
-                close=russell_2000['Close'],
-                name='Russell 2000',
-                showlegend=False
-            ),
-            row=1,
-            col=1
-        )
-
-        fig_russell.add_trace(
-            go.Candlestick(
-                x=russell_3000['Date'],
-                open=russell_3000['Open'],
-                high=russell_3000['High'],
-                low=russell_3000['Low'],
-                close=russell_3000['Close'],
-                name='Russell 3000',
-                showlegend=False
-            ),
-            row=1,
-            col=1
-        )
-
-        fig_russell.add_trace(
-            go.Bar(
-                x=russell_2000['Date'],
-                y=russell_2000['Volume'],
-                showlegend=False,
-                name='Volumen Russell 2000'
-            ),
-            row=2,
-            col=1
-        )
-
-        fig_russell.add_trace(
-            go.Bar(
-                x=russell_3000['Date'],
-                y=russell_3000['Volume'],
-                showlegend=False,
-                name='Volumen Russell 3000'
-            ),
-            row=2,
-            col=1
-        )
-
-        fig_russell.update(layout_xaxis_rangeslider_visible=False)
-
-        fig_russell.update_layout(
-            {'plot_bgcolor': color_blanco, 'paper_bgcolor': color_blanco},
-            font=dict(family='arial'),
-            font_size=12,
-            margin=dict(l=0, r=0, t=0, b=0)
-        )
-
-        fig_russell.update_xaxes(
-            rangebreaks=[dict(bounds=["sat", "mon"])],
-            rangeselector=dict(
-                buttons=list([
-                    dict(count=3, label='3D', step='day', stepmode='backward'),
-                    dict(count=5, label='1S', step='day', stepmode='backward'),
-                    dict(count=1, label='1M', step='month', stepmode='backward'),
-                    dict(count=6, label='6M', step='month', stepmode='backward'),
-                    dict(count=1, label='YTD', step='year', stepmode='todate'),
-                    dict(count=1, label='1A', step='year', stepmode='backward'),
-                    dict(label='Máx.', step='all')
-                ]))
-        )
-
-        st.plotly_chart(fig_russell, use_container_width=True)
+        olhc_chart('Russell 2000', russell_2000, True)
 
     with st.expander('Más información:'):
-        st.write('''
-            Fuente: Federal Reserve Bank of St. Louis (Federal Reserve Economic Data).
-            
-            El índice Russell 2000 se refiere a un indice bursátil que mide el desempeño de las 2,000 compañías más pequeñas que forman parte del índice Russell 3000. Este índice es administrado por FTSE Russell y es considerado uno de los referentes de la salud de la economía norteamericana por su énfasis en compañías públicas pequeñas del mercado norteamericnano.
-            
-            Por su parte, el índice Russell 3000 es un índice bursátil ponderado por capitalización de mercado que provee exposición a todo el mercado bursátil norteamericano. Este índice sigue el desempeño de las 3 mil empresas norteamericanas públicas con mayor capitalización en el mercado, que representa el 97% de todas las empresas incorporadas en EE.UU. que cotizan en el mercado bursátil norteamericano.
-            ''')
 
-with eq6:
+        st.write('''
+        Fuente: Yahoo! Finance
+
+        El índice Russell 2000 se refiere a un indice bursátil que mide el desempeño de las 2,000 compañías más pequeñas que forman parte del índice Russell 3000. Este índice es administrado por FTSE Russell y es considerado uno de los referentes de la salud de la economía norteamericana por su énfasis en compañías públicas pequeñas del mercado norteamericnano.
+        ''')
+
+with eq4:
 
     st.markdown('**FTSE 100**')
 
@@ -941,116 +602,73 @@ with eq6:
 
     if ftse_chart == 'Gráfico de línea':
 
-        fig_ftse = go.Figure()
-
-        fig_ftse.add_trace(
-            go.Line(
-                name='Índice FTSE 100',
-                x=ftse_100['Date'],
-                y=ftse_100['Close'],
-                line=dict(color=color_rojo)
-            )
-        )
-
-        fig_ftse.update_layout(
-            {'plot_bgcolor': color_blanco, 'paper_bgcolor': color_blanco},
-            font=dict(family='arial'),
-            font_size=14,
-            margin=dict(l=0, r=0, t=0, b=0)
-        )
-
-        fig_ftse.update_yaxes(title='Puntos')
-
-        fig_ftse.update_xaxes(
-            title='Fecha',
-            # rangeslider_visible=True,
-            rangeselector=dict(
-                buttons=list([
-                    dict(count=3, label='3D', step='day', stepmode='backward'),
-                    dict(count=5, label='1S', step='day', stepmode='backward'),
-                    dict(count=1, label='1M', step='month', stepmode='backward'),
-                    dict(count=6, label='6M', step='month', stepmode='backward'),
-                    dict(count=1, label='YTD', step='year', stepmode='todate'),
-                    dict(count=1, label='1A', step='year', stepmode='backward'),
-                    dict(label='Máx.', step='all')
-                ]))
-        )
-
-        st.plotly_chart(fig_ftse, use_container_width=True)
+        line_chart('FTSE 100', ftse_100, 'Puntos', False)
 
     elif ftse_chart == 'Gráfico OHLC + Volumen':
 
-        fig_ftse = make_subplots(
-            rows=2,
-            cols=1,
-            shared_xaxes=True,
-            vertical_spacing=0.03,
-            # subplot_titles=('OLHC', 'Volumen'),
-            row_width=[0.2, 0.7]
-        )
-
-        fig_ftse.add_trace(
-            go.Candlestick(
-                x=ftse_100['Date'],
-                open=ftse_100['Open'],
-                high=ftse_100['High'],
-                low=ftse_100['Low'],
-                close=ftse_100['Close'],
-                name='OLHC',
-                showlegend=False
-            ),
-            row=1,
-            col=1
-        )
-
-        fig_ftse.add_trace(
-            go.Bar(
-                x=ftse_100['Date'],
-                y=ftse_100['Volume'],
-                showlegend=False,
-                name='Volumen'
-            ),
-            row=2,
-            col=1
-        )
-
-        fig_ftse.update(layout_xaxis_rangeslider_visible=False)
-
-        fig_ftse.update_layout(
-            {'plot_bgcolor': color_blanco, 'paper_bgcolor': color_blanco},
-            font=dict(family='arial'),
-            font_size=12,
-            margin=dict(l=0, r=0, t=0, b=0)
-        )
-
-        fig_ftse.update_xaxes(
-            rangebreaks=[dict(bounds=["sat", "mon"])],
-            rangeselector=dict(
-                buttons=list([
-                    dict(count=3, label='3D', step='day', stepmode='backward'),
-                    dict(count=5, label='1S', step='day', stepmode='backward'),
-                    dict(count=1, label='1M', step='month', stepmode='backward'),
-                    dict(count=6, label='6M', step='month', stepmode='backward'),
-                    dict(count=1, label='YTD', step='year', stepmode='todate'),
-                    dict(count=1, label='1A', step='year', stepmode='backward'),
-                    dict(label='Máx.', step='all')
-                ]))
-        )
-
-        st.plotly_chart(fig_ftse, use_container_width=True)
+        line_chart('FTSE 100', ftse_100, False)
 
     with st.expander('Más información'):
+
         st.write('''
-            Fuente: Banco Central de Reserva del Perú.
-            
-            El FTSE 100 es un índice bursátil de las 100 empresas que cotizan en el London Stock Exchange con la mayor capitalización de mercado.El índice es mantenido por el Grupo FTSE, una subsidiaria del Grupo London Stock Exchange.
-            ''')
+        Fuente: Yahoo! Finance.
 
-# SHANGHAI Y NIKKEI 225
+        El FTSE 100 es un índice bursátil de las 100 empresas que cotizan en el London Stock Exchange con la mayor capitalización de mercado.El índice es mantenido por el Grupo FTSE, una subsidiaria del Grupo London Stock Exchange.
+        ''')
 
-eq7, eq8 = st.columns(2)
+# VIX y FTSE 100
 
-with eq7:
+eq5 = st.columns(2)
+
+with eq5[0]:
+
+    st.markdown('**Índice de volatilidad CBOE VIX**')
+
+    vix_chart = st.selectbox('Seleccione el tipo de gráfico', ('Gráfico de línea', 'Gráfico OHLC + Volumen'), key='vix_key')
+
+    if vix_chart == 'Gráfico de línea':
+
+        line_chart('Índice VIX', vix_index, 'USD', True)
+
+    elif vix_chart == 'Gráfico OHLC + Volumen':
+
+        olhc_chart('Índice VIX', vix_index, True)
+
+    with st.expander('Más información'):
+
+        st.write('''
+        Fuente: Yahoo! Finance.
+
+        El índice VIX es una estimación destinada a producir una medida constante de la volatilidad esperada a 30 días del mercado bursátil norteamericano. Esta medida se deriva del precio "mid" de opciones call y put del índice S&P 500 a tiempo real. A nivel global, es una de las medidas de volatilidad más importantes -- ampliamente citada y seguida por medios especializados, así como por participantes del mercado como un indicador de seguimiento.
+        ''')
+
+with eq5[1]:
+
+    st.markdown('**Índice de volatilidad MOVE**')
+
+    move_chart = st.selectbox('Seleccione el tipo de gráfico', ('Gráfico de línea', 'Gráfico OHLC + Volumen'), key='move_key')
+
+    if move_chart == 'Gráfico de línea':
+
+        line_chart('Índice MOVE', move_index, 'USD', True)
+
+    elif move_chart == 'Gráfico OHLC + Volumen':
+
+        olhc_chart('Índice MOVE', move_index, True)
+
+    with st.expander('Más información'):
+
+        st.write('''
+        Fuente: Yahoo! Finance.
+
+        El índice MOVE es una reconocida medida de la volatilidad de tasas de interés en EE.UU. que sigue el movimiento de la volatilidad implícita del rendimiento de instrumentos del Tesoro norteamericano a través de los precios vigentes de opciones a 1 mes de bonos del Tesoro norteamericano a 2, 5, 10 y 30 años.
+
+        Es una media ponderada del rendimiento constante a 2, 5, 10 y 30 años de los bonos del Tesoro norteamericano con los siguientes pesos: 20%, 20%, 40% y 20%, respectivamente.
+        ''')
+
+eq6 = st.columns(2)
+
+with eq6[0]:
 
     st.markdown('**Shanghai Composite**')
 
@@ -1058,112 +676,20 @@ with eq7:
 
     if shanghai_chart == 'Gráfico de línea':
 
-        fig_shanghai_comp = go.Figure()
-
-        fig_shanghai_comp.add_trace(
-            go.Line(
-                name='Índice Shanghai Composite',
-                x=shanghai_comp['Date'],
-                y=shanghai_comp['Close'],
-                line=dict(color=color_azul)
-            )
-        )
-
-        fig_shanghai_comp.update_layout(
-            {'plot_bgcolor': color_blanco, 'paper_bgcolor': color_blanco},
-            font=dict(family='arial'),
-            font_size=14,
-            margin=dict(l=0, r=0, t=0, b=0)
-        )
-
-        fig_shanghai_comp.update_yaxes(title='Puntos')
-
-        fig_shanghai_comp.update_xaxes(
-            title='Fecha',
-            # rangeslider_visible=True,
-            rangeselector=dict(
-                buttons=list([
-                    dict(count=3, label='3D', step='day', stepmode='backward'),
-                    dict(count=5, label='1S', step='day', stepmode='backward'),
-                    dict(count=1, label='1M', step='month', stepmode='backward'),
-                    dict(count=6, label='6M', step='month', stepmode='backward'),
-                    dict(count=1, label='YTD', step='year', stepmode='todate'),
-                    dict(count=1, label='1A', step='year', stepmode='backward'),
-                    dict(label='Máx.', step='all')
-                ]))
-        )
-
-        st.plotly_chart(fig_shanghai_comp, use_container_width=True)
+        line_chart('Shanghai Composite', shanghai_comp, 'Puntos', False)
 
     elif shanghai_chart == 'Gráfico OHLC + Volumen':
 
-        fig_shanghai_comp = make_subplots(
-            rows=2,
-            cols=1,
-            shared_xaxes=True,
-            vertical_spacing=0.03,
-            # subplot_titles=('OLHC', 'Volumen'),
-            row_width=[0.2, 0.7]
-        )
-
-        fig_shanghai_comp.add_trace(
-            go.Candlestick(
-                x=shanghai_comp['Date'],
-                open=shanghai_comp['Open'],
-                high=shanghai_comp['High'],
-                low=shanghai_comp['Low'],
-                close=shanghai_comp['Close'],
-                name='OLHC',
-                showlegend=False
-            ),
-            row=1,
-            col=1
-        )
-
-        fig_shanghai_comp.add_trace(
-            go.Bar(
-                x=shanghai_comp['Date'],
-                y=shanghai_comp['Volume'],
-                showlegend=False,
-                name='Volumen'
-            ),
-            row=2,
-            col=1
-        )
-
-        fig_shanghai_comp.update(layout_xaxis_rangeslider_visible=False)
-
-        fig_shanghai_comp.update_layout(
-            {'plot_bgcolor': color_blanco, 'paper_bgcolor': color_blanco},
-            font=dict(family='arial'),
-            font_size=12,
-            margin=dict(l=0, r=0, t=0, b=0)
-        )
-
-        fig_shanghai_comp.update_xaxes(
-            rangebreaks=[dict(bounds=["sat", "mon"])],
-            rangeselector=dict(
-                buttons=list([
-                    dict(count=3, label='3D', step='day', stepmode='backward'),
-                    dict(count=5, label='1S', step='day', stepmode='backward'),
-                    dict(count=1, label='1M', step='month', stepmode='backward'),
-                    dict(count=6, label='6M', step='month', stepmode='backward'),
-                    dict(count=1, label='YTD', step='year', stepmode='todate'),
-                    dict(count=1, label='1A', step='year', stepmode='backward'),
-                    dict(label='Máx.', step='all')
-                ]))
-        )
-
-        st.plotly_chart(fig_shanghai_comp, use_container_width=True)
+        olhc_chart('Shanghai Composite', shanghai_comp, False)
 
     with st.expander('Más información'):
         st.write('''
-            Fuente: Banco Central de Reserva del Perú.
-            
-            The SSE Composite Index also known as SSE Index is a stock market index of all stocks that are traded at the Shanghai Stock Exchange.
-            ''')
+        Fuente: Yahoo! Finance.
 
-with eq8:
+        The SSE Composite Index also known as SSE Index is a stock market index of all stocks that are traded at the Shanghai Stock Exchange.
+        ''')
+
+with eq6[1]:
 
     st.markdown('**Nikkei 225**')
 
@@ -1171,110 +697,35 @@ with eq8:
 
     if nikkei_chart == 'Gráfico de línea':
 
-        fig_nikkei = go.Figure()
-
-        fig_nikkei.add_trace(
-            go.Line(
-                name='Índice Nikkei 225',
-                x=nikkei_225['Date'],
-                y=nikkei_225['Close'],
-                line=dict(color=color_rojo)
-            )
-        )
-
-        fig_nikkei.update_layout(
-            {'plot_bgcolor': color_blanco, 'paper_bgcolor': color_blanco},
-            font=dict(family='arial'),
-            font_size=14,
-            margin=dict(l=0, r=0, t=0, b=0)
-        )
-
-        fig_nikkei.update_yaxes(title='Puntos')
-
-        fig_nikkei.update_xaxes(
-            title='Fecha',
-            # rangeslider_visible=True,
-            rangeselector=dict(
-                buttons=list([
-                    dict(count=3, label='3D', step='day', stepmode='backward'),
-                    dict(count=5, label='1S', step='day', stepmode='backward'),
-                    dict(count=1, label='1M', step='month', stepmode='backward'),
-                    dict(count=6, label='6M', step='month', stepmode='backward'),
-                    dict(count=1, label='YTD', step='year', stepmode='todate'),
-                    dict(count=1, label='1A', step='year', stepmode='backward'),
-                    dict(label='Máx.', step='all')
-                ]))
-        )
-
-        st.plotly_chart(fig_nikkei, use_container_width=True)
+        line_chart('Nikkei 225', nikkei_225, 'Puntos', False)
 
     elif nikkei_chart == 'Gráfico OHLC + Volumen':
 
-        nikkei_chart = make_subplots(
-            rows=2,
-            cols=1,
-            shared_xaxes=True,
-            vertical_spacing=0.03,
-            # subplot_titles=('OLHC', 'Volumen'),
-            row_width=[0.2, 0.7]
-        )
-
-        nikkei_chart.add_trace(
-            go.Candlestick(
-                x=nikkei_225['Date'],
-                open=nikkei_225['Open'],
-                high=nikkei_225['High'],
-                low=nikkei_225['Low'],
-                close=nikkei_225['Close'],
-                name='OLHC',
-                showlegend=False
-            ),
-            row=1,
-            col=1
-        )
-
-        nikkei_chart.add_trace(
-            go.Bar(
-                x=nikkei_225['Date'],
-                y=nikkei_225['Volume'],
-                showlegend=False,
-                name='Volumen'
-            ),
-            row=2,
-            col=1
-        )
-
-        nikkei_chart.update(layout_xaxis_rangeslider_visible=False)
-
-        nikkei_chart.update_layout(
-            {'plot_bgcolor': color_blanco, 'paper_bgcolor': color_blanco},
-            font=dict(family='arial'),
-            font_size=12,
-            margin=dict(l=0, r=0, t=0, b=0)
-        )
-
-        nikkei_chart.update_xaxes(
-            rangebreaks=[dict(bounds=["sat", "mon"])],
-            rangeselector=dict(
-                buttons=list([
-                    dict(count=3, label='3D', step='day', stepmode='backward'),
-                    dict(count=5, label='1S', step='day', stepmode='backward'),
-                    dict(count=1, label='1M', step='month', stepmode='backward'),
-                    dict(count=6, label='6M', step='month', stepmode='backward'),
-                    dict(count=1, label='YTD', step='year', stepmode='todate'),
-                    dict(count=1, label='1A', step='year', stepmode='backward'),
-                    dict(label='Máx.', step='all')
-                ]))
-        )
-
-        st.plotly_chart(nikkei_chart, use_container_width=True)
+        olhc_chart('Nikkei 225', nikkei_225, False)
 
     with st.expander('Más información'):
+
         st.write('''
-            Fuente: Banco Central de Reserva del Perú.
-            
-            El índice Nikkei 225 is a stock market index for the Tokyo Stock Exchange. It has been calculated daily by the Nihon Keizai Shimbun newspaper since 1950.
-            ''')
+        Fuente: Banco Central de Reserva del Perú.
+
+        El índice Nikkei 225 is a stock market index for the Tokyo Stock Exchange. It has been calculated daily by the Nihon Keizai Shimbun newspaper since 1950.
+        ''')
+
+# SHANGHAI Y NIKKEI 225
+
+eq7, eq8 = st.columns(2)
+
+with eq7:
+
+    st.write('**S&P/BVL Perú General**')
+
+    line_chart('S&P/BVL Perú General', bvl_gen, 'Puntos', False)
+
+    with st.expander('Más información'):
+
+        st.write('''
+        Fuente: Standard & Poor's.
+        ''')
 
 # MATERIAS PRIMAS
 
