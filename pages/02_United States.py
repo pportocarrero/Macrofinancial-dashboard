@@ -7,8 +7,8 @@ import plotly.graph_objects as go
 import os
 # import hydralit_components as hc
 # from plotly.subplots import make_subplots
-# from plotly_resampler import register_plotly_resampler
 import locale
+import platform
 
 st.set_page_config(
     layout='wide',
@@ -41,13 +41,19 @@ text_size = 14
 
 # LOAD DATA
 
-os.chdir('C:/Users/pport/OneDrive/Projects/macrofinancial dash/')
+if platform.system() == 'Windows':
+
+    os.chdir('C:/Users/pport/OneDrive/Projects/Macrofinancial-dashboard/')
+
+if platform.system() == 'Darwin':
+
+    os.chdir('/Users/pportocarrero/OneDrive/Projects/Macrofinancial-dashboard/')
 
 # BASES DEL RESUMEN
 
 sp_500 = pd.read_feather('mercados/sp_500')  # S&P 500
 
-sp_500_intraday = pd.read_feather('mercados/sp_500_intraday')  # S&P 500 INTRADAY
+# sp_500_intraday = pd.read_feather('mercados/sp_500_intraday')  # S&P 500 INTRADAY
 
 dji_index = pd.read_feather('mercados/dji_index')  # DOW JONES
 
@@ -85,7 +91,7 @@ soybean_fut = pd.read_feather('mercados/soybean_futures')  # SOYBEAN FUTURES
 
 corn_fut = pd.read_feather('mercados/corn_futures')  # CORN FUTURES
 
-usd_pen = pd.read_feather('mercados/usd_pen')  # USD/PEN
+usd_pen = pd.read_excel('mercados/usd_pen.xlsx')  # USD/PEN
 
 # BASES DE EEUU
 

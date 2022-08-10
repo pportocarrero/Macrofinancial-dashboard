@@ -10,6 +10,8 @@ from plotly.subplots import make_subplots
 # from plotly_resampler import register_plotly_resampler
 import locale
 import platform
+from io import BytesIO
+from pyxlsb import open_workbook as open_xlsb
 
 st.set_page_config(
     layout='wide',
@@ -201,9 +203,9 @@ delta_copper_pct = '{:.2%}'.format(delta_copper_pct).replace('.', ',')
 
 # DELTA USD/PEN
 
-usd_pen_latest = usd_pen['Close'].iloc[-1]
+usd_pen_latest = usd_pen['4. close'].iloc[-1]
 
-usd_pen_t2 = usd_pen['Close'].iloc[-2]
+usd_pen_t2 = usd_pen['4. close'].iloc[-2]
 
 delta_usd_pen = usd_pen_latest - usd_pen_t2
 
@@ -472,6 +474,69 @@ def olhc_chart(name, ticker_id, us_recession=False):
 
 ###########
 
+def two_chart(name: str, data_frame, y_axis, us_recession=False):
+
+    st.markdown('**' + name + '**')
+
+    chart = st.selectbox('Seleccione el tipo de gráfico', ('Gráfico de línea', 'Gráfico OHLC + Volumen'), key=name)
+
+    if chart == 'Gráfico de línea':
+
+        tab0 = st.tabs(['Gráfico', 'Tabla', 'Descargar'])
+
+        with tab0[0]:
+
+            line_chart(name, data_frame, y_axis, us_recession=False)
+
+        with tab0[1]:
+
+            st.dataframe(data_frame)
+
+        with tab0[2]:
+
+            def to_excel(data_frame):
+
+                output = BytesIO()
+
+                writer = pd.ExcelWriter(output, engine='xlsxwriter')
+
+                data_frame.to_excel(writer, index=False, sheet_name='Hoja1')
+
+                workbook = writer.book
+
+                worksheet = writer.sheets['Hoja1']
+
+                format1 = workbook.add_format({'num_format': '0.00'})
+
+                worksheet.set_column('A:A', None, format1)
+
+                writer.save()
+
+                processed_data = output.getvalue()
+
+                return processed_data
+
+            df_xlsx = to_excel(data_frame)
+
+            st.download_button(
+                label='Descarga la data',
+                data=df_xlsx,
+                file_name=name + '.xlsx'
+            )
+
+    elif chart == 'Gráfico OHLC + Volumen':
+
+        tab1 = st.tabs(['Gráfico', 'Tabla'])
+
+        with tab1[0]:
+
+            olhc_chart(name, data_frame, us_recession=False)
+
+        with tab1[1]:
+
+            st.dataframe(data_frame)
+
+###########
 # ÍNDICES BURSÁTILES Y DE RENTA FIJA
 
 st.subheader('Índices bursátiles y de renta fija')
@@ -482,17 +547,7 @@ eq = st.columns(2)
 
 with eq[0]:
 
-    st.markdown('**S&P 500**')
-
-    sp_chart = st.selectbox('Seleccione el tipo de gráfico', ('Gráfico de línea', 'Gráfico OHLC + Volumen'), key='sp_key')
-
-    if sp_chart == 'Gráfico de línea':
-
-        line_chart('S&P 500', sp_500, 'Puntos', True)
-
-    elif sp_chart == 'Gráfico OHLC + Volumen':
-
-        olhc_chart('S&P 500', sp_500, True)
+    two_chart('S&P 500', sp_500, 'Puntos', True)
 
     with st.expander('Más información:'):
 
@@ -504,17 +559,7 @@ with eq[0]:
 
 with eq[1]:
 
-    st.markdown('**Dow Jones Industrial Average**')
-
-    dji_chart = st.selectbox('Seleccione el tipo de gráfico', ('Gráfico de línea', 'Gráfico OHLC + Volumen'), key='dji_key')
-
-    if dji_chart == 'Gráfico de línea':
-
-        line_chart('Dow Jones 30', dji_index, 'Puntos', True)
-
-    elif dji_chart == 'Gráfico OHLC + Volumen':
-
-        olhc_chart('Dow Jones 30', dji_index, True)
+    two_chart('Dow Jones Industrial Average', dji_index, 'Puntos', True)
 
     with st.expander('Más información:'):
 
@@ -528,17 +573,7 @@ eq1 = st.columns(2)
 
 with eq1[0]:
 
-    st.markdown('**Nasdaq 100**')
-
-    nasdaq_chart = st.selectbox('Seleccione el tipo de gráfico', ('Gráfico de línea', 'Gráfico OHLC + Volumen'), key='nasdaq_key')
-
-    if nasdaq_chart == 'Gráfico de línea':
-
-        line_chart('Nasdaq 100', nasdaq_100, 'Puntos', True)
-
-    elif nasdaq_chart == 'Gráfico OHLC + Volumen':
-
-        olhc_chart('Nasdaq 100', nasdaq_100, True)
+    two_chart('Nasdaq 100', nasdaq_100, 'Puntos', True)
 
     with st.expander('Más información:'):
 
@@ -550,17 +585,7 @@ with eq1[0]:
 
 with eq1[1]:
 
-    st.markdown('**Russell 3000**')
-
-    russell_chart = st.selectbox('Seleccione el tipo de gráfico', ('Gráfico de línea', 'Gráfico OHLC + Volumen'), key='russell_3000_key')
-
-    if russell_chart == 'Gráfico de línea':
-
-        line_chart('Russell 3000', russell_3000, 'Puntos', True)
-
-    elif russell_chart == 'Gráfico OHLC + Volumen':
-
-        olhc_chart('Russell 3000', russell_3000, True)
+    two_chart('Russell 3000', russell_3000, 'Puntos', True)
 
     with st.expander('Más información:'):
 
@@ -574,17 +599,7 @@ eq3, eq4 = st.columns(2)
 
 with eq3:
 
-    st.markdown('**Russell 2000**')
-
-    russell_2000_chart = st.selectbox('Seleccione el tipo de gráfico', ('Gráfico de línea', 'Gráfico OHLC + Volumen'), key='russell_2000_key')
-
-    if russell_2000_chart == 'Gráfico de línea':
-
-        line_chart('Russell 2000', russell_2000, 'Puntos', True)
-
-    elif russell_2000_chart == 'Gráfico OHLC + Volumen':
-
-        olhc_chart('Russell 2000', russell_2000, True)
+    two_chart('Russell 2000', russell_2000, 'Puntos', True)
 
     with st.expander('Más información:'):
 
@@ -1154,7 +1169,7 @@ with comm1[0]:
 
 with comm1[1]:
 
-    st.write('**Trigo (US$/bushel)**')
+    st.write('**Trigo (cUS$/bushel)**')
 
     wheat_chart = st.selectbox('Seleccione el tipo de gráfico', ('Gráfico de línea', 'Gráfico OHLC + Volumen'), key='wheat_key')
 
@@ -1177,7 +1192,7 @@ with comm1[1]:
             margin=dict(l=0, r=0, t=0, b=0)
         )
 
-        fig_wheat.update_yaxes(title='US$')
+        fig_wheat.update_yaxes(title='cUS$')
 
         fig_wheat.update_xaxes(
             title='Fecha',
@@ -1294,7 +1309,7 @@ with comm2[0]:
             margin=dict(l=0, r=0, t=0, b=0)
         )
 
-        fig_corn.update_yaxes(title='US$')
+        fig_corn.update_yaxes(title='cUS$')
 
         fig_corn.update_xaxes(
             title='Fecha',
@@ -1407,7 +1422,7 @@ with comm2[1]:
             margin=dict(l=0, r=0, t=0, b=0)
         )
 
-        fig_soybean.update_yaxes(title='US$')
+        fig_soybean.update_yaxes(title='cUS$')
 
         fig_soybean.update_xaxes(
             title='Fecha',

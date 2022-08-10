@@ -8,6 +8,7 @@ import os
 # from plotly.subplots import make_subplots
 # from plotly_resampler import register_plotly_resampler
 import locale
+import platform
 
 st.set_page_config(
     layout='wide',
@@ -40,7 +41,13 @@ text_size = 14
 
 # LOAD DATA
 
-os.chdir('C:/Users/pport/OneDrive/Projects/macrofinancial dash/')
+if platform.system() == 'Windows':
+
+    os.chdir('C:/Users/pport/OneDrive/Projects/Macrofinancial-dashboard/')
+
+if platform.system() == 'Darwin':
+
+    os.chdir('/Users/pportocarrero/OneDrive/Projects/Macrofinancial-dashboard/')
 
 # BASES DE PERÚ
 
