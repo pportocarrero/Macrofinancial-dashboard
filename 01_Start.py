@@ -71,6 +71,8 @@ soybean_fut = pd.read_feather('mercados/soybean_futures')  # SOYBEAN FUTURES
 
 corn_fut = pd.read_feather('mercados/corn_futures')  # CORN FUTURES
 
+gscpi = pd.read_feather('mercados/gscpi_data')  # GLOBAL SUPPLY CHAIN PRESSURE INDEX
+
 usd_pen = pd.read_excel('mercados/usd_pen.xlsx')  # USD/PEN
 
 # COLORS AND CONFIGS
@@ -233,7 +235,7 @@ kpi2[3].metric(
 ###########
 
 # FUNCTION TO CREATE AREA CHART
-def line_chart(name, ticker_id, y_axis, us_recession=False):
+def line_chart(name, ticker_id, y_axis, decimals, us_recession=False):
 
     import plotly.graph_objects as go
 
@@ -264,7 +266,7 @@ def line_chart(name, ticker_id, y_axis, us_recession=False):
         fig.update_layout(
             margin=dict(l=0, r=0, t=0, b=0),
             hovermode='x unified',
-            yaxis=dict(tickformat=',.1f'),
+            yaxis=dict(tickformat=',.' + str(decimals) + 'f'),
         )
 
         fig.update_xaxes(
@@ -302,7 +304,7 @@ def line_chart(name, ticker_id, y_axis, us_recession=False):
         fig.update_layout(
             margin=dict(l=0, r=0, t=0, b=0),
             hovermode='x unified',
-            yaxis=dict(tickformat=',.1f'),
+            yaxis=dict(tickformat=',.' + str(decimals) + 'f'),
         )
 
         fig.update_xaxes(
@@ -327,7 +329,7 @@ def line_chart(name, ticker_id, y_axis, us_recession=False):
 
 # CREATE FUNCTION FOR CANDLESTICK CHARTS
 
-def olhc_chart(name, ticker_id, us_recession=False):
+def olhc_chart(name, ticker_id, decimals, us_recession=False):
 
     import plotly.graph_objects as go
 
@@ -385,7 +387,7 @@ def olhc_chart(name, ticker_id, us_recession=False):
         fig.update_layout(
             margin=dict(l=0, r=0, t=0, b=0),
             hovermode='x unified',
-            yaxis=dict(tickformat=',.1f'),
+            yaxis=dict(tickformat=',.' + str(decimals) + 'f'),
         )
 
         fig.update_xaxes(
@@ -446,7 +448,7 @@ def olhc_chart(name, ticker_id, us_recession=False):
         fig.update_layout(
             margin=dict(l=0, r=0, t=0, b=0),
             hovermode='x unified',
-            yaxis=dict(tickformat=',.1f'),
+            yaxis=dict(tickformat=',.' + str(decimals) + 'f'),
         )
 
         fig.update_xaxes(
@@ -467,7 +469,7 @@ def olhc_chart(name, ticker_id, us_recession=False):
 
 ###########
 
-def two_chart(name: str, data_frame, y_axis, us_recession=False):
+def two_chart(name: str, data_frame, y_axis, decimals, us_recession=False):
 
     st.markdown('**' + name + '**')
 
@@ -479,7 +481,7 @@ def two_chart(name: str, data_frame, y_axis, us_recession=False):
 
         with tab0[0]:
 
-            line_chart(name, data_frame, y_axis, us_recession=False)
+            line_chart(name, data_frame, y_axis, decimals, us_recession=False)
 
         with tab0[1]:
 
@@ -523,7 +525,7 @@ def two_chart(name: str, data_frame, y_axis, us_recession=False):
 
         with tab1[0]:
 
-            olhc_chart(name, data_frame, us_recession=False)
+            olhc_chart(name, data_frame, decimals, us_recession=False)
 
         with tab1[1]:
 
@@ -544,7 +546,7 @@ with main_tabs[0]:
 
     with eq[0]:
 
-        two_chart('S&P 500', sp_500, 'Puntos', True)
+        two_chart('S&P 500', sp_500, 'Puntos', decimals=0, us_recession=True)
 
         with st.expander('Más información:'):
 
@@ -556,7 +558,7 @@ with main_tabs[0]:
 
     with eq[1]:
 
-        two_chart('Dow Jones Industrial Average', dji_index, 'Puntos', True)
+        two_chart('Dow Jones Industrial Average', dji_index, 'Puntos', decimals=0, us_recession=True)
 
         with st.expander('Más información:'):
 
@@ -570,7 +572,7 @@ with main_tabs[0]:
 
     with eq1[0]:
 
-        two_chart('Nasdaq 100', nasdaq_100, 'Puntos', True)
+        two_chart('Nasdaq 100', nasdaq_100, 'Puntos', decimals=0, us_recession=True)
 
         with st.expander('Más información:'):
 
@@ -582,7 +584,7 @@ with main_tabs[0]:
 
     with eq1[1]:
 
-        two_chart('Russell 3000', russell_3000, 'Puntos', True)
+        two_chart('Russell 3000', russell_3000, 'Puntos', decimals=0, us_recession=True)
 
         with st.expander('Más información:'):
 
@@ -596,7 +598,7 @@ with main_tabs[0]:
 
     with eq3:
 
-        two_chart('Russell 2000', russell_2000, 'Puntos', True)
+        two_chart('Russell 2000', russell_2000, 'Puntos', decimals=0, us_recession=True)
 
         with st.expander('Más información:'):
 
@@ -608,17 +610,7 @@ with main_tabs[0]:
 
     with eq4:
 
-        st.markdown('**FTSE 100**')
-
-        ftse_chart = st.selectbox('Seleccione el tipo de gráfico', ('Gráfico de línea', 'Gráfico OHLC + Volumen'), key='ftse_key')
-
-        if ftse_chart == 'Gráfico de línea':
-
-            line_chart('FTSE 100', ftse_100, 'Puntos', False)
-
-        elif ftse_chart == 'Gráfico OHLC + Volumen':
-
-            line_chart('FTSE 100', ftse_100, False)
+        two_chart('FTSE 100', ftse_100, 'Puntos', decimals=0, us_recession=False)
 
         with st.expander('Más información'):
 
@@ -634,17 +626,7 @@ with main_tabs[0]:
 
     with eq5[0]:
 
-        st.markdown('**Índice de volatilidad CBOE VIX**')
-
-        vix_chart = st.selectbox('Seleccione el tipo de gráfico', ('Gráfico de línea', 'Gráfico OHLC + Volumen'), key='vix_key')
-
-        if vix_chart == 'Gráfico de línea':
-
-            line_chart('Índice VIX', vix_index, 'USD', True)
-
-        elif vix_chart == 'Gráfico OHLC + Volumen':
-
-            olhc_chart('Índice VIX', vix_index, True)
+        two_chart('Índice de volatilidad CBOE VIX', vix_index, 'US$', decimals=1, us_recession=True)
 
         with st.expander('Más información'):
 
@@ -656,17 +638,7 @@ with main_tabs[0]:
 
     with eq5[1]:
 
-        st.markdown('**Índice de volatilidad MOVE**')
-
-        move_chart = st.selectbox('Seleccione el tipo de gráfico', ('Gráfico de línea', 'Gráfico OHLC + Volumen'), key='move_key')
-
-        if move_chart == 'Gráfico de línea':
-
-            line_chart('Índice MOVE', move_index, 'USD', True)
-
-        elif move_chart == 'Gráfico OHLC + Volumen':
-
-            olhc_chart('Índice MOVE', move_index, True)
+        two_chart('Índice de volatilidad MOVE', move_index, 'US$', decimals=1, us_recession=True)
 
         with st.expander('Más información'):
 
@@ -682,17 +654,7 @@ with main_tabs[0]:
 
     with eq6[0]:
 
-        st.markdown('**Shanghai Composite**')
-
-        shanghai_chart = st.selectbox('Seleccione el tipo de gráfico', ('Gráfico de línea', 'Gráfico OHLC + Volumen'), key='shanghai_key')
-
-        if shanghai_chart == 'Gráfico de línea':
-
-            line_chart('Shanghai Composite', shanghai_comp, 'Puntos', False)
-
-        elif shanghai_chart == 'Gráfico OHLC + Volumen':
-
-            olhc_chart('Shanghai Composite', shanghai_comp, False)
+        two_chart('Shanghai Composite', shanghai_comp, 'Puntos', decimals=0, us_recession=False)
 
         with st.expander('Más información'):
             st.write('''
@@ -703,17 +665,7 @@ with main_tabs[0]:
 
     with eq6[1]:
 
-        st.markdown('**Nikkei 225**')
-
-        nikkei_chart = st.selectbox('Seleccione el tipo de gráfico', ('Gráfico de línea', 'Gráfico OHLC + Volumen'), key='nikkei_key')
-
-        if nikkei_chart == 'Gráfico de línea':
-
-            line_chart('Nikkei 225', nikkei_225, 'Puntos', False)
-
-        elif nikkei_chart == 'Gráfico OHLC + Volumen':
-
-            olhc_chart('Nikkei 225', nikkei_225, False)
+        two_chart('Nikkei 225', nikkei_225, 'Puntos', decimals=1, us_recession=False)
 
         with st.expander('Más información'):
 
@@ -731,7 +683,46 @@ with main_tabs[0]:
 
         st.write('**S&P/BVL Perú General**')
 
-        line_chart('S&P/BVL Perú General', bvl_gen, 'Puntos', False)
+        tab0 = st.tabs(['Gráfico', 'Tabla', 'Descargar'])
+
+        with tab0[0]:
+
+            line_chart('S&P/BVL Perú General', bvl_gen, 'Puntos', decimals=0, us_recession=False)
+
+        with tab0[1]:
+
+            st.dataframe(bvl_gen)
+
+        with tab0[2]:
+            def to_excel(data_frame):
+                output = BytesIO()
+
+                writer = pd.ExcelWriter(output, engine='xlsxwriter')
+
+                data_frame.to_excel(writer, index=False, sheet_name='Hoja1')
+
+                workbook = writer.book
+
+                worksheet = writer.sheets['Hoja1']
+
+                format1 = workbook.add_format({'num_format': '0.00'})
+
+                worksheet.set_column('A:A', None, format1)
+
+                writer.save()
+
+                processed_data = output.getvalue()
+
+                return processed_data
+
+
+            df_xlsx = to_excel(bvl_gen)
+
+            st.download_button(
+                label='Descarga la data',
+                data=df_xlsx,
+                file_name='bvl_gen.xlsx'
+            )
 
         with st.expander('Más información'):
 
@@ -751,302 +742,27 @@ with main_tabs[1]:
 
     with com1:
 
-        st.markdown('**Crudo WTI y Brent (US$/barril)**')
-
-        crude_chart = st.selectbox('Seleccione el tipo de gráfico', ('Gráfico de línea', 'Gráfico OHLC + Volumen'), key='crude_key')
-
-        if crude_chart == 'Gráfico de línea':
-
-            fig_crude = go.Figure()
-
-            fig_crude.add_trace(
-                go.Line(
-                    name='Crudo WTI',
-                    x=wti_crude['Date'],
-                    y=wti_crude['Close'],
-                    line=dict(color=color_azul)
-                )
-            )
-
-            fig_crude.add_trace(
-                go.Line(
-                    name='Crudo Brent',
-                    x=brent_crude['Date'],
-                    y=brent_crude['Close'],
-                    line=dict(color=color_rojo)
-                )
-            )
-
-            fig_crude.add_vrect(
-                x0='2001-03-01',
-                x1='2001-11-01',
-                fillcolor=color_gris,
-                opacity=0.25,
-                line_width=0
-            )
-
-            fig_crude.add_vrect(
-                x0='2007-12-01',
-                x1='2009-06-01',
-                fillcolor=color_gris,
-                opacity=0.25,
-                line_width=0
-            )
-
-            fig_crude.add_vrect(
-                x0='2020-02-01',
-                x1='2020-04-01',
-                fillcolor=color_gris,
-                opacity=0.25,
-                line_width=0
-            )
-
-            fig_crude.update_layout(
-                {'plot_bgcolor': color_blanco, 'paper_bgcolor': color_blanco},
-                font=dict(family='arial'),
-                font_size=14,
-                margin=dict(l=0, r=0, t=0, b=0),
-                legend=dict(orientation="h", valign="bottom", xanchor="left", x=0, y=-0.13)
-            )
-
-            fig_crude.update_xaxes(
-                title='Fecha',
-                rangebreaks=[dict(bounds=["sat", "mon"])],
-                rangeselector=dict(
-                    buttons=list([
-                        dict(count=3, label='3D', step='day', stepmode='backward'),
-                        dict(count=5, label='1S', step='day', stepmode='backward'),
-                        dict(count=1, label='1M', step='month', stepmode='backward'),
-                        dict(count=6, label='6M', step='month', stepmode='backward'),
-                        dict(count=1, label='YTD', step='year', stepmode='todate'),
-                        dict(count=1, label='1A', step='year', stepmode='backward'),
-                        dict(label='Máx.', step='all')
-                    ]))
-            )
-
-            st.plotly_chart(fig_crude, use_container_width=True)
-
-        elif crude_chart == 'Gráfico OHLC + Volumen':
-
-            fig_crude = make_subplots()
-
-            fig_crude.add_trace(
-                go.Candlestick(
-                    x=wti_crude['Date'],
-                    open=wti_crude['Open'],
-                    high=wti_crude['High'],
-                    low=wti_crude['Low'],
-                    close=wti_crude['Close'],
-                    name='WTI',
-                    showlegend=True,
-                    increasing_line_color=color_azul,
-                    decreasing_line_color=color_rojo
-                )
-            )
-
-            fig_crude.add_trace(
-                go.Candlestick(
-                    x=brent_crude['Date'],
-                    open=brent_crude['Open'],
-                    high=brent_crude['High'],
-                    low=brent_crude['Low'],
-                    close=brent_crude['Close'],
-                    name='Brent',
-                    showlegend=True,
-                    increasing_line_color=color_azul_oscuro,
-                    decreasing_line_color=color_rojo_claro
-                )
-            )
-
-            fig_crude.update(layout_xaxis_rangeslider_visible=False)
-
-            fig_crude.update_layout(
-                {'plot_bgcolor': color_blanco, 'paper_bgcolor': color_blanco},
-                font=dict(family='arial'),
-                font_size=14,
-                margin=dict(l=0, r=0, t=0, b=0),
-                legend=dict(orientation="h", valign="bottom", xanchor="left", x=0, y=-0.13)
-            )
-
-            fig_crude.update_xaxes(
-                rangebreaks=[dict(bounds=["sat", "mon"])],
-                rangeselector=dict(
-                    buttons=list([
-                        dict(count=3, label='3D', step='day', stepmode='backward'),
-                        dict(count=5, label='1S', step='day', stepmode='backward'),
-                        dict(count=1, label='1M', step='month', stepmode='backward'),
-                        dict(count=6, label='6M', step='month', stepmode='backward'),
-                        dict(count=1, label='YTD', step='year', stepmode='todate'),
-                        dict(count=1, label='1A', step='year', stepmode='backward'),
-                        dict(label='Máx.', step='all')
-                    ]))
-            )
-
-            st.plotly_chart(fig_crude, use_container_width=True)
+        two_chart('Crudo WTI (US$/barril)', wti_crude, 'US$', decimals=2, us_recession=True)
 
         with st.expander('Más información'):
             st.write('''
-                Fuente: Federal Reserve Bank of St. Louis.
+                Fuente: Yahoo! Finance.
                     
                 WTI is the underlying commodity of the New York Mercantile Exchange's (NYMEX) oil futures contract and is considered a high-quality oil that is easily refined.
                     
                 West Texas Intermediate (WTI) crude oil is a specific grade of crude oil and one of the main three benchmarks in oil pricing, along with Brent and Dubai Crude. WTI is known as a light sweet oil because it contains between 0.24% and 0.34% sulfur, making it "sweet," and has a low density (specific gravity), making it "light."
-                
-                Brent actually refers to oil from four different fields in the North Sea: Brent, Forties, Oseberg, and Ekofisk. Crude from this region is light and sweet, making them ideal for the refining of diesel fuel, gasoline, and other high-demand products. And because the supply is waterborne, it’s easy to transport to distant locations.
                 ''')
 
     with com2:
 
-        st.write('**Principales metales**')
-
-        metals_chart = st.selectbox('Seleccione el tipo de gráfico', ('Gráfico de línea', 'Gráfico OHLC + Volumen'), key='metals_key')
-
-        if metals_chart == 'Gráfico de línea':
-
-            fig_metals = make_subplots(specs=[[{"secondary_y": True}]])
-
-            fig_metals.add_trace(
-                go.Line(
-                    name='Cobre (izq.)',
-                    x=copper_fut['Date'],
-                    y=copper_fut['Close'],
-                    line=dict(color=color_rojo)
-                ),
-                secondary_y=False
-            )
-
-            fig_metals.add_trace(
-                go.Line(
-                    name='Oro (der.)',
-                    x=gold_fut['Date'],
-                    y=gold_fut['Close'],
-                    line=dict(color=color_azul)
-                ),
-                secondary_y=True
-            )
-
-            fig_metals.add_vrect(
-                x0='2001-03-01',
-                x1='2001-11-01',
-                fillcolor=color_gris,
-                opacity=0.25,
-                line_width=0
-            )
-
-            fig_metals.add_vrect(
-                x0='2007-12-01',
-                x1='2009-06-01',
-                fillcolor=color_gris,
-                opacity=0.25,
-                line_width=0
-            )
-
-            fig_metals.add_vrect(
-                x0='2020-02-01',
-                x1='2020-04-01',
-                fillcolor=color_gris,
-                opacity=0.25,
-                line_width=0
-            )
-
-            fig_metals.update_layout(
-                {'plot_bgcolor': color_blanco, 'paper_bgcolor': color_blanco},
-                font=dict(family='arial'),
-                font_size=14,
-                margin=dict(l=0, r=0, t=0, b=0),
-                legend=dict(orientation="h", valign="bottom", xanchor="left", x=0, y=-0.13)
-            )
-
-            fig_metals.update_yaxes(title='US$/lb', secondary_y=False)
-
-            fig_metals.update_yaxes(title='US$/Oz.tr.', secondary_y=True)
-
-            fig_metals.update_xaxes(
-                title='Fecha',
-                # rangeslider_visible=True,
-                rangeselector=dict(
-                    buttons=list([
-                        dict(count=3, label='3D', step='day', stepmode='backward'),
-                        dict(count=5, label='1S', step='day', stepmode='backward'),
-                        dict(count=1, label='1M', step='month', stepmode='backward'),
-                        dict(count=6, label='6M', step='month', stepmode='backward'),
-                        dict(count=1, label='YTD', step='year', stepmode='todate'),
-                        dict(count=1, label='1A', step='year', stepmode='backward'),
-                        dict(count=5, label='5A', step='year', stepmode='backward'),
-                        dict(label='Máx.', step='all')
-                    ]))
-            )
-
-            st.plotly_chart(fig_metals, use_container_width=True)
-
-        elif metals_chart == 'Gráfico OHLC + Volumen':
-
-            fig_metals = make_subplots(specs=[[{"secondary_y": True}]])
-
-            fig_metals.add_trace(
-                go.Candlestick(
-                    x=copper_fut['Date'],
-                    open=copper_fut['Open'],
-                    high=copper_fut['High'],
-                    low=copper_fut['Low'],
-                    close=copper_fut['Close'],
-                    name='Cobre (izq.)',
-                    showlegend=True,
-                    increasing_line_color=color_azul,
-                    decreasing_line_color=color_rojo
-                ),
-                secondary_y=False
-            )
-
-            fig_metals.add_trace(
-                go.Candlestick(
-                    x=gold_fut['Date'],
-                    open=gold_fut['Open'],
-                    high=gold_fut['High'],
-                    low=gold_fut['Low'],
-                    close=gold_fut['Close'],
-                    name='Oro (der.)',
-                    showlegend=True,
-                    increasing_line_color=color_azul_oscuro,
-                    decreasing_line_color=color_rojo_claro
-                ),
-                secondary_y=True
-            )
-
-            fig_metals.update(layout_xaxis_rangeslider_visible=False)
-
-            fig_metals.update_layout(
-                {'plot_bgcolor': color_blanco, 'paper_bgcolor': color_blanco},
-                font=dict(family='arial'),
-                font_size=14,
-                margin=dict(l=0, r=0, t=0, b=0),
-                legend=dict(orientation="h", valign="bottom", xanchor="left", x=0, y=-0.13)
-            )
-
-            fig_metals.update_xaxes(
-                rangebreaks=[dict(bounds=["sat", "mon"])],
-                rangeselector=dict(
-                    buttons=list([
-                        dict(count=3, label='3D', step='day', stepmode='backward'),
-                        dict(count=5, label='1S', step='day', stepmode='backward'),
-                        dict(count=1, label='1M', step='month', stepmode='backward'),
-                        dict(count=6, label='6M', step='month', stepmode='backward'),
-                        dict(count=1, label='YTD', step='year', stepmode='todate'),
-                        dict(count=1, label='1A', step='year', stepmode='backward'),
-                        dict(label='Máx.', step='all')
-                    ]))
-            )
-
-            fig_metals.update_yaxes(title='US$/lb', secondary_y=False)
-
-            fig_metals.update_yaxes(title='US$/Oz.tr.', secondary_y=True)
-
-            st.plotly_chart(fig_metals, use_container_width=True)
+        two_chart('Crude Brent (US$/barril)', brent_crude, 'US$', decimals=2, us_recession=True)
 
         with st.expander('Más información'):
 
             st.write('''
-                    Fuente: Banco Central de Reserva del Perú.
+                    Fuente: Yahoo! Finance.
+                    
+                    Brent actually refers to oil from four different fields in the North Sea: Brent, Forties, Oseberg, and Ekofisk. Crude from this region is light and sweet, making them ideal for the refining of diesel fuel, gasoline, and other high-demand products. And because the supply is waterborne, it’s easy to transport to distant locations.
                     ''')
 
     # COBRE Y ORO
@@ -1055,228 +771,22 @@ with main_tabs[1]:
 
     with comm1[0]:
 
-        st.write('**Plata (US$/Oz.tr.)**')
-
-        silver_chart = st.selectbox('Seleccione el tipo de gráfico', ('Gráfico de línea', 'Gráfico OHLC + Volumen'), key='silver_key')
-
-        if silver_chart == 'Gráfico de línea':
-
-            fig_silver = go.Figure()
-
-            fig_silver.add_trace(
-                go.Line(
-                    name='Plata (US$/Oz.tr.)',
-                    x=silver_fut['Date'],
-                    y=silver_fut['Close'],
-                    line=dict(color=color_azul)
-                ))
-
-            fig_silver.update_layout(
-                {'plot_bgcolor': color_blanco, 'paper_bgcolor': color_blanco},
-                font=dict(family='arial'),
-                font_size=14,
-                margin=dict(l=0, r=0, t=0, b=0)
-            )
-
-            fig_silver.update_yaxes(title='US$')
-
-            fig_silver.update_xaxes(
-                title='Fecha',
-                # rangeslider_visible=True,
-                rangeselector=dict(
-                    buttons=list([
-                        dict(count=3, label='3D', step='day', stepmode='backward'),
-                        dict(count=5, label='1S', step='day', stepmode='backward'),
-                        dict(count=1, label='1M', step='month', stepmode='backward'),
-                        dict(count=6, label='6M', step='month', stepmode='backward'),
-                        dict(count=1, label='YTD', step='year', stepmode='todate'),
-                        dict(count=1, label='1A', step='year', stepmode='backward'),
-                        dict(label='Máx.', step='all')
-                    ]))
-            )
-
-            st.plotly_chart(fig_silver, use_container_width=True)
-
-        elif silver_fut == 'Gráfico OHLC + Volumen':
-
-            fig_silver = make_subplots(
-                rows=2,
-                cols=1,
-                shared_xaxes=True,
-                vertical_spacing=0.03,
-                # subplot_titles=('OLHC', 'Volumen'),
-                row_width=[0.2, 0.7]
-            )
-
-            fig_silver.add_trace(
-                go.Candlestick(
-                    x=silver_fut['Date'],
-                    open=silver_fut['Open'],
-                    high=silver_fut['High'],
-                    low=silver_fut['Low'],
-                    close=silver_fut['Close'],
-                    name='OLHC',
-                    showlegend=False
-                ),
-                row=1,
-                col=1
-            )
-
-            fig_silver.add_trace(
-                go.Bar(
-                    x=silver_fut['Date'],
-                    y=silver_fut['Volume'],
-                    showlegend=False,
-                    name='Volumen'
-                ),
-                row=2,
-                col=1
-            )
-
-            fig_silver.update(layout_xaxis_rangeslider_visible=False)
-
-            fig_silver.update_layout(
-                {'plot_bgcolor': color_blanco, 'paper_bgcolor': color_blanco},
-                font=dict(family='arial'),
-                font_size=12,
-                margin=dict(l=0, r=0, t=0, b=0)
-            )
-
-            fig_silver.update_xaxes(
-                rangebreaks=[dict(bounds=["sat", "mon"])],
-                rangeselector=dict(
-                    buttons=list([
-                        dict(count=3, label='3D', step='day', stepmode='backward'),
-                        dict(count=5, label='1S', step='day', stepmode='backward'),
-                        dict(count=1, label='1M', step='month', stepmode='backward'),
-                        dict(count=6, label='6M', step='month', stepmode='backward'),
-                        dict(count=1, label='YTD', step='year', stepmode='todate'),
-                        dict(count=1, label='1A', step='year', stepmode='backward'),
-                        dict(label='Máx.', step='all')
-                    ]))
-            )
-
-            st.plotly_chart(fig_silver, use_container_width=True)
+        two_chart('Cobre (US$/lb)', copper_fut, 'US$', decimals=2, us_recession=True)
 
         with st.expander('Más información)'):
 
             st.write('''
-                Fuente: Banco Central de Reserva del Perú.
-                
-                Silver futures are standardized, exchange-traded contracts in which the contract buyer agrees to take delivery, from the seller, a specific quantity of silver at a predetermined price on a future delivery date. Though its use as the nation's coinage was discontinued in 1965, at the turn of the century, an even more important economic function emerged for silver: that of an industrial raw material. Today, silver is sought as a valuable and practical industrial commodity, and silver futures are seen as an appealing investment that can be traded nearly 24 hours per day, 6 days per week. The largest industrial users of silver are the photographic, jewelry, and electronic industries. Silver futures are available for trading in the COMEX Division at the New York Mercantile Exchange (NYMEX).
+                Fuente: Yahoo! Finance.
                 ''')
 
     with comm1[1]:
 
-        st.write('**Trigo (cUS$/bushel)**')
-
-        wheat_chart = st.selectbox('Seleccione el tipo de gráfico', ('Gráfico de línea', 'Gráfico OHLC + Volumen'), key='wheat_key')
-
-        if wheat_chart == 'Gráfico de línea':
-
-            fig_wheat = go.Figure()
-
-            fig_wheat.add_trace(
-                go.Line(
-                    name='Trigo (US$/bushel)',
-                    x=wheat_fut['Date'],
-                    y=wheat_fut['Close'],
-                    line=dict(color=color_rojo)
-                ))
-
-            fig_wheat.update_layout(
-                {'plot_bgcolor': color_blanco, 'paper_bgcolor': color_blanco},
-                font=dict(family='arial'),
-                font_size=14,
-                margin=dict(l=0, r=0, t=0, b=0)
-            )
-
-            fig_wheat.update_yaxes(title='cUS$')
-
-            fig_wheat.update_xaxes(
-                title='Fecha',
-                # rangeslider_visible=True,
-                rangeselector=dict(
-                    buttons=list([
-                        dict(count=3, label='3D', step='day', stepmode='backward'),
-                        dict(count=5, label='1S', step='day', stepmode='backward'),
-                        dict(count=1, label='1M', step='month', stepmode='backward'),
-                        dict(count=6, label='6M', step='month', stepmode='backward'),
-                        dict(count=1, label='YTD', step='year', stepmode='todate'),
-                        dict(count=1, label='1A', step='year', stepmode='backward'),
-                        dict(label='Máx.', step='all')
-                    ]))
-            )
-
-            st.plotly_chart(fig_wheat, use_container_width=True)
-
-        elif wheat_chart == 'Gráfico OHLC + Volumen':
-
-            fig_wheat = make_subplots(
-                rows=2,
-                cols=1,
-                shared_xaxes=True,
-                vertical_spacing=0.03,
-                # subplot_titles=('OLHC', 'Volumen'),
-                row_width=[0.2, 0.7]
-            )
-
-            fig_wheat.add_trace(
-                go.Candlestick(
-                    x=wheat_fut['Date'],
-                    open=wheat_fut['Open'],
-                    high=wheat_fut['High'],
-                    low=wheat_fut['Low'],
-                    close=wheat_fut['Close'],
-                    name='OLHC',
-                    showlegend=False
-                ),
-                row=1,
-                col=1
-            )
-
-            fig_wheat.add_trace(
-                go.Bar(
-                    x=wheat_fut['Date'],
-                    y=wheat_fut['Volume'],
-                    showlegend=False,
-                    name='Volumen'
-                ),
-                row=2,
-                col=1
-            )
-
-            fig_wheat.update(layout_xaxis_rangeslider_visible=False)
-
-            fig_wheat.update_layout(
-                {'plot_bgcolor': color_blanco, 'paper_bgcolor': color_blanco},
-                font=dict(family='arial'),
-                font_size=12,
-                margin=dict(l=0, r=0, t=0, b=0)
-            )
-
-            fig_wheat.update_xaxes(
-                rangebreaks=[dict(bounds=["sat", "mon"])],
-                rangeselector=dict(
-                    buttons=list([
-                        dict(count=3, label='3D', step='day', stepmode='backward'),
-                        dict(count=5, label='1S', step='day', stepmode='backward'),
-                        dict(count=1, label='1M', step='month', stepmode='backward'),
-                        dict(count=6, label='6M', step='month', stepmode='backward'),
-                        dict(count=1, label='YTD', step='year', stepmode='todate'),
-                        dict(count=1, label='1A', step='year', stepmode='backward'),
-                        dict(label='Máx.', step='all')
-                    ]))
-            )
-
-            st.plotly_chart(fig_wheat, use_container_width=True)
+        two_chart('Oro (US$/Oz.tr.)', gold_fut, 'US$', decimals=2, us_recession=True)
 
         with st.expander('Más información'):
 
             st.write('''
                 Fuente: Banco Central de Reserva del Perú.
-                
-                Representing the majority of the U.S. wheat crop, Hard Red Winter wheat is the primary ingredient in the world’s production of bread. KC HRW Wheat futures are by no means new; in fact, they’ve traded since 1876 – longer than the Chicago SRW Wheat futures. However, what market participants are noticing as of late is newfound liquidity. Bid-ask spread, market depth and breadth of participants have improved dramatically. Trades at the Chicago Board of Trade (CBOT - CME Group).
                 ''')
 
     # SILVER Y TRIGO
@@ -1285,229 +795,105 @@ with main_tabs[1]:
 
     with comm2[0]:
 
-        st.write('**Maíz (cUS$/bushel)**')
-
-        corn_chart = st.selectbox('Seleccione el tipo de gráfico', ('Gráfico de línea', 'Gráfico OHLC + Volumen'), key='corn_key')
-
-        if corn_chart == 'Gráfico de línea':
-
-            fig_corn = go.Figure()
-
-            fig_corn.add_trace(
-                go.Line(
-                    name='Maíz (cUS$/bushel)',
-                    x=corn_fut['Date'],
-                    y=corn_fut['Close'],
-                    line=dict(color=color_azul)
-                ))
-
-            fig_corn.update_layout(
-                {'plot_bgcolor': color_blanco, 'paper_bgcolor': color_blanco},
-                font=dict(family='arial'),
-                font_size=14,
-                margin=dict(l=0, r=0, t=0, b=0)
-            )
-
-            fig_corn.update_yaxes(title='cUS$')
-
-            fig_corn.update_xaxes(
-                title='Fecha',
-                # rangeslider_visible=True,
-                rangeselector=dict(
-                    buttons=list([
-                        dict(count=3, label='3D', step='day', stepmode='backward'),
-                        dict(count=5, label='1S', step='day', stepmode='backward'),
-                        dict(count=1, label='1M', step='month', stepmode='backward'),
-                        dict(count=6, label='6M', step='month', stepmode='backward'),
-                        dict(count=1, label='YTD', step='year', stepmode='todate'),
-                        dict(count=1, label='1A', step='year', stepmode='backward'),
-                        dict(label='Máx.', step='all')
-                    ]))
-            )
-
-            st.plotly_chart(fig_corn, use_container_width=True)
-
-        elif corn_chart == 'Gráfico OHLC + Volumen':
-
-            fig_corn = make_subplots(
-                rows=2,
-                cols=1,
-                shared_xaxes=True,
-                vertical_spacing=0.03,
-                # subplot_titles=('OLHC', 'Volumen'),
-                row_width=[0.2, 0.7]
-            )
-
-            fig_corn.add_trace(
-                go.Candlestick(
-                    x=corn_fut['Date'],
-                    open=corn_fut['Open'],
-                    high=corn_fut['High'],
-                    low=corn_fut['Low'],
-                    close=corn_fut['Close'],
-                    name='OLHC',
-                    showlegend=False
-                ),
-                row=1,
-                col=1
-            )
-
-            fig_corn.add_trace(
-                go.Bar(
-                    x=corn_fut['Date'],
-                    y=corn_fut['Volume'],
-                    showlegend=False,
-                    name='Volumen'
-                ),
-                row=2,
-                col=1
-            )
-
-            fig_corn.update(layout_xaxis_rangeslider_visible=False)
-
-            fig_corn.update_layout(
-                {'plot_bgcolor': color_blanco, 'paper_bgcolor': color_blanco},
-                font=dict(family='arial'),
-                font_size=12,
-                margin=dict(l=0, r=0, t=0, b=0)
-            )
-
-            fig_corn.update_xaxes(
-                rangebreaks=[dict(bounds=["sat", "mon"])],
-                rangeselector=dict(
-                    buttons=list([
-                        dict(count=3, label='3D', step='day', stepmode='backward'),
-                        dict(count=5, label='1S', step='day', stepmode='backward'),
-                        dict(count=1, label='1M', step='month', stepmode='backward'),
-                        dict(count=6, label='6M', step='month', stepmode='backward'),
-                        dict(count=1, label='YTD', step='year', stepmode='todate'),
-                        dict(count=1, label='1A', step='year', stepmode='backward'),
-                        dict(label='Máx.', step='all')
-                    ]))
-            )
-
-            st.plotly_chart(fig_corn, use_container_width=True)
+        two_chart('Plata (US$/Oz.tr.)', silver_fut, 'US$', decimals=2, us_recession=True)
 
         with st.expander('Más información'):
 
             st.write('''
-                Fuente: Banco Central de Reserva del Perú.
+                Fuente: Yahoo! Finance.
                 
-                Corn futures are the most liquid and active market in grains, with 350,000 contracts traded per day. Trades at the Chicago Board of Trade (CBOT- CME Group).
+                Silver futures are standardized, exchange-traded contracts in which the contract buyer agrees to take delivery, from the seller, a specific quantity of silver at a predetermined price on a future delivery date. Though its use as the nation's coinage was discontinued in 1965, at the turn of the century, an even more important economic function emerged for silver: that of an industrial raw material. Today, silver is sought as a valuable and practical industrial commodity, and silver futures are seen as an appealing investment that can be traded nearly 24 hours per day, 6 days per week. The largest industrial users of silver are the photographic, jewelry, and electronic industries. Silver futures are available for trading in the COMEX Division at the New York Mercantile Exchange (NYMEX).
                 ''')
 
     with comm2[1]:
 
-        st.write('**Aceite de soya (cUS$/lb)**')
-
-        soybean_chart = st.selectbox('Seleccione el tipo de gráfico', ('Gráfico de línea', 'Gráfico OHLC + Volumen'), key='soybean_key')
-
-        if soybean_chart == 'Gráfico de línea':
-
-            fig_soybean = go.Figure()
-
-            fig_soybean.add_trace(
-                go.Line(
-                    name='Aceite de soya (cUS$/lb)',
-                    x=soybean_fut['Date'],
-                    y=soybean_fut['Close'],
-                    line=dict(color=color_rojo)
-                ))
-
-            fig_soybean.update_layout(
-                {'plot_bgcolor': color_blanco, 'paper_bgcolor': color_blanco},
-                font=dict(family='arial'),
-                font_size=14,
-                margin=dict(l=0, r=0, t=0, b=0)
-            )
-
-            fig_soybean.update_yaxes(title='cUS$')
-
-            fig_soybean.update_xaxes(
-                title='Fecha',
-                # rangeslider_visible=True,
-                rangeselector=dict(
-                    buttons=list([
-                        dict(count=3, label='3D', step='day', stepmode='backward'),
-                        dict(count=5, label='1S', step='day', stepmode='backward'),
-                        dict(count=1, label='1M', step='month', stepmode='backward'),
-                        dict(count=6, label='6M', step='month', stepmode='backward'),
-                        dict(count=1, label='YTD', step='year', stepmode='todate'),
-                        dict(count=1, label='1A', step='year', stepmode='backward'),
-                        dict(label='Máx.', step='all')
-                    ]))
-            )
-
-            st.plotly_chart(fig_soybean, use_container_width=True)
-
-        elif soybean_chart == 'Gráfico OHLC + Volumen':
-
-            fig_soybean = make_subplots(
-                rows=2,
-                cols=1,
-                shared_xaxes=True,
-                vertical_spacing=0.03,
-                # subplot_titles=('OLHC', 'Volumen'),
-                row_width=[0.2, 0.7]
-            )
-
-            fig_soybean.add_trace(
-                go.Candlestick(
-                    x=soybean_fut['Date'],
-                    open=soybean_fut['Open'],
-                    high=soybean_fut['High'],
-                    low=soybean_fut['Low'],
-                    close=soybean_fut['Close'],
-                    name='OLHC',
-                    showlegend=False
-                ),
-                row=1,
-                col=1
-            )
-
-            fig_soybean.add_trace(
-                go.Bar(
-                    x=soybean_fut['Date'],
-                    y=soybean_fut['Volume'],
-                    showlegend=False,
-                    name='Volumen'
-                ),
-                row=2,
-                col=1
-            )
-
-            fig_soybean.update(layout_xaxis_rangeslider_visible=False)
-
-            fig_soybean.update_layout(
-                {'plot_bgcolor': color_blanco, 'paper_bgcolor': color_blanco},
-                font=dict(family='arial'),
-                font_size=12,
-                margin=dict(l=0, r=0, t=0, b=0)
-            )
-
-            fig_soybean.update_xaxes(
-                rangebreaks=[dict(bounds=["sat", "mon"])],
-                rangeselector=dict(
-                    buttons=list([
-                        dict(count=3, label='3D', step='day', stepmode='backward'),
-                        dict(count=5, label='1S', step='day', stepmode='backward'),
-                        dict(count=1, label='1M', step='month', stepmode='backward'),
-                        dict(count=6, label='6M', step='month', stepmode='backward'),
-                        dict(count=1, label='YTD', step='year', stepmode='todate'),
-                        dict(count=1, label='1A', step='year', stepmode='backward'),
-                        dict(label='Máx.', step='all')
-                    ]))
-            )
-
-            st.plotly_chart(fig_soybean, use_container_width=True)
+        two_chart('Trigo (cUS$/bushel)', wheat_fut, 'cUS$', decimals=2, us_recession=True)
 
         with st.expander('Más información'):
 
             st.write('''
-                Fuente: Banco Central de Reserva del Perú.
+                Fuente: Yahoo! Finance.
                 
-                Soybean futures are an easy, liquid tool for speculating or hedging against price movements for one of the world’s most widely grown crops. Seek rewards, manage risks and diversify your portfolio. Our global contracts enable you to trade around the new crop of the northern hemisphere in November and the South American new crop in May. Trades at the Chicago Board of Trade (CBOT - CME Group).
+                Representing the majority of the U.S. wheat crop, Hard Red Winter wheat is the primary ingredient in the world’s production of bread. KC HRW Wheat futures are by no means new; in fact, they’ve traded since 1876 – longer than the Chicago SRW Wheat futures. However, what market participants are noticing as of late is newfound liquidity. Bid-ask spread, market depth and breadth of participants have improved dramatically. Trades at the Chicago Board of Trade (CBOT - CME Group).
                 ''')
+
+    comm3 = st.columns(2)
+
+    with comm3[0]:
+
+        two_chart('Maíz (cUS$/bushel)', corn_fut, 'cUS$', decimals=2, us_recession=True)
+
+        with st.expander('Más información'):
+
+            st.write('''
+                Fuente: Yahoo! Finance.
+
+                Corn futures are the most liquid and active market in grains, with 350,000 contracts traded per day. Trades at the Chicago Board of Trade (CBOT- CME Group).
+            ''')
+
+    with comm3[1]:
+
+        two_chart('Aceite de soya (cUS$/lb)', soybean_fut, 'cUS$', decimals=2, us_recession=True)
+
+        with st.expander('Más información'):
+            st.write('''
+                Fuente: Yahoo! Finance.
+
+                Soybean futures are an easy, liquid tool for speculating or hedging against price movements for one of the world’s most widely grown crops. Seek rewards, manage risks and diversify your portfolio. Our global contracts enable you to trade around the new crop of the northern hemisphere in November and the South American new crop in May. Trades at the Chicago Board of Trade (CBOT - CME Group).
+            ''')
+
+    comm4 = st.columns(2)
+
+    with comm4[0]:
+
+        st.write('**Global Supply Chain Pressure Index**')
+
+        tab0 = st.tabs(['Gráfico', 'Tabla', 'Descargar'])
+
+        with tab0[0]:
+            line_chart('Global Supply Chain Pressure Index', gscpi, 'Puntos', decimals=2, us_recession=True)
+
+        with tab0[1]:
+
+            st.dataframe(gscpi)
+
+        with tab0[2]:
+            def to_excel(data_frame):
+
+                output = BytesIO()
+
+                writer = pd.ExcelWriter(output, engine='xlsxwriter')
+
+                data_frame.to_excel(writer, index=False, sheet_name='Hoja1')
+
+                workbook = writer.book
+
+                worksheet = writer.sheets['Hoja1']
+
+                format1 = workbook.add_format({'num_format': '0.00'})
+
+                worksheet.set_column('A:A', None, format1)
+
+                writer.save()
+
+                processed_data = output.getvalue()
+
+                return processed_data
+
+            df_xlsx = to_excel(gscpi)
+
+            st.download_button(
+                label='Descarga la data',
+                data=df_xlsx,
+                file_name='gscpi.xlsx'
+            )
+
+            with st.expander('Más información'):
+                st.write('''
+                        Fuente: Reserva Federal de Nueva York.
+                        
+                        Es un índice construido con el objetivo de proveer información sobre presiones a la cadena de suministros global, que puedan indicar restricciones significativas por el lado de la oferta, y que puedan afectar la producción global. Este indicador es compuesto con información de costos de transporte, cuellos de botella en la producción global, e información relevante sobre la producción manufacturera. Utiliza data del Baltic Dry Index (BDI), Harpex index, y del U.S. Bureau of Labor Statistics. Este índice también usa componentes de las encuestas PMI (Purchasing-Managers' Index) de China, Japón, la zona euro, Corea del Sur, Taiwán, Reino Unido y Estados Unidos.
+                        ''')
 
 # TIPO DE CAMBIO
 
