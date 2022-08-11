@@ -227,7 +227,7 @@ kpi2[2].metric(
 
 kpi2[3].metric(
     'USD/PEN',
-    'S/ ' + str(usd_pen_delta[0]) + ' /US$',
+    'S/ ' + str(usd_pen_delta[0]) + '/US$',
     str(usd_pen_delta[2]) + ' (S/ ' + usd_pen_delta[1].replace('.', ',') + '/US$)',
     delta_color='inverse'
 )
