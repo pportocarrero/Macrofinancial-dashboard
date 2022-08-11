@@ -199,8 +199,8 @@ kpi1[2].metric(
 
 kpi1[3].metric(
     'Crudo WTI',
-    str(wti_delta[0]) + ' pts',
-    str(wti_delta[2]) + ' (' + str(wti_delta[1].replace('.', ',')) + ' pts)'
+    'US$' + str(wti_delta[0]),
+    str(wti_delta[2]) + ' (US$ ' + str(wti_delta[1].replace('.', ',')) + ')'
 )
 
 kpi2 = st.columns(4)
@@ -221,14 +221,14 @@ kpi2[1].metric(
 
 kpi2[2].metric(
     'Cobre',
-    'US$ ' + str(copper_delta[0]) + '/lb',
-    str(copper_delta[2]) + ' (US$ ' + str(copper_delta[1]).replace('.', ',') + '/lb)'
+    'US$ ' + str(copper_delta[0]) ,
+    str(copper_delta[2]) + ' (US$ ' + str(copper_delta[1]).replace('.', ',') + ')'
 )
 
 kpi2[3].metric(
     'USD/PEN',
-    'S/ ' + str(usd_pen_delta[0]) + '/US$',
-    str(usd_pen_delta[2]) + ' (S/ ' + usd_pen_delta[1].replace('.', ',') + '/US$)',
+    'S/ ' + str(usd_pen_delta[0]),
+    str(usd_pen_delta[2]) + ' (S/ ' + usd_pen_delta[1].replace('.', ',') + ')',
     delta_color='inverse'
 )
 
