@@ -99,143 +99,136 @@ text_size = 14
 
 # ACÁ HAY QUE INCLUIR UNA OPCIÓN PARA QUE EL USUARIO CAMBIE DE IDIOMA
 
+# FUNCIONES
+
+def delta_2d(dataframe):
+
+    latest = dataframe['Close'].iloc[-1]
+
+    t2 = dataframe['Close'].iloc[-2]
+
+    delta = latest - t2
+
+    delta_pct = latest / t2 - 1
+
+    latest = '{:,.2f}'.format(latest).replace(',', ' ').replace('.', ',')
+
+    delta = '{:,.2f}'.format(delta).replace(',', ' ').replace('.', ',')
+
+    delta_pct = '{:,.2%}'.format(delta_pct).replace('.', ',')
+
+    return latest, delta, delta_pct
+
+def delta_4d(dataframe):
+
+    latest = dataframe['Close'].iloc[-1]
+
+    t2 = dataframe['Close'].iloc[-2]
+
+    delta = latest - t2
+
+    delta_pct = latest / t2 - 1
+
+    latest = '{:,.4f}'.format(latest).replace(',', ' ').replace('.', ',')
+
+    delta = '{:,.4f}'.format(delta).replace(',', ' ').replace('.', ',')
+
+    delta_pct = '{:,.2%}'.format(delta_pct).replace('.', ',')
+
+    return latest, delta, delta_pct
+
 # RESUMEN
 
 st.title('Resumen de los mercados financieros')
 
 # DELTA DEL S&P 500
 
-sp_500_latest = sp_500['Close'].iloc[-1]
-
-sp_500_t2 = sp_500['Close'].iloc[-2]
-
-delta_sp_500 = sp_500_latest - sp_500_t2
-
-delta_sp_500_pct = sp_500_latest / sp_500_t2 - 1
-
-sp_500_latest = "{:,.2f}".format(sp_500_latest).replace(',', ' ').replace('.', ',')
-
-delta_sp_500_pct = '{:.2%}'.format(delta_sp_500_pct).replace('.', ',')
+sp_500_delta = delta_2d(sp_500)
 
 # DELTA DOW JONES
 
-dji_latest = dji_index['Close'].iloc[-1]
-
-dji_t2 = dji_index['Close'].iloc[-2]
-
-delta_dji = dji_latest - dji_t2
-
-delta_dji_pct = dji_latest / dji_t2 - 1
-
-dji_latest = '{:,.2f}'.format(dji_latest).replace(',', ' '). replace('.', ',')
-
-delta_dji_pct = '{:.2%}'.format(delta_dji_pct).replace('.', ',')
+dji_delta = delta_2d(dji_index)
 
 # DELTA NASDAQ 100
 
-nasdaq_latest = nasdaq_100['Close'].iloc[-1]
-
-nasdaq_t2 = nasdaq_100['Close'].iloc[-2]
-
-delta_nasdaq = nasdaq_latest - nasdaq_t2
-
-delta_nasdaq_pct = nasdaq_latest / nasdaq_t2 - 1
-
-nasdaq_latest = '{:,.2f}'.format(nasdaq_latest).replace(',', ' ').replace('.', ',')
-
-delta_nasdaq_pct = '{:.2%}'.format(delta_nasdaq_pct).replace('.', ',')
+nasdaq_delta = delta_2d(nasdaq_100)
 
 # DELTA VIX
 
-vix_latest = vix_index['Close'].iloc[-1]
-
-vix_t2 = vix_index['Close'].iloc[-2]
-
-delta_vix = vix_latest - vix_t2
-
-delta_vix_pct = vix_latest / vix_t2 - 1
-
-vix_latest = '{:,.2f}'.format(vix_latest).replace(',', ' ').replace('.', ',')
-
-delta_vix_pct = '{:.2%}'.format(delta_vix_pct).replace('.', ',')
+vix_delta = delta_2d(vix_index)
 
 # DELTA MOVE
 
-move_latest = move_index['Close'].iloc[-1]
-
-move_t2 = move_index['Close'].iloc[-2]
-
-delta_move = move_latest - move_t2
-
-delta_move_pct = move_latest / move_t2 - 1
-
-move_latest = '{:,.2f}'.format(move_latest).replace(',', ' ').replace('.', ',')
-
-delta_move_pct = '{:.2%}'.format(delta_move_pct).replace('.', ',')
+move_delta = delta_2d(move_index)
 
 # DELTA WTI CRUDE
 
-wti_crude_latest = wti_crude['Close'].iloc[-1]
-
-wti_crude_t2 = wti_crude['Close'].iloc[-2]
-
-delta_wti = wti_crude_latest - wti_crude_t2
-
-delta_wti_pct = wti_crude_latest / wti_crude_t2 - 1
-
-wti_crude_latest = '{:,.2f}'.format(wti_crude_latest).replace(',', ' ').replace('.', ',')
-
-delta_wti_pct = '{:.2%}'.format(delta_wti_pct).replace('.', ',')
+wti_delta = delta_2d(wti_crude)
 
 # DELTA COPPER
 
-copper_fut_latest = copper_fut['Close'].iloc[-1]
-
-copper_fut_t2 = copper_fut['Close'].iloc[-2]
-
-delta_copper = copper_fut_latest - copper_fut_t2
-
-delta_copper_pct = copper_fut_latest / copper_fut_t2 - 1
-
-copper_fut_latest = '{:,.4f}'.format(copper_fut_latest).replace(',', ' ').replace('.', ',')
-
-delta_copper_pct = '{:.2%}'.format(delta_copper_pct).replace('.', ',')
+copper_delta = delta_4d(copper_fut)
 
 # DELTA USD/PEN
 
-usd_pen_latest = usd_pen['4. close'].iloc[-1]
-
-usd_pen_t2 = usd_pen['4. close'].iloc[-2]
-
-delta_usd_pen = usd_pen_latest - usd_pen_t2
-
-delta_usd_pen_pct = usd_pen_latest / usd_pen_t2 - 1
-
-usd_pen_latest = '{:,.4f}'.format(usd_pen_latest).replace(',', ' ').replace('.', ',')
-
-delta_usd_pen_pct = '{:.2%}'.format(delta_usd_pen_pct).replace('.', ',')
+usd_pen_delta = delta_4d(usd_pen)
 
 # KPI's
 
 kpi1 = st.columns(4)
 
-kpi1[0].metric('S&P 500', str(sp_500_latest) + ' pts', str(delta_sp_500_pct) + ' (' + f'{delta_sp_500:.2f}'.replace('.', ',') + ' pts)')
+kpi1[0].metric(
+    'S&P 500',
+    str(sp_500_delta[0]) + ' pts',
+    str(sp_500_delta[2]) + ' (' + str(sp_500_delta[1].replace('.', ',')) + ' pts)'
+)
 
-kpi1[1].metric('Dow Jones 30', str(dji_latest) + ' pts', str(delta_dji_pct) + ' (' + f'{delta_dji:.2f}'.replace('.', ',') + ' pts)')
+kpi1[1].metric(
+    'Dow Jones 30',
+    str(dji_delta[0]) + ' pts',
+    str(dji_delta[2]) + ' (' + str(dji_delta[1].replace('.', ',')) + ' pts)'
+)
 
-kpi1[2].metric('Nasdaq 100', str(nasdaq_latest) + ' pts', str(delta_nasdaq_pct) + ' (' + f'{delta_nasdaq:.2f}'.replace('.', ',') + ' pts)')
+kpi1[2].metric(
+    'Nasdaq 100',
+    str(nasdaq_delta[0]) + ' pts',
+    str(nasdaq_delta[2]) + ' (' + str(nasdaq_delta[1].replace('.', ',')) + ' pts)'
+)
 
-kpi1[3].metric('Crudo WTI', str(wti_crude_latest) + ' US$/bbl', str(delta_wti_pct) + ' (' + f'{delta_wti:.2f}'.replace('.', ',') + ' US$/bbl)')
+kpi1[3].metric(
+    'Crudo WTI',
+    str(wti_delta[0]) + ' pts',
+    str(wti_delta[2]) + ' (' + str(wti_delta[1].replace('.', ',')) + ' pts)'
+)
 
 kpi2 = st.columns(4)
 
-kpi2[0].metric('Índice de volatilidad VIX', str(vix_latest) + ' US$', str(delta_vix_pct) + ' (' + f'{delta_vix:.2f}'.replace('.', ',') + ' US$)', delta_color='inverse')
+kpi2[0].metric(
+    'Índice de volatilidad VIX',
+    'US$ ' + str(vix_delta[0]),
+    str(vix_delta[2]) + ' (US$ ' + str(vix_delta[1]).replace('.', ',') + ')',
+    delta_color='inverse'
+)
 
-kpi2[1].metric('Índice de volatilidad MOVE', str(move_latest) + ' US$', str(delta_move_pct) + ' (' + f'{delta_move:.2f}'.replace('.', ',') + ' US$)', delta_color='inverse')
+kpi2[1].metric(
+    'Índice de volatilidad MOVE',
+    'US$ ' + str(move_delta[0]),
+    str(move_delta[2]) + ' (US$ ' + str(move_delta[1]).replace('.', ',') + ')',
+    delta_color='inverse'
+)
 
-kpi2[2].metric('Cobre', str(copper_fut_latest) + ' US$/lb', str(delta_copper_pct) + ' (' + f'{delta_copper:.4f}'.replace('.', ',') + ' US$/lb)')
+kpi2[2].metric(
+    'Cobre',
+    'US$ ' + str(copper_delta[0]) + '/lb',
+    str(copper_delta[2]) + ' (US$ ' + str(copper_delta[1]).replace('.', ',') + '/lb)'
+)
 
-kpi2[3].metric('USD/PEN', 'S/ ' + str(usd_pen_latest) + ' /US$', str(delta_usd_pen_pct) + ' (S/ ' + f'{delta_usd_pen:.4f}'.replace('.', ',') + ' /US$)', delta_color='inverse')
+kpi2[3].metric(
+    'USD/PEN',
+    'S/ ' + str(usd_pen_delta[0]) + ' /US$',
+    str(usd_pen_delta[2]) + ' (S/ ' + usd_pen_delta[1].replace('.', ',') + '/US$)',
+    delta_color='inverse'
+)
 
 ###########
 
