@@ -165,143 +165,60 @@ per1[2].metric('Inflación ex. alimentos y energía', str(inflacion_peru_sub_lat
 per1[3].metric('Tasa de referencia del BCRP', str(tasa_bcrp_latest) + '%',
                f'{delta_tasa_bcrp:.0f}' + ' puntos básicos m/m', delta_color='inverse')
 
-# MACROECONOMÍA
+# BODY
 
-st.subheader('Macroeconomía')
+main_tabs = st.tabs(['Macroeconomía', 'Finanzas', 'Finanzas públicas', 'Indicadores adelantados'])
 
-st.markdown('**Producto Bruto Interno**')
+with main_tabs[0]:
 
-fig_pbi_peru = go.Figure()
+    st.subheader('Macroeconomía')
 
-fig_pbi_peru.add_trace(
-    go.Bar(
-        name='PBI (var. % a/a)',
-        x=pbi_peru['date'],
-        y=pbi_peru['Var. % a/a'],
-        marker_color=color_azul,
-        # line=dict(color=color_azul),
-        showlegend=True
+    st.markdown('**Producto Bruto Interno**')
+
+    fig_pbi_peru = go.Figure()
+
+    fig_pbi_peru.add_trace(
+        go.Bar(
+            name='PBI (var. % a/a)',
+            x=pbi_peru['date'],
+            y=pbi_peru['Var. % a/a'],
+            marker_color=color_azul,
+            # line=dict(color=color_azul),
+            showlegend=True
+        )
     )
-)
 
-fig_pbi_peru.add_trace(
-    go.Line(
-        name='Expectativas PBI 12 meses (%)',
-        x=exp_pbi_peru['date'],
-        y=exp_pbi_peru['Expectativas PBI (%)'],
-        line=dict(color=color_rojo),
-        showlegend=True
-    )
-)
-
-# fig_pbi_peru.add_trace(
-#    go.Line(
-#        name='PBI desestacionalizado (var. % m/m)',
-#        x=pbi_peru_des['date'],
-#        y=pbi_peru_des['Var. % m/m'],
-#        line=dict(color=color_rojo),
-#        showlegend=True
-#    )
-# )
-
-# fig_pbi_peru.add_trace(
-#    go.Line(
-#        name='PBI desestacionalizado (var. % promedio móvil 3 meses)',
-#        x=pbi_peru_des_prom['date'],
-#        y=pbi_peru_des_prom['Var. % promedio móvil 3m'],
-#        line=dict(color=color_azul_oscuro),
-#        showlegend=True
-#    )
-# )
-
-fig_pbi_peru.update_layout(
-    {'plot_bgcolor': color_blanco, 'paper_bgcolor': color_blanco},
-    font=dict(family='arial'),
-    font_size=14,
-    margin=dict(l=0, r=0, t=0, b=0),
-    legend=dict(orientation="h", valign="bottom", xanchor="left", x=0, y=-0.13)
-)
-
-fig_pbi_peru.add_vrect(
-    x0='2020-03-01',
-    x1='2021-02-28',
-    fillcolor=color_gris,
-    opacity=0.25,
-    line_width=0
-)
-
-fig_pbi_peru.update_yaxes(
-    title='%',
-    showgrid=False,
-    zeroline=True,
-    zerolinecolor='black',
-    zerolinewidth=1
-)
-
-fig_pbi_peru.update_xaxes(
-    title='Fecha',
-    # rangeslider_visible=True,
-    rangeselector=dict(
-        buttons=list([
-            dict(count=6, label='6M', step='month', stepmode='backward'),
-            dict(count=1, label='YTD', step='year', stepmode='todate'),
-            dict(count=1, label='1A', step='year', stepmode='backward'),
-            dict(count=5, label='5A', step='year', stepmode='backward'),
-            dict(label='Máx.', step='all')
-        ]))
-)
-
-st.plotly_chart(fig_pbi_peru, use_container_width=True)
-
-with st.expander('Más información'):
-    st.write('''
-    Fuente: Banco Central de Reserva del Perú.
-        
-    PBI peruano
-        
-    PBI peruano desestacionalizado
-        
-    PBI peruano desestacionalizado media móvil 3 meses
-    ''')
-
-per2 = st.columns(2)
-
-with per2[0]:
-    st.markdown('**Inflación**')
-
-    fig_inflacion = go.Figure()
-
-    fig_inflacion.add_trace(
+    fig_pbi_peru.add_trace(
         go.Line(
-            name='Inflación (Var % a/a)',
-            x=inflacion_peru['date'],
-            y=inflacion_peru['Var. % a/a'],
+            name='Expectativas PBI 12 meses (%)',
+            x=exp_pbi_peru['date'],
+            y=exp_pbi_peru['Expectativas PBI (%)'],
             line=dict(color=color_rojo),
             showlegend=True
         )
     )
 
-    fig_inflacion.add_trace(
-        go.Line(
-            name='Inflación ex. alimentos y energía (Var % a/a)',
-            x=inflacion_peru_sub['date'],
-            y=inflacion_peru_sub['Var. % a/a'],
-            line=dict(color=color_azul),
-            showlegend=True
-        )
-    )
+    # fig_pbi_peru.add_trace(
+    #    go.Line(
+    #        name='PBI desestacionalizado (var. % m/m)',
+    #        x=pbi_peru_des['date'],
+    #        y=pbi_peru_des['Var. % m/m'],
+    #        line=dict(color=color_rojo),
+    #        showlegend=True
+    #    )
+    # )
 
-    fig_inflacion.add_trace(
-        go.Line(
-            name='Expectativas de inflación a 12 meses (%)',
-            x=inflacion_peru_exp['date'],
-            y=inflacion_peru_exp['Expectativas'],
-            line=dict(color=color_gris),
-            showlegend=True
-        )
-    )
+    # fig_pbi_peru.add_trace(
+    #    go.Line(
+    #        name='PBI desestacionalizado (var. % promedio móvil 3 meses)',
+    #        x=pbi_peru_des_prom['date'],
+    #        y=pbi_peru_des_prom['Var. % promedio móvil 3m'],
+    #        line=dict(color=color_azul_oscuro),
+    #        showlegend=True
+    #    )
+    # )
 
-    fig_inflacion.update_layout(
+    fig_pbi_peru.update_layout(
         {'plot_bgcolor': color_blanco, 'paper_bgcolor': color_blanco},
         font=dict(family='arial'),
         font_size=14,
@@ -309,11 +226,7 @@ with per2[0]:
         legend=dict(orientation="h", valign="bottom", xanchor="left", x=0, y=-0.13)
     )
 
-    fig_inflacion.add_hline(y=1, line_width=1)
-
-    fig_inflacion.add_hline(y=3, line_width=1)
-
-    fig_inflacion.add_vrect(
+    fig_pbi_peru.add_vrect(
         x0='2020-03-01',
         x1='2021-02-28',
         fillcolor=color_gris,
@@ -321,11 +234,15 @@ with per2[0]:
         line_width=0
     )
 
-    fig_inflacion.update_yaxes(
-        title='%'
+    fig_pbi_peru.update_yaxes(
+        title='%',
+        showgrid=False,
+        zeroline=True,
+        zerolinecolor='black',
+        zerolinewidth=1
     )
 
-    fig_inflacion.update_xaxes(
+    fig_pbi_peru.update_xaxes(
         title='Fecha',
         # rangeslider_visible=True,
         rangeselector=dict(
@@ -338,29 +255,180 @@ with per2[0]:
             ]))
     )
 
-    st.plotly_chart(fig_inflacion, use_container_width=True)
+    st.plotly_chart(fig_pbi_peru, use_container_width=True)
 
     with st.expander('Más información'):
         st.write('''
         Fuente: Banco Central de Reserva del Perú.
+            
+        PBI peruano
+            
+        PBI peruano desestacionalizado
+            
+        PBI peruano desestacionalizado media móvil 3 meses
         ''')
 
-with per2[1]:
-    st.markdown('**Tasa de referencia de la política monetaria del BCRP**')
+    per2 = st.columns(2)
 
-    fig_tasa_bcrp = go.Figure()
+    with per2[0]:
+        st.markdown('**Inflación**')
 
-    fig_tasa_bcrp.add_trace(
+        fig_inflacion = go.Figure()
+
+        fig_inflacion.add_trace(
+            go.Line(
+                name='Inflación (Var % a/a)',
+                x=inflacion_peru['date'],
+                y=inflacion_peru['Var. % a/a'],
+                line=dict(color=color_rojo),
+                showlegend=True
+            )
+        )
+
+        fig_inflacion.add_trace(
+            go.Line(
+                name='Inflación ex. alimentos y energía (Var % a/a)',
+                x=inflacion_peru_sub['date'],
+                y=inflacion_peru_sub['Var. % a/a'],
+                line=dict(color=color_azul),
+                showlegend=True
+            )
+        )
+
+        fig_inflacion.add_trace(
+            go.Line(
+                name='Expectativas de inflación a 12 meses (%)',
+                x=inflacion_peru_exp['date'],
+                y=inflacion_peru_exp['Expectativas'],
+                line=dict(color=color_gris),
+                showlegend=True
+            )
+        )
+
+        fig_inflacion.update_layout(
+            {'plot_bgcolor': color_blanco, 'paper_bgcolor': color_blanco},
+            font=dict(family='arial'),
+            font_size=14,
+            margin=dict(l=0, r=0, t=0, b=0),
+            legend=dict(orientation="h", valign="bottom", xanchor="left", x=0, y=-0.13)
+        )
+
+        fig_inflacion.add_hline(y=1, line_width=1)
+
+        fig_inflacion.add_hline(y=3, line_width=1)
+
+        fig_inflacion.add_vrect(
+            x0='2020-03-01',
+            x1='2021-02-28',
+            fillcolor=color_gris,
+            opacity=0.25,
+            line_width=0
+        )
+
+        fig_inflacion.update_yaxes(
+            title='%'
+        )
+
+        fig_inflacion.update_xaxes(
+            title='Fecha',
+            # rangeslider_visible=True,
+            rangeselector=dict(
+                buttons=list([
+                    dict(count=6, label='6M', step='month', stepmode='backward'),
+                    dict(count=1, label='YTD', step='year', stepmode='todate'),
+                    dict(count=1, label='1A', step='year', stepmode='backward'),
+                    dict(count=5, label='5A', step='year', stepmode='backward'),
+                    dict(label='Máx.', step='all')
+                ]))
+        )
+
+        st.plotly_chart(fig_inflacion, use_container_width=True)
+
+        with st.expander('Más información'):
+            st.write('''
+            Fuente: Banco Central de Reserva del Perú.
+            ''')
+
+    with per2[1]:
+        st.markdown('**Tasa de referencia de la política monetaria del BCRP**')
+
+        fig_tasa_bcrp = go.Figure()
+
+        fig_tasa_bcrp.add_trace(
+            go.Line(
+                name='Tasa de referencia BCRP',
+                x=tasa_bcrp['date'],
+                y=tasa_bcrp['Tasa %'],
+                line=dict(color=color_azul),
+                showlegend=False
+            )
+        )
+
+        fig_tasa_bcrp.add_vrect(
+            x0='2020-03-01',
+            x1='2021-02-28',
+            fillcolor=color_gris,
+            opacity=0.25,
+            line_width=0
+        )
+
+        fig_tasa_bcrp.update_layout(
+            {'plot_bgcolor': color_blanco, 'paper_bgcolor': color_blanco},
+            font=dict(family='arial'),
+            font_size=14,
+            margin=dict(l=0, r=0, t=0, b=0),
+            # legend=dict(orientation="h", valign="bottom", xanchor="left", x=0, y=-0.13)
+        )
+
+        fig_tasa_bcrp.update_yaxes(
+            title='%'
+        )
+
+        fig_tasa_bcrp.update_xaxes(
+            title='Fecha',
+            # rangeslider_visible=True,
+            rangeselector=dict(
+                buttons=list([
+                    dict(count=6, label='6M', step='month', stepmode='backward'),
+                    dict(count=1, label='YTD', step='year', stepmode='todate'),
+                    dict(count=1, label='1A', step='year', stepmode='backward'),
+                    dict(count=5, label='5A', step='year', stepmode='backward'),
+                    dict(label='Máx.', step='all')
+                ]))
+        )
+
+        st.plotly_chart(fig_tasa_bcrp, use_container_width=True)
+
+        with st.expander('Más información'):
+            st.write('''
+            Fuente: Banco Central de Reserva del Perú.
+            ''')
+
+    st.markdown('**Expectativas de la economía peruana a 3 y 12 meses**')
+
+    fig_exp_eco = go.Figure()
+
+    fig_exp_eco.add_trace(
         go.Line(
-            name='Tasa de referencia BCRP',
-            x=tasa_bcrp['date'],
-            y=tasa_bcrp['Tasa %'],
+            name='A 3 meses',
+            x=exp_eco_3m['date'],
+            y=exp_eco_3m['Expectativas a 3 meses'],
             line=dict(color=color_azul),
-            showlegend=False
+            showlegend=True
         )
     )
 
-    fig_tasa_bcrp.add_vrect(
+    fig_exp_eco.add_trace(
+        go.Line(
+            name='A 12 meses',
+            x=exp_eco_12m['date'],
+            y=exp_eco_12m['Expectativas a 12 meses'],
+            line=dict(color=color_rojo),
+            showlegend=True
+        )
+    )
+
+    fig_exp_eco.add_vrect(
         x0='2020-03-01',
         x1='2021-02-28',
         fillcolor=color_gris,
@@ -368,19 +436,26 @@ with per2[1]:
         line_width=0
     )
 
-    fig_tasa_bcrp.update_layout(
+    fig_exp_eco.add_hline(
+        y=50,
+        line_width=1,
+        annotation_text='Tramo optimista',
+        annotation_position='top left'
+    )
+
+    fig_exp_eco.update_layout(
         {'plot_bgcolor': color_blanco, 'paper_bgcolor': color_blanco},
         font=dict(family='arial'),
         font_size=14,
         margin=dict(l=0, r=0, t=0, b=0),
-        # legend=dict(orientation="h", valign="bottom", xanchor="left", x=0, y=-0.13)
+        legend=dict(orientation="h", valign="bottom", xanchor="left", x=0, y=-0.13)
     )
 
-    fig_tasa_bcrp.update_yaxes(
+    fig_exp_eco.update_yaxes(
         title='%'
     )
 
-    fig_tasa_bcrp.update_xaxes(
+    fig_exp_eco.update_xaxes(
         title='Fecha',
         # rangeslider_visible=True,
         rangeselector=dict(
@@ -393,94 +468,27 @@ with per2[1]:
             ]))
     )
 
-    st.plotly_chart(fig_tasa_bcrp, use_container_width=True)
+    st.plotly_chart(fig_exp_eco, use_container_width=True)
 
     with st.expander('Más información'):
         st.write('''
         Fuente: Banco Central de Reserva del Perú.
         ''')
 
-st.markdown('**Expectativas de la economía peruana a 3 y 12 meses**')
+    st.markdown('**Desempleo**')
+    'BCRP'
 
-fig_exp_eco = go.Figure()
+with main_tabs[1]:
 
-fig_exp_eco.add_trace(
-    go.Line(
-        name='A 3 meses',
-        x=exp_eco_3m['date'],
-        y=exp_eco_3m['Expectativas a 3 meses'],
-        line=dict(color=color_azul),
-        showlegend=True
-    )
-)
+    st.subheader('Finanzas')
 
-fig_exp_eco.add_trace(
-    go.Line(
-        name='A 12 meses',
-        x=exp_eco_12m['date'],
-        y=exp_eco_12m['Expectativas a 12 meses'],
-        line=dict(color=color_rojo),
-        showlegend=True
-    )
-)
+    st.markdown('**6. Tasa de referencia de la política monetaria**')
+    'BCRP'
 
-fig_exp_eco.add_vrect(
-    x0='2020-03-01',
-    x1='2021-02-28',
-    fillcolor=color_gris,
-    opacity=0.25,
-    line_width=0
-)
+    st.write('**7. Rendimiento del bono a 10 años PEN**')
 
-fig_exp_eco.add_hline(
-    y=50,
-    line_width=1,
-    annotation_text='Tramo optimista',
-    annotation_position='top left'
-)
+    st.write('**8. Rendimiento del bono a 10 años USD**')
 
-fig_exp_eco.update_layout(
-    {'plot_bgcolor': color_blanco, 'paper_bgcolor': color_blanco},
-    font=dict(family='arial'),
-    font_size=14,
-    margin=dict(l=0, r=0, t=0, b=0),
-    legend=dict(orientation="h", valign="bottom", xanchor="left", x=0, y=-0.13)
-)
+with main_tabs[2]:
 
-fig_exp_eco.update_yaxes(
-    title='%'
-)
-
-fig_exp_eco.update_xaxes(
-    title='Fecha',
-    # rangeslider_visible=True,
-    rangeselector=dict(
-        buttons=list([
-            dict(count=6, label='6M', step='month', stepmode='backward'),
-            dict(count=1, label='YTD', step='year', stepmode='todate'),
-            dict(count=1, label='1A', step='year', stepmode='backward'),
-            dict(count=5, label='5A', step='year', stepmode='backward'),
-            dict(label='Máx.', step='all')
-        ]))
-)
-
-st.plotly_chart(fig_exp_eco, use_container_width=True)
-
-with st.expander('Más información'):
-    st.write('''
-    Fuente: Banco Central de Reserva del Perú.
-    ''')
-
-st.markdown('**Desempleo**')
-'BCRP'
-
-st.subheader('Finanzas')
-
-st.markdown('**6. Tasa de referencia de la política monetaria**')
-'BCRP'
-
-st.write('**7. Rendimiento del bono a 10 años PEN**')
-
-st.write('**8. Rendimiento del bono a 10 años USD**')
-
-st.subheader('Indicadores avanzados de coyuntura económica')
+    st.subheader('Indicadores avanzados de coyuntura económica')

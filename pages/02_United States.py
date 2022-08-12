@@ -121,57 +121,87 @@ exp_eco_12m = pd.read_feather('mercados/expectativas_eco_12m')  # EXPECTATIVAS D
 
 st.title('Información macrofinanciera de Estados Unidos')
 
-# SIDEBAR
-
 
 # RESUMEN
 
 # ESTADOS UNIDOS
 
-st.subheader('Información macroeconómica')
+main_tabs = st.tabs(['Macroeconomía', 'Finanzas', 'Finanzas públicas', 'Indicadores avanzados'])
 
-st.write('PBI EEUU')
-'FRED'
+with main_tabs[0]:
 
-st.write('Componentes del PBI')
-'FRED'
+    st.subheader('Macroeconomía')
 
-st.write('Inflación e inflación subyacente (PCE)')
-'FRED'
+    st.write('PBI EEUU')
+    'FRED'
 
-st.write('Desempleo')
-'FRED'
+    st.write('Componentes del PBI')
+    'FRED'
 
-st.write('Nóminas no agrícolas')
-'FRED'
+    st.write('**Inflación e inflación subyacente (PCE y CPI)**')
+    'FRED'
+    'PCE: PCEPI'
+    'Core PCE: PCEPILFE'
+    'CPI: USACPIALLMINMEI'
+    'Core CPI: USACPICORMINMEI'
 
-st.write('Peticiones iniciales de desempleo')
-'FRED'
+    st.write('Desempleo')
+    'FRED'
 
-st.write('Peticiones continuas de desempleo')
-'FRED'
+    st.write('**Inventarios retail**')
+    'https://fred.stlouisfed.org/series/RETAILIMSA'
 
-st.write('Retail inventories')
+with main_tabs[1]:
 
-st.write('Federal Funds Rate (upper and lower bound)')
-'FRED'
+    st.subheader('Finanzas')
 
-st.write('Fed dot plots')
-'FRED'
+    st.write('Curva de treasury')
+    'FRED'
 
-st.write('Federal Reserve Balance Sheet')
-'FRED'
+    st.write('Rendimientos de los bonos')
+    'FRED'
 
-st.subheader('Información financiera')
+    st.write('Spread de 3m-10 años')
+    'FRED'
 
-st.write('Curva de treasury')
-'FRED'
+    st.write('Spread 2-10 años')
+    'FRED'
 
-st.write('Rendimientos de los bonos')
-'FRED'
+    st.write('Federal Funds Rate (upper and lower bound, también incluir la tasa real)')
+    'FRED'
 
-st.write('Spread de 3m-10 años')
-'FRED'
+    st.write('Fed dot plots')
+    'FRED'
 
-st.write('Spread 2-10 años')
-'FRED'
+with main_tabs[2]:
+
+    st.subheader('Finanzas públicas')
+
+    st.write('**Federal Reserve Balance Sheet**')
+    'https://fred.stlouisfed.org/series/WALCL'
+
+    st.write('**Deuda de EEUU**')
+
+with main_tabs[3]:
+
+    st.subheader('Indicadores adelantados')
+
+    st.write('Nóminas no agrícolas')
+    'FRED'
+
+    st.write('Peticiones iniciales de desempleo')
+    'FRED'
+
+    st.write('Peticiones continuas de desempleo')
+    'FRED'
+
+    st.write('Probabilidad de recesión de NY Fed')
+    'Federal Reserve Bank of New York'
+    'https://www.newyorkfed.org/research/capital_markets/ycfaq#/interactive'
+
+    st.write('Empire State Manufacturing Survey')
+    'Federal Reserve Bank of New York'
+    'https://www.newyorkfed.org/survey/empire/empiresurvey_overview'
+
+    st.write('GDPNow Proyección de GDP de la Federal Reserve Bank of Atlanta')
+    'Federal Reserve Bank of Atlanta'
