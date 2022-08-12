@@ -221,7 +221,7 @@ kpi2[1].metric(
 
 kpi2[2].metric(
     'Cobre',
-    'US$ ' + str(copper_delta[0]) ,
+    'US$ ' + str(copper_delta[0]),
     str(copper_delta[2]) + ' (US$ ' + str(copper_delta[1]).replace('.', ',') + ')'
 )
 
