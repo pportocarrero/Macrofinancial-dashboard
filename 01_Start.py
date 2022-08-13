@@ -199,7 +199,7 @@ kpi1[2].metric(
 
 kpi1[3].metric(
     'Crudo WTI',
-    'US$' + str(wti_delta[0]),
+    'US$ ' + str(wti_delta[0]),
     str(wti_delta[2]) + ' (US$ ' + str(wti_delta[1].replace('.', ',')) + ')'
 )
 
