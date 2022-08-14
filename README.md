@@ -11,7 +11,12 @@ The dashboard is far from over, in the following weeks, I will be making several
 - Relevant financial news.
 
 # Instructions
-This dashboard has been developed using the multipage streamlit platform. Currently, you only need to run the 01_Start.py file. Eventually, this repository will include all the code to automatically update all information.
+This dashboard has been developed using the multipage streamlit platform. Currently, you only need to run the 01_Start.py file. Eventually, this repository will include all the code to automatically update all information. First, you need to install the streamlit library.
+
+
+```bash
+pip install streamlit
+```
 
 For now, open a prompt from your Anaconda Navigator, PowerShell prompt, or terminal and navigate to the folder containing this repo, then run the following:
 
