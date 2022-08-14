@@ -18,6 +18,8 @@ This dashboard has been developed using the multipage streamlit platform. Curren
 pip install streamlit
 ```
 
+The scripts that retrieve the information are coded to work on Windows or Mac computers.
+
 For now, open a prompt from your Anaconda Navigator, PowerShell prompt, or terminal and navigate to the folder containing this repo, then run the following:
 
 ```bash
