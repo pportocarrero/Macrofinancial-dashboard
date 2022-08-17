@@ -1,4 +1,5 @@
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/pportocarrero/Macrofinancial-dashboard)](https://github.com/pportocarrero/Macrofinancial-dashboard/releases)
+[![See recent changes](https://img.shields.io/badge/changelog-See%20recent%20changes-blue)](https://github.com/pportocarrero/Macrofinancial-dashboard/commits/v0.0.1-alpha)
 
 # Macrofinancial Dashboard
 
