@@ -1,3 +1,5 @@
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/pportocarrero/Macrofinancial-dashboard)](https://github.com/pportocarrero/Macrofinancial-dashboard/releases)
+
 # Macrofinancial Dashboard
 
 This is a dashboard showing information of the main macroeconomic and financial indicators. Additionally, it displays financial news and macrofinancial information for United States and Peru (I work in Peru and need to follow it).
