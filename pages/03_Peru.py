@@ -73,62 +73,65 @@ exp_eco_3m = pd.read_feather('mercados/expectativas_eco_3m')  # EXPECTATIVAS DE 
 
 exp_eco_12m = pd.read_feather('mercados/expectativas_eco_12m')  # EXPECTATIVAS DE LA ECONOMÍA A 12 MESES
 
-# SIDEBAR
+############
+def delta_1y(dataframe):
 
+    latest = dataframe.iloc[-1]
 
+    t2 = dataframe.iloc[-13]
+
+    delta = latest - t2
+
+    delta_pct = latest / t2 - 1
+
+    latest = '{:,.2f}'.format(latest)
+
+    delta = '{:,.2f}'.format(delta)
+
+    delta_pct = '{:,.2%}'.format(delta_pct)
+
+    return latest, delta, delta_pct
+
+############
+def delta_1d(dataframe):
+
+    latest = dataframe.iloc[-1]
+
+    t2 = dataframe.iloc[-2]
+
+    delta = latest - t2
+
+    delta_pct = latest / t2 - 1
+
+    latest = '{:,.2f}'.format(latest)
+
+    delta = '{:,.2f}'.format(delta)
+
+    delta_pct = '{:,.2%}'.format(delta_pct)
+
+    return latest, delta, delta_pct
+############
 # RESUMEN
 
 st.title('Información macrofinanciera de Perú')
 
-st.subheader('Resumen de indicadores clave de Perú')
+st.subheader('Resumen de indicadores clave')
 
 # DELTA PBI
 
-pbi_peru_latest = pbi_peru['Var. % a/a'].iloc[-1]
-
-pbi_peru_t12 = pbi_peru['Var. % a/a'].iloc[-13]
-
-delta_pbi_peru = pbi_peru_latest - pbi_peru_t12
-
-delta_pbi_peru_pct = pbi_peru_latest / pbi_peru_t12 - 1
-
-pbi_peru_latest = "{:,.1f}".format(pbi_peru_latest).replace('.', ',')
-
-delta_pbi_peru_pct = '{:.2%}'.format(delta_pbi_peru_pct).replace('.', ',')
+pbi_peru_delta = delta_1y(pbi_peru['Var. % a/a'])
 
 # DELTA INFLACIÓN
 
-inflacion_peru_latest = inflacion_peru['Var. % a/a'].iloc[-1]
-
-inflacion_peru_t12 = inflacion_peru['Var. % a/a'].iloc[-13]
-
-# delta_inflacion_peru = inflacion_peru_latest - inflacion_peru_t12
-
-delta_inflacion_peru = inflacion_peru_latest - 3.00
-
-inflacion_peru_latest = "{:,.2f}".format(inflacion_peru_latest).replace('.', ',')
+inflacion_delta = delta_1y(inflacion_peru['Var. % a/a'])
 
 # DELTA INFLACIÓN SIN ALIMENTOS Y ENERGÍA
 
-inflacion_peru_sub_latest = inflacion_peru_sub['Var. % a/a'].iloc[-1]
-
-inflacion_peru_sub_t12 = inflacion_peru_sub['Var. % a/a'].iloc[-13]
-
-# delta_inflacion_peru_sub = inflacion_peru_sub_latest - inflacion_peru_sub_t12
-
-delta_inflacion_peru_sub = inflacion_peru_sub_latest - 3.00
-
-inflacion_peru_sub_latest = "{:,.2f}".format(inflacion_peru_sub_latest).replace('.', ',')
+core_inflacion_delta = delta_1y(inflacion_peru_sub['Var. % a/a'])
 
 # DELTA TASA DE REFERENCIA
 
-tasa_bcrp_latest = tasa_bcrp['Tasa %'].iloc[-1]
-
-tasa_bcrp_t2 = tasa_bcrp['Tasa %'].iloc[-2]
-
-delta_tasa_bcrp = (tasa_bcrp_latest - tasa_bcrp_t2) * 100
-
-tasa_bcrp_latest = '{:,.2f}'.format(tasa_bcrp_latest).replace('.', ',')
+tasa_bcrp_delta = delta_1d(tasa_bcrp['Tasa %'])
 
 # DELTA RENDIMIENTO BONO 10 AÑOS PEN
 
@@ -136,34 +139,36 @@ tasa_bcrp_latest = '{:,.2f}'.format(tasa_bcrp_latest).replace('.', ',')
 
 # DELTA TIPO DE CAMBIO
 
-# DELTA BVL PERÚ GEN
-
-bvl_gen_latest = bvl_gen['Close'].iloc[-1]
-
-bvl_gen_t2 = bvl_gen['Close'].iloc[-2]
-
-delta_bvl_gen = bvl_gen_latest - bvl_gen_t2
-
-delta_bvl_gen_pct = bvl_gen_latest / bvl_gen_t2 - 1
-
-bvl_gen_latest = '{:,.2f}'.format(bvl_gen_latest).replace(',', ' ').replace('.', ',')
-
-delta_bvl_gen_pct = '{:.2%}'.format(delta_bvl_gen_pct).replace('.', ',')
-
 # RESUMEN
 
 per1 = st.columns(4)
 
-per1[0].metric('Producto Bruto Interno', str(pbi_peru_latest) + '% a/a', f'{delta_pbi_peru:.2f}' + ' p.p. a/a')
+per1[0].metric(
+    'Producto Bruto Interno',
+    pbi_peru_delta[0] + '% a/a',
+    pbi_peru_delta[1] + ' p.p. a/a'
+)
 
-per1[1].metric('Inflación', str(inflacion_peru_latest) + '% a/a',
-               f'{delta_inflacion_peru:.2f}' + ' p.p. sobre el rango meta', delta_color='inverse')
+per1[1].metric(
+    'Inflación',
+    str(inflacion_delta[0]) + '% a/a',
+    inflacion_delta[1] + ' p.p. sobre el rango meta',
+    delta_color='inverse'
+)
 
-per1[2].metric('Inflación ex. alimentos y energía', str(inflacion_peru_sub_latest) + '% a/a',
-               f'{delta_inflacion_peru_sub:.2f}' + ' p.p. sobre el rango meta', delta_color='inverse')
+per1[2].metric(
+    'Inflación ex. alimentos y energía',
+    str(core_inflacion_delta[0]) + '% a/a',
+    core_inflacion_delta[1] + ' p.p. sobre el rango meta',
+    delta_color='inverse'
+)
 
-per1[3].metric('Tasa de referencia del BCRP', str(tasa_bcrp_latest) + '%',
-               f'{delta_tasa_bcrp:.0f}' + ' puntos básicos m/m', delta_color='inverse')
+per1[3].metric(
+    'Tasa de referencia del BCRP',
+    str(tasa_bcrp_delta[0]) + '%',
+    tasa_bcrp_delta[1] + ' puntos básicos m/m',
+    delta_color='inverse'
+)
 
 # BODY
 

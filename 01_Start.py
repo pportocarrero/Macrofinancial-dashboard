@@ -113,11 +113,11 @@ def delta_2d(dataframe):
 
     delta_pct = latest / t2 - 1
 
-    latest = '{:,.2f}'.format(latest).replace(',', ' ').replace('.', ',')
+    latest = '{:,.2f}'.format(latest)
 
-    delta = '{:,.2f}'.format(delta).replace(',', ' ').replace('.', ',')
+    delta = '{:,.2f}'.format(delta)
 
-    delta_pct = '{:,.2%}'.format(delta_pct).replace('.', ',')
+    delta_pct = '{:,.2%}'.format(delta_pct)
 
     return latest, delta, delta_pct
 
@@ -131,11 +131,11 @@ def delta_4d(dataframe):
 
     delta_pct = latest / t2 - 1
 
-    latest = '{:,.4f}'.format(latest).replace(',', ' ').replace('.', ',')
+    latest = '{:,.4f}'.format(latest)
 
-    delta = '{:,.4f}'.format(delta).replace(',', ' ').replace('.', ',')
+    delta = '{:,.4f}'.format(delta)
 
-    delta_pct = '{:,.2%}'.format(delta_pct).replace('.', ',')
+    delta_pct = '{:,.2%}'.format(delta_pct)
 
     return latest, delta, delta_pct
 

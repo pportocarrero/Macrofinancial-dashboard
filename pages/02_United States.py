@@ -49,82 +49,126 @@ if platform.system() == 'Darwin':
 
     os.chdir('/Users/pportocarrero/OneDrive/Projects/Macrofinancial-dashboard/')
 
-# BASES DEL RESUMEN
-
-sp_500 = pd.read_feather('mercados/sp_500')  # S&P 500
-
-# sp_500_intraday = pd.read_feather('mercados/sp_500_intraday')  # S&P 500 INTRADAY
-
-dji_index = pd.read_feather('mercados/dji_index')  # DOW JONES
-
-nasdaq_100 = pd.read_feather('mercados/nasdaq_100')  # NASDAQ 100
-
-russell_2000 = pd.read_feather('mercados/russell_2000')  # RUSSELL 2000
-
-russell_3000 = pd.read_feather('mercados/russell_3000')  # RUSSELL 3000
-
-ftse_100 = pd.read_feather('mercados/ftse_100')  # FTSE 100
-
-nikkei_225 = pd.read_feather('mercados/nikkei_225')  # NIKKEI 225
-
-shanghai_comp = pd.read_feather('mercados/shanghai_comp')  # SHANGHAI COMPOSITE
-
-vix_index = pd.read_feather('mercados/vix_index')  # VIX
-
-move_index = pd.read_feather('mercados/move_index')  # MOVE Index
-
-bvl_gen = pd.read_excel("mercados/bvl_gen.xlsx")  # ÍNDICE GENERAL DE LA BVL
-
-wti_crude = pd.read_feather('mercados/wti_crude')  # WTI CRUDE
-
-brent_crude = pd.read_feather('mercados/brent_crude')  # BRENT CRUDE
-
-copper_fut = pd.read_feather('mercados/copper_futures')  # COPPER FUTURES
-
-gold_fut = pd.read_feather('mercados/gold_futures')  # GOLD FUTURES
-
-silver_fut = pd.read_feather('mercados/silver_futures')  # SILVER FUTURES
-
-wheat_fut = pd.read_feather('mercados/wheat_futures')  # WHEAT FUTURES
-
-soybean_fut = pd.read_feather('mercados/soybean_futures')  # SOYBEAN FUTURES
-
-corn_fut = pd.read_feather('mercados/corn_futures')  # CORN FUTURES
-
-usd_pen = pd.read_excel('mercados/usd_pen.xlsx')  # USD/PEN
-
 # BASES DE EEUU
 
-# BASES DE PERÚ
+ust1m = pd.read_excel('mercados/ust1m.xlsx')  # US TREASURY 1 MONTH
 
-pbi_peru = pd.read_feather('mercados/pbi_peru')  # PBI PERÚ
+ust3m = pd.read_excel('mercados/ust3m.xlsx')  # US TREASURY 3 MONTHS
 
-pbi_peru_des = pd.read_feather('mercados/pbi_peru_des')  # PBI PERÚ DESESTACIONALIZADO
+ust6m = pd.read_excel('mercados/ust6m.xlsx')  # US TREASURY 6 MONTHS
 
-pbi_peru_des_prom = pd.read_feather('mercados/pbi_peru_des_prom')  # PBI PERÚ DESESTACIONALIZADO PROMEDIO MÓVIL 3 MESES
+ust1y = pd.read_excel('mercados/ust1y.xlsx')  # US TREASURY 1 YEAR
 
-exp_pbi_peru = pd.read_feather('mercados/expectativas_pbi_peru')  # EXPECTATIVAS PBI PERÚ
+ust2y = pd.read_excel('mercados/ust2y.xlsx')  # US TREASURY 2 YEARS
 
-inflacion_peru = pd.read_feather('mercados/inflacion_peru')  # INFLACIÓN PERÚ
+ust3y = pd.read_excel('mercados/ust3y.xlsx')  # US TREASURY 3 YEARS
 
-inflacion_peru_sub = pd.read_feather('mercados/inflacion_peru_sub')  # INFLACIÓN PERÚ SIN ALIMENTOS Y ENERGÍA
+ust5y = pd.read_excel('mercados/ust5y.xlsx')  # US TREASURY 5 YEARS
 
-inflacion_peru_exp = pd.read_feather('mercados/inflacion_peru_exp')  # EXPECTATIVAS DE INFLACION A 12 MESES
+ust7y = pd.read_excel('mercados/ust7y.xlsx')  # US TREASURY 7 YEARS
 
-tasa_bcrp = pd.read_feather('mercados/tasa_bcrp')  # TASA DE REFERENCIA DEL BCRP
+ust10y = pd.read_excel('mercados/ust10y.xlsx')  # US TREASURY 10 YEARS
 
-exp_eco_3m = pd.read_feather('mercados/expectativas_eco_3m')  # EXPECTATIVAS DE LA ECONOMÍA A 3 MESES
+ust20y = pd.read_excel('mercados/ust20y.xlsx')  # US TREASURY 20 YEARS
 
-exp_eco_12m = pd.read_feather('mercados/expectativas_eco_12m')  # EXPECTATIVAS DE LA ECONOMÍA A 12 MESES
+ust30y = pd.read_excel('mercados/ust30y.xlsx')  # US TREASURY 30 YEARS
+
+ust_curve = pd.read_excel('mercados/ust_curve.xlsx')  # UST CURVE
+
+us_gdp = pd.read_excel('mercados/us_gdp.xlsx')  # US QUATERLY GDP YOY
+
+us_pce = pd.read_excel('mercados/us_pce.xlsx')  # US PCE INFLATION
+
+us_core_pce = pd.read_excel('mercados/us_core_pce.xlsx')  # US CORE PCE INFLATION
+
+fed_rate_upper = pd.read_excel('mercados/fed_rate_upper.xlsx')  # FEDERAL FUNDS RATE UPPER
+
+fed_rate_lower = pd.read_excel('mercados/fed_rate_lower.xlsx')  # FEDERAL FUNDS RATE LOWER
+
+############
 
 # HEADER
 
 st.title('Información macrofinanciera de Estados Unidos')
 
-
 # RESUMEN
 
-# ESTADOS UNIDOS
+# DELTA PBI USA
+
+us_gdp_latest = us_gdp['value'].iloc[-1]
+
+us_gdp_t12 = us_gdp['value'].iloc[-13]
+
+delta_us_gdp = us_gdp_latest - us_gdp_t12
+
+us_gdp_latest = '{:,.2f}'.format(us_gdp_latest)
+
+# DELTA INFLACIÓN PCE
+
+us_pce_latest = us_pce['yoy_growth'].iloc[-1] * 100
+
+delta_us_pce = us_pce_latest - 2.0
+
+us_pce_latest = '{:,.2f}'.format(us_pce_latest)
+
+# DELTA INFLACIÓN CORE PCE
+
+us_pce_core_latest = us_core_pce['yoy_growth'].iloc[-1] * 100
+
+delta_us_pce_core = us_pce_core_latest - 2.0
+
+us_pce_core_latest = '{:,.2f}'.format(us_pce_core_latest)
+
+# FED FEDERAL FUNDS RATE
+
+fed_rate_upper_latest = fed_rate_upper['value'].iloc[-1]
+
+fed_rate_upper_t2 = fed_rate_upper['value'].iloc[-30]
+
+delta_fed_rate_upper = (fed_rate_upper_latest - fed_rate_upper_t2) * 100
+
+fed_rate_upper_latest = '{:,.2f}'.format(fed_rate_upper_latest)
+
+fed_rate_lower_latest = fed_rate_lower['value'].iloc[-1]
+
+fed_rate_lower_t2 = fed_rate_lower['value'].iloc[-2]
+
+delta_fed_rate_lower = fed_rate_lower_latest - fed_rate_lower_t2
+
+fed_rate_lower_latest = '{:,.2f}'.format(fed_rate_lower_latest)
+
+st.subheader('Resumen de indicadores clave')
+
+us = st.columns(4)
+
+us[0].metric(
+    'Producto Bruto Interno',
+    str(us_gdp_latest) + '% a/a',
+    f'{delta_us_gdp:.2f}' + ' p.p. a/a'
+)
+
+us[1].metric(
+    'Inflación PCE',
+    str(us_pce_latest) + '% a/a',
+    f'{delta_us_pce:.2f}' + ' p.p. sobre el objetivo (2%)',
+    delta_color='inverse'
+)
+
+us[2].metric(
+    'Inflación subyacente PCE',
+    str(us_pce_core_latest) + '% a/a',
+    f'{delta_us_pce_core:.2f}' + ' p.p. sobre el objetivo (2%)',
+    delta_color='inverse'
+)
+
+us[3].metric(
+    'Tasa de fondos federales de la Fed',
+    str(fed_rate_lower_latest) + '-' + str(fed_rate_upper_latest) + '%',
+    f'{delta_fed_rate_upper:.2f}' + ' puntos básicos m/m',
+    delta_color='inverse'
+)
+
+# MAIN TABS
 
 main_tabs = st.tabs(['Macroeconomía', 'Finanzas', 'Finanzas públicas', 'Indicadores avanzados'])
 
