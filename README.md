@@ -1,5 +1,5 @@
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/pportocarrero/Macrofinancial-dashboard)](https://github.com/pportocarrero/Macrofinancial-dashboard/releases)
-[![See recent changes](https://img.shields.io/badge/changelog-See%20recent%20changes-blue)](https://github.com/pportocarrero/Macrofinancial-dashboard/compare/v0.0.1-alpha...v0.0.2-alpha)
+[![See recent changes](https://img.shields.io/badge/changelog-See%20recent%20changes-blue)](https://github.com/pportocarrero/Macrofinancial-dashboard/compare/v0.0.2-alpha...v0.0.3-alpha)
 
 # Macrofinancial Dashboard
 
@@ -26,7 +26,7 @@ The scripts that retrieve the information are coded to work on Windows or Mac co
 For now, open a prompt from your Anaconda Navigator, PowerShell prompt, or terminal and navigate to the folder containing this repo, then run the following:
 
 ```bash
-streamlit run 01_Start.py
+streamlit run Dashboard.py
 ```
 
 # Sources
