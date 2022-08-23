@@ -29,7 +29,7 @@ if platform.system() == 'Darwin':
 
     os.chdir('/Users/pportocarrero/OneDrive/Projects/Macrofinancial-dashboard/')
 
-# FIRE UP DATA FOR MARKET SNAPSHOT
+# FIRE UP MARKET DATA
 
 sp_500 = pd.read_feather('mercados/sp_500')  # S&P 500
 
