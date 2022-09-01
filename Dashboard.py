@@ -19,7 +19,7 @@ st.set_page_config(
     page_icon=''
 )
 
-locale.setlocale(locale.LC_TIME, 'es_ES')
+# locale.setlocale(locale.LC_TIME, 'es_ES')
 
 # if platform.system() == 'Windows':
 
