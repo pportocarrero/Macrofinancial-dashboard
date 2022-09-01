@@ -21,13 +21,13 @@ st.set_page_config(
 
 locale.setlocale(locale.LC_TIME, 'es_ES')
 
-if platform.system() == 'Windows':
+# if platform.system() == 'Windows':
 
-    os.chdir('C:/Users/pport/OneDrive/Projects/Macrofinancial-dashboard/')
+#    os.chdir('C:/Users/pport/OneDrive/Projects/Macrofinancial-dashboard/')
 
-if platform.system() == 'Darwin':
+# if platform.system() == 'Darwin':
 
-    os.chdir('/Users/pportocarrero/OneDrive/Projects/Macrofinancial-dashboard/')
+#    os.chdir('/Users/pportocarrero/OneDrive/Projects/Macrofinancial-dashboard/')
 
 # FIRE UP MARKET DATA
 
