@@ -1009,9 +1009,9 @@ with tabs[0]:
 
         st.subheader('Tipo de cambio')
 
-with tabs[1]:
+# with tabs[1]:
 
-    st.subheader('S&P 500 snapshot')
+#    st.subheader('S&P 500 snapshot')
 
 with tabs[2]:
 
