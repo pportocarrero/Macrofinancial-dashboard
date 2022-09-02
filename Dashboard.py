@@ -1013,7 +1013,7 @@ with tabs[0]:
 
 #    st.subheader('S&P 500 snapshot')
 
-with tabs[2]:
+with tabs[1]:
 
     # DELTA PBI USA
 
@@ -1168,7 +1168,7 @@ with tabs[2]:
         st.write('GDPNow Proyección de GDP de la Federal Reserve Bank of Atlanta')
         'Federal Reserve Bank of Atlanta'
 
-with tabs[3]:
+with tabs[2]:
 
     st.subheader('Perú: Resumen de indicadores clave')
 
@@ -1552,6 +1552,6 @@ with tabs[3]:
 
         st.subheader('Indicadores avanzados de coyuntura económica')
 
-with tabs[4]:
+with tabs[3]:
 
     st.subheader('Noticias')
