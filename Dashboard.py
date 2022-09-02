@@ -242,7 +242,13 @@ def delta_1d(dataframe):
 
 st.title('Información macrofinanciera')
 
-tabs = st.tabs(['Resumen', 'S&P 500 Snapshot', 'Estados Unidos', 'Perú', 'Noticias'])
+tabs = st.tabs([
+    'Resumen',
+    # 'S&P 500 Snapshot',
+    'Estados Unidos',
+    'Perú',
+    'Noticias'
+])
 
 with tabs[0]:
 
