@@ -3,7 +3,6 @@
 [![See recent changes](https://img.shields.io/badge/changelog-See%20recent%20changes-blue)](https://github.com/pportocarrero/Macrofinancial-dashboard/compare/v0.0.2-alpha...v0.0.3-alpha)
 ![GitHub Pipenv locked Python version](https://img.shields.io/github/pipenv/locked/python-version/pportocarrero/Macrofinancial-dashboard)
 
-https://img.shields.io/github/pipenv/locked/python-version/pportocarrero/Macrofinancial-dashboard
 # Macrofinancial Dashboard
 
 This is a dashboard showing information of the main macroeconomic and financial indicators. Additionally, it displays financial news and macrofinancial information for United States and Peru (I work in Peru and need to follow it).
