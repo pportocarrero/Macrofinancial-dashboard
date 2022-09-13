@@ -1051,7 +1051,7 @@ with tabs[1]:
 
     fed_rate_upper_latest = fed_rate_upper['value'].iloc[-1]
 
-    fed_rate_upper_t2 = fed_rate_upper['value'].iloc[-3]
+    fed_rate_upper_t2 = fed_rate_upper['value'].iloc[-4]  # CHANGE ACCORDINGLY 
 
     delta_fed_rate_upper = (fed_rate_upper_latest - fed_rate_upper_t2) * 100
 
