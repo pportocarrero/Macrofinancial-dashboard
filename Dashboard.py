@@ -1051,7 +1051,7 @@ with tabs[1]:
 
     fed_rate_upper_latest = fed_rate_upper['value'].iloc[-1]
 
-    fed_rate_upper_t2 = fed_rate_upper['value'].iloc[-30]
+    fed_rate_upper_t2 = fed_rate_upper['value'].iloc[-3]
 
     delta_fed_rate_upper = (fed_rate_upper_latest - fed_rate_upper_t2) * 100
 
@@ -1092,7 +1092,7 @@ with tabs[1]:
     us[3].metric(
         'Tasa de fondos federales de la Fed',
         str(fed_rate_lower_latest) + '-' + str(fed_rate_upper_latest) + '%',
-        f'{delta_fed_rate_upper:.2f}' + ' puntos básicos m/m',
+        f'{delta_fed_rate_upper:,.0f}' + ' p.b. vs anterior',
         delta_color='inverse'
     )
 
