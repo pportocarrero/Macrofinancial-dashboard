@@ -477,6 +477,42 @@ with tabs[0]:
             )
 
             fig.add_trace(
+                go.Scatter(
+                    name='SMA(50)',
+                    x=ticker_id['Date'],
+                    y=ticker_id['SMA50'],
+                    mode='lines',
+                    showlegend=True
+                ),
+                row=1,
+                col=1
+            )
+
+            fig.add_trace(
+                go.Scatter(
+                    name='SMA(100)',
+                    x=ticker_id['Date'],
+                    y=ticker_id['SMA100'],
+                    mode='lines',
+                    showlegend=True
+                ),
+                row=1,
+                col=1
+            )
+
+            fig.add_trace(
+                go.Scatter(
+                    name='SMA(200)',
+                    x=ticker_id['Date'],
+                    y=ticker_id['SMA200'],
+                    mode='lines',
+                    showlegend=True
+                ),
+                row=1,
+                col=1
+            )
+
+            fig.add_trace(
                 go.Bar(
                     x=ticker_id['Date'],
                     y=ticker_id['Volume'],
@@ -540,6 +576,42 @@ with tabs[0]:
                     increasing_line_color='green',
                     decreasing_line_color='red',
                     showlegend=False
+                ),
+                row=1,
+                col=1
+            )
+
+            fig.add_trace(
+                go.Scatter(
+                    name='SMA(50)',
+                    x=ticker_id['Date'],
+                    y=ticker_id['SMA50'],
+                    mode='lines',
+                    showlegend=True
+                ),
+                row=1,
+                col=1
+            )
+
+            fig.add_trace(
+                go.Scatter(
+                    name='SMA(100)',
+                    x=ticker_id['Date'],
+                    y=ticker_id['SMA100'],
+                    mode='lines',
+                    showlegend=True
+                ),
+                row=1,
+                col=1
+            )
+
+            fig.add_trace(
+                go.Scatter(
+                    name='SMA(200)',
+                    x=ticker_id['Date'],
+                    y=ticker_id['SMA200'],
+                    mode='lines',
+                    showlegend=True
                 ),
                 row=1,
                 col=1
