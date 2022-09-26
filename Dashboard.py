@@ -706,7 +706,7 @@ with tabs[0]:
 
         elif chart == 'Gráfico OHLC + Volumen':
 
-            tab1 = st.tabs(['Gráfico', 'Tabla'])
+            tab1 = st.tabs(['Gráfico', 'Tabla', 'Descargar'])
 
             with tab1[0]:
 
@@ -715,6 +715,38 @@ with tabs[0]:
             with tab1[1]:
 
                 st.dataframe(data_frame)
+
+            with tab1[2]:
+
+                def to_excel(data_frame):
+
+                    output = BytesIO()
+
+                    writer = pd.ExcelWriter(output, engine='xlsxwriter')
+
+                    data_frame.to_excel(writer, index=False, sheet_name='Hoja1')
+
+                    workbook = writer.book
+
+                    worksheet = writer.sheets['Hoja1']
+
+                    format1 = workbook.add_format({'num_format': '0.00'})
+
+                    worksheet.set_column('A:A', None, format1)
+
+                    writer.save()
+
+                    processed_data = output.getvalue()
+
+                    return processed_data
+
+                df_xlsx = to_excel(data_frame)
+
+                st.download_button(
+                    label='Descarga la data',
+                    data=df_xlsx,
+                    file_name=name + '.xlsx'
+                )
 
     ###########
 
