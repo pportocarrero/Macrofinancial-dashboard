@@ -15,7 +15,7 @@ from io import BytesIO
 
 st.set_page_config(
     layout='wide',
-    page_title='Condiciones macrofinancieras',
+    page_title='Macrofinancial conditions',
     page_icon=''
 )
 
@@ -240,21 +240,21 @@ def delta_1d(dataframe):
 
 # MAIN TABS
 
-st.title('Información macrofinanciera')
+st.title('Macrofinancial information')
 
 tabs = st.tabs([
-    'Resumen',
+    'Summary',
     # 'S&P 500 Snapshot',
-    'Estados Unidos',
-    'Perú',
-    'Noticias'
+    'United States',
+    'Peru',
+    'News'
 ])
 
 with tabs[0]:
 
     # RESUMEN
 
-    st.subheader('Resumen de los mercados financieros')
+    st.subheader('Summary of financial information')
 
     # DELTA DEL S&P 500
 
@@ -311,7 +311,7 @@ with tabs[0]:
     )
 
     kpi1[3].metric(
-        'Crudo WTI',
+        'WTI Crude',
         'US$ ' + str(wti_delta[0]),
         str(wti_delta[2]) + ' (US$ ' + str(wti_delta[1].replace('.', ',')) + ')'
     )
@@ -319,21 +319,21 @@ with tabs[0]:
     kpi2 = st.columns(4)
 
     kpi2[0].metric(
-        'Índice de volatilidad VIX',
+        'VIX volatility index',
         'US$ ' + str(vix_delta[0]),
         str(vix_delta[2]) + ' (US$ ' + str(vix_delta[1]).replace('.', ',') + ')',
         delta_color='inverse'
     )
 
     kpi2[1].metric(
-        'Índice de volatilidad MOVE',
+        'MOVE volatility index',
         'US$ ' + str(move_delta[0]),
         str(move_delta[2]) + ' (US$ ' + str(move_delta[1]).replace('.', ',') + ')',
         delta_color='inverse'
     )
 
     kpi2[2].metric(
-        'Cobre',
+        'Copper',
         'US$ ' + str(copper_delta[0]),
         str(copper_delta[2]) + ' (US$ ' + str(copper_delta[1]).replace('.', ',') + ')'
     )
@@ -392,7 +392,7 @@ with tabs[0]:
                         dict(count=6, label='6M', step='month', stepmode='backward'),
                         dict(count=1, label='YTD', step='year', stepmode='todate'),
                         dict(count=1, label='1A', step='year', stepmode='backward'),
-                        dict(label='Máx.', step='all')
+                        dict(label='Max.', step='all')
                     ]))
             )
 
@@ -429,7 +429,7 @@ with tabs[0]:
                         dict(count=3, label='3M', step='month', stepmode='backward'),
                         dict(count=6, label='6M', step='month', stepmode='backward'),
                         dict(count=1, label='YTD', step='year', stepmode='todate'),
-                        dict(count=1, label='1A', step='year', stepmode='backward'),
+                        dict(count=1, label='1Y', step='year', stepmode='backward'),
                         dict(label='Máx.', step='all')
                     ]))
             )
@@ -517,7 +517,7 @@ with tabs[0]:
                     x=ticker_id['Date'],
                     y=ticker_id['Volume'],
                     showlegend=False,
-                    name='Volumen'
+                    name='Volume'
                 ),
                 row=2,
                 col=1
@@ -548,8 +548,8 @@ with tabs[0]:
                         dict(count=3, label='3M', step='month', stepmode='backward'),
                         dict(count=6, label='6M', step='month', stepmode='backward'),
                         dict(count=1, label='YTD', step='year', stepmode='todate'),
-                        dict(count=1, label='1A', step='year', stepmode='backward'),
-                        dict(label='Máx.', step='all')
+                        dict(count=1, label='1Y', step='year', stepmode='backward'),
+                        dict(label='Max.', step='all')
                     ]))
             )
 
@@ -622,7 +622,7 @@ with tabs[0]:
                     x=ticker_id['Date'],
                     y=ticker_id['Volume'],
                     showlegend=False,
-                    name='Volumen'
+                    name='Volume'
                 ),
                 row=2,
                 col=1
@@ -645,8 +645,8 @@ with tabs[0]:
                         dict(count=3, label='3M', step='month', stepmode='backward'),
                         dict(count=6, label='6M', step='month', stepmode='backward'),
                         dict(count=1, label='YTD', step='year', stepmode='todate'),
-                        dict(count=1, label='1A', step='year', stepmode='backward'),
-                        dict(label='Máx.', step='all')
+                        dict(count=1, label='1Y', step='year', stepmode='backward'),
+                        dict(label='Max.', step='all')
                     ]))
             )
 
@@ -658,11 +658,11 @@ with tabs[0]:
 
         st.markdown('**' + name + '**')
 
-        chart = st.selectbox('Seleccione el tipo de gráfico', ('Gráfico de línea', 'Gráfico OHLC + Volumen'), key=name)
+        chart = st.selectbox('Select the type of chart', ('Line chart', 'OHLC chart + Volume'), key=name)
 
-        if chart == 'Gráfico de línea':
+        if chart == 'Line chart':
 
-            tab0 = st.tabs(['Gráfico', 'Tabla', 'Descargar'])
+            tab0 = st.tabs(['Chart', 'Dataset', 'Download'])
 
             with tab0[0]:
 
@@ -699,14 +699,14 @@ with tabs[0]:
                 df_xlsx = to_excel(data_frame)
 
                 st.download_button(
-                    label='Descarga la data',
+                    label='Download data',
                     data=df_xlsx,
                     file_name=name + '.xlsx'
                 )
 
-        elif chart == 'Gráfico OHLC + Volumen':
+        elif chart == 'OHLC chart + Volume':
 
-            tab1 = st.tabs(['Gráfico', 'Tabla', 'Descargar'])
+            tab1 = st.tabs(['Chart', 'Dataset', 'Download'])
 
             with tab1[0]:
 
@@ -743,7 +743,7 @@ with tabs[0]:
                 df_xlsx = to_excel(data_frame)
 
                 st.download_button(
-                    label='Descarga la data',
+                    label='Download data',
                     data=df_xlsx,
                     file_name=name + '.xlsx'
                 )
@@ -753,11 +753,11 @@ with tabs[0]:
 
     # ÍNDICES BURSÁTILES Y DE RENTA FIJA
 
-    main_tabs = st.tabs(['Equities y renta fija', 'Materias primas', 'Monedas'])  # AÑADIR UN EQUITY SNAPSHOT POR SECTOR DEL S&P 500 EN BASE AL CRECIMIENTO DE ACA ACCIÓN
+    main_tabs = st.tabs(['Equities and fixed income', 'Commodities', 'FX'])  # AÑADIR UN EQUITY SNAPSHOT POR SECTOR DEL S&P 500 EN BASE AL CRECIMIENTO DE ACA ACCIÓN
 
     with main_tabs[0]:
 
-        st.subheader('Índices bursátiles y de renta fija')
+        st.subheader('Equities and fixed income')
 
         # S&P 500 y DJI
 
@@ -765,24 +765,24 @@ with tabs[0]:
 
         with eq[0]:
 
-            two_chart('S&P 500', sp_500, 'Puntos', decimals=0, us_recession=True)
+            two_chart('S&P 500', sp_500, 'Points', decimals=0, us_recession=True)
 
-            with st.expander('Más información:'):
+            with st.expander('More information:'):
 
                 st.write('''
-                Fuente: Yahoo! Finance.
+                Source: Yahoo! Finance.
                     
                 El índice S&P 500 es considerado como el mejor barómetro de las compañías de alta capitalización en Estados Unidos. El índice incluye 500 compañías públicas de diferentes sectores de la economía y cubre aproximadamente el 80% del total de capitalización de mercado disponible. El S&P 500 es un índice bursátil ponderado en base a la capitalización de mercado de las compañías que la componen. De acuerdo a la Encuesta anual de activos, se estima que US$ 13 billones están indexados o comparados a este índice.
                 ''')
 
         with eq[1]:
 
-            two_chart('Dow Jones Industrial Average', dji_index, 'Puntos', decimals=0, us_recession=True)
+            two_chart('Dow Jones Industrial Average', dji_index, 'Points', decimals=0, us_recession=True)
 
-            with st.expander('Más información:'):
+            with st.expander('More information:'):
 
                 st.write('''
-                Fuente: Yahoo! Finance.
+                Source: Yahoo! Finance.
         
                 El Dow Jones Industrial Average es un indicador ponderado por el precio de 30 compañías 'blue-chip' norteamericanas. Este índice cubre todas las industrias con la excepción de transportes y servicios públicos.
                 ''')
@@ -791,24 +791,24 @@ with tabs[0]:
 
         with eq1[0]:
 
-            two_chart('Nasdaq 100', nasdaq_100, 'Puntos', decimals=0, us_recession=True)
+            two_chart('Nasdaq 100', nasdaq_100, 'Points', decimals=0, us_recession=True)
 
-            with st.expander('Más información:'):
+            with st.expander('More information:'):
 
                 st.write('''
-                Fuente: Federal Reserve Bank of St. Louis (Federal Reserve Economic Data).
+                Source: Yahoo! Finance.
                     
                 El Nasdaq 100 es un índice basado en una canasta de 100 acciones de las empresas que más actividad tienen en la bolsa de valores Nasdaq. El índice incluye empresas de varios sectores, a excepción de las financieras. El índice se calcula en base a la ponderación de la capitalización de las empresas.
                 ''')
 
         with eq1[1]:
 
-            two_chart('Russell 3000', russell_3000, 'Puntos', decimals=0, us_recession=True)
+            two_chart('Russell 3000', russell_3000, 'Points', decimals=0, us_recession=True)
 
-            with st.expander('Más información:'):
+            with st.expander('More information:'):
 
                 st.write('''
-                Fuente: Yahoo! Finance.
+                Source: Yahoo! Finance.
         
                 Por su parte, el índice Russell 3000 es un índice bursátil ponderado por capitalización de mercado que provee exposición a todo el mercado bursátil norteamericano. Este índice sigue el desempeño de las 3 mil empresas norteamericanas públicas con mayor capitalización en el mercado, que representa el 97% de todas las empresas incorporadas en EE.UU. que cotizan en el mercado bursátil norteamericano.
                 ''')
@@ -817,24 +817,24 @@ with tabs[0]:
 
         with eq3:
 
-            two_chart('Russell 2000', russell_2000, 'Puntos', decimals=0, us_recession=True)
+            two_chart('Russell 2000', russell_2000, 'Points', decimals=0, us_recession=True)
 
-            with st.expander('Más información:'):
+            with st.expander('More information:'):
 
                 st.write('''
-                Fuente: Yahoo! Finance
+                Source: Yahoo! Finance
         
                 El índice Russell 2000 se refiere a un indice bursátil que mide el desempeño de las 2,000 compañías más pequeñas que forman parte del índice Russell 3000. Este índice es administrado por FTSE Russell y es considerado uno de los referentes de la salud de la economía norteamericana por su énfasis en compañías públicas pequeñas del mercado norteamericnano.
                 ''')
 
         with eq4:
 
-            two_chart('FTSE 100', ftse_100, 'Puntos', decimals=0, us_recession=False)
+            two_chart('FTSE 100', ftse_100, 'Points', decimals=0, us_recession=False)
 
-            with st.expander('Más información'):
+            with st.expander('More information'):
 
                 st.write('''
-                Fuente: Yahoo! Finance.
+                Source: Yahoo! Finance.
         
                 El FTSE 100 es un índice bursátil de las 100 empresas que cotizan en el London Stock Exchange con la mayor capitalización de mercado.El índice es mantenido por el Grupo FTSE, una subsidiaria del Grupo London Stock Exchange.
                 ''')
@@ -845,24 +845,24 @@ with tabs[0]:
 
         with eq5[0]:
 
-            two_chart('Índice de volatilidad CBOE VIX', vix_index, 'US$', decimals=1, us_recession=True)
+            two_chart('CBOE VIX volatility index', vix_index, 'US$', decimals=1, us_recession=True)
 
-            with st.expander('Más información'):
+            with st.expander('More information'):
 
                 st.write('''
-                Fuente: Yahoo! Finance.
+                Source: Yahoo! Finance.
         
                 El índice VIX es una estimación destinada a producir una medida constante de la volatilidad esperada a 30 días del mercado bursátil norteamericano. Esta medida se deriva del precio "mid" de opciones call y put del índice S&P 500 a tiempo real. A nivel global, es una de las medidas de volatilidad más importantes -- ampliamente citada y seguida por medios especializados, así como por participantes del mercado como un indicador de seguimiento.
                 ''')
 
         with eq5[1]:
 
-            two_chart('Índice de volatilidad MOVE', move_index, 'US$', decimals=1, us_recession=True)
+            two_chart('BofA MOVE volatility index', move_index, 'US$', decimals=1, us_recession=True)
 
-            with st.expander('Más información'):
+            with st.expander('More information'):
 
                 st.write('''
-                Fuente: Yahoo! Finance.
+                Source: Yahoo! Finance.
         
                 El índice MOVE es una reconocida medida de la volatilidad de tasas de interés en EE.UU. que sigue el movimiento de la volatilidad implícita del rendimiento de instrumentos del Tesoro norteamericano a través de los precios vigentes de opciones a 1 mes de bonos del Tesoro norteamericano a 2, 5, 10 y 30 años.
         
@@ -873,23 +873,23 @@ with tabs[0]:
 
         with eq6[0]:
 
-            two_chart('Shanghai Composite', shanghai_comp, 'Puntos', decimals=0, us_recession=False)
+            two_chart('Shanghai Composite', shanghai_comp, 'Points', decimals=0, us_recession=False)
 
-            with st.expander('Más información'):
+            with st.expander('More information'):
                 st.write('''
-                Fuente: Yahoo! Finance.
+                Source: Yahoo! Finance.
         
                 The SSE Composite Index also known as SSE Index is a stock market index of all stocks that are traded at the Shanghai Stock Exchange.
                 ''')
 
         with eq6[1]:
 
-            two_chart('Nikkei 225', nikkei_225, 'Puntos', decimals=1, us_recession=False)
+            two_chart('Nikkei 225', nikkei_225, 'Points', decimals=1, us_recession=False)
 
-            with st.expander('Más información'):
+            with st.expander('More information'):
 
                 st.write('''
-                Fuente: Banco Central de Reserva del Perú.
+                Source: Banco Central de Reserva del Perú.
         
                 El índice Nikkei 225 is a stock market index for the Tokyo Stock Exchange. It has been calculated daily by the Nihon Keizai Shimbun newspaper since 1950.
                 ''')
@@ -900,13 +900,13 @@ with tabs[0]:
 
         with eq7:
 
-            st.write('**S&P/BVL Perú General**')
+            st.write('**S&P/BVL Peru General**')
 
-            tab0 = st.tabs(['Gráfico', 'Tabla', 'Descargar'])
+            tab0 = st.tabs(['Chart', 'Dataset', 'Download'])
 
             with tab0[0]:
 
-                line_chart('S&P/BVL Perú General', bvl_gen, 'Puntos', decimals=0, us_recession=False)
+                line_chart('S&P/BVL Peru General', bvl_gen, 'Points', decimals=0, us_recession=False)
 
             with tab0[1]:
 
@@ -938,22 +938,22 @@ with tabs[0]:
                 df_xlsx = to_excel(bvl_gen)
 
                 st.download_button(
-                    label='Descarga la data',
+                    label='Download data',
                     data=df_xlsx,
                     file_name='bvl_gen.xlsx'
                 )
 
-            with st.expander('Más información'):
+            with st.expander('More information'):
 
                 st.write('''
-                Fuente: Standard & Poor's.
+                Source: Standard & Poor's.
                 ''')
 
     with main_tabs[1]:
 
     # MATERIAS PRIMAS
 
-        st.subheader('Materias primas')
+        st.subheader('Commodities')
 
         # CRUDOS WTI Y BRENT
 
@@ -961,11 +961,11 @@ with tabs[0]:
 
         with com1:
 
-            two_chart('Crudo WTI (US$/barril)', wti_crude, 'US$', decimals=2, us_recession=True)
+            two_chart('WTI Crude (US$/bl)', wti_crude, 'US$', decimals=2, us_recession=True)
 
-            with st.expander('Más información'):
+            with st.expander('More information'):
                 st.write('''
-                    Fuente: Yahoo! Finance.
+                    Source: Yahoo! Finance.
                         
                     WTI is the underlying commodity of the New York Mercantile Exchange's (NYMEX) oil futures contract and is considered a high-quality oil that is easily refined.
                         
@@ -974,12 +974,12 @@ with tabs[0]:
 
         with com2:
 
-            two_chart('Crude Brent (US$/barril)', brent_crude, 'US$', decimals=2, us_recession=True)
+            two_chart('Brent Crude (US$/bl)', brent_crude, 'US$', decimals=2, us_recession=True)
 
-            with st.expander('Más información'):
+            with st.expander('More information'):
 
                 st.write('''
-                        Fuente: Yahoo! Finance.
+                        Source: Yahoo! Finance.
                         
                         Brent actually refers to oil from four different fields in the North Sea: Brent, Forties, Oseberg, and Ekofisk. Crude from this region is light and sweet, making them ideal for the refining of diesel fuel, gasoline, and other high-demand products. And because the supply is waterborne, it’s easy to transport to distant locations.
                         ''')
@@ -990,22 +990,22 @@ with tabs[0]:
 
         with comm1[0]:
 
-            two_chart('Cobre (US$/lb)', copper_fut, 'US$', decimals=2, us_recession=True)
+            two_chart('Copper (US$/lb)', copper_fut, 'US$', decimals=2, us_recession=True)
 
-            with st.expander('Más información)'):
+            with st.expander('More information)'):
 
                 st.write('''
-                    Fuente: Yahoo! Finance.
+                    Source: Yahoo! Finance.
                     ''')
 
         with comm1[1]:
 
-            two_chart('Oro (US$/Oz.tr.)', gold_fut, 'US$', decimals=2, us_recession=True)
+            two_chart('Gold (US$/Tr.Oz.)', gold_fut, 'US$', decimals=2, us_recession=True)
 
-            with st.expander('Más información'):
+            with st.expander('More information'):
 
                 st.write('''
-                    Fuente: Banco Central de Reserva del Perú.
+                    Source: Banco Central de Reserva del Perú.
                     ''')
 
         # SILVER Y TRIGO
@@ -1014,24 +1014,24 @@ with tabs[0]:
 
         with comm2[0]:
 
-            two_chart('Plata (US$/Oz.tr.)', silver_fut, 'US$', decimals=2, us_recession=True)
+            two_chart('Silver (US$/Tr.Oz.)', silver_fut, 'US$', decimals=2, us_recession=True)
 
-            with st.expander('Más información'):
+            with st.expander('More information'):
 
                 st.write('''
-                    Fuente: Yahoo! Finance.
+                    Source: Yahoo! Finance.
                     
                     Silver futures are standardized, exchange-traded contracts in which the contract buyer agrees to take delivery, from the seller, a specific quantity of silver at a predetermined price on a future delivery date. Though its use as the nation's coinage was discontinued in 1965, at the turn of the century, an even more important economic function emerged for silver: that of an industrial raw material. Today, silver is sought as a valuable and practical industrial commodity, and silver futures are seen as an appealing investment that can be traded nearly 24 hours per day, 6 days per week. The largest industrial users of silver are the photographic, jewelry, and electronic industries. Silver futures are available for trading in the COMEX Division at the New York Mercantile Exchange (NYMEX).
                     ''')
 
         with comm2[1]:
 
-            two_chart('Trigo (cUS$/bushel)', wheat_fut, 'cUS$', decimals=2, us_recession=True)
+            two_chart('Wheat (cUS$/bushel)', wheat_fut, 'cUS$', decimals=2, us_recession=True)
 
-            with st.expander('Más información'):
+            with st.expander('More information'):
 
                 st.write('''
-                    Fuente: Yahoo! Finance.
+                    Source: Yahoo! Finance.
                     
                     Representing the majority of the U.S. wheat crop, Hard Red Winter wheat is the primary ingredient in the world’s production of bread. KC HRW Wheat futures are by no means new; in fact, they’ve traded since 1876 – longer than the Chicago SRW Wheat futures. However, what market participants are noticing as of late is newfound liquidity. Bid-ask spread, market depth and breadth of participants have improved dramatically. Trades at the Chicago Board of Trade (CBOT - CME Group).
                     ''')
@@ -1040,23 +1040,23 @@ with tabs[0]:
 
         with comm3[0]:
 
-            two_chart('Maíz (cUS$/bushel)', corn_fut, 'cUS$', decimals=2, us_recession=True)
+            two_chart('Corn (cUS$/bushel)', corn_fut, 'cUS$', decimals=2, us_recession=True)
 
-            with st.expander('Más información'):
+            with st.expander('More information'):
 
                 st.write('''
-                    Fuente: Yahoo! Finance.
+                    Source: Yahoo! Finance.
     
                     Corn futures are the most liquid and active market in grains, with 350,000 contracts traded per day. Trades at the Chicago Board of Trade (CBOT- CME Group).
                 ''')
 
         with comm3[1]:
 
-            two_chart('Aceite de soya (cUS$/lb)', soybean_fut, 'cUS$', decimals=2, us_recession=True)
+            two_chart('Soybean oil (cUS$/lb)', soybean_fut, 'cUS$', decimals=2, us_recession=True)
 
-            with st.expander('Más información'):
+            with st.expander('More information'):
                 st.write('''
-                    Fuente: Yahoo! Finance.
+                    Source: Yahoo! Finance.
     
                     Soybean futures are an easy, liquid tool for speculating or hedging against price movements for one of the world’s most widely grown crops. Seek rewards, manage risks and diversify your portfolio. Our global contracts enable you to trade around the new crop of the northern hemisphere in November and the South American new crop in May. Trades at the Chicago Board of Trade (CBOT - CME Group).
                 ''')
@@ -1067,10 +1067,10 @@ with tabs[0]:
 
             st.write('**Global Supply Chain Pressure Index**')
 
-            tab0 = st.tabs(['Gráfico', 'Tabla', 'Descargar'])
+            tab0 = st.tabs(['Chart', 'Dataset', 'Download'])
 
             with tab0[0]:
-                line_chart('Global Supply Chain Pressure Index', gscpi, 'Puntos', decimals=2, us_recession=True)
+                line_chart('Global Supply Chain Pressure Index', gscpi, 'Points', decimals=2, us_recession=True)
 
             with tab0[1]:
 
@@ -1102,14 +1102,14 @@ with tabs[0]:
                 df_xlsx = to_excel(gscpi)
 
                 st.download_button(
-                    label='Descarga la data',
+                    label='Download data',
                     data=df_xlsx,
                     file_name='gscpi.xlsx'
                 )
 
-                with st.expander('Más información'):
+                with st.expander('More information'):
                     st.write('''
-                            Fuente: Reserva Federal de Nueva York.
+                            Source: Reserva Federal de Nueva York.
                             
                             Es un índice construido con el objetivo de proveer información sobre presiones a la cadena de suministros global, que puedan indicar restricciones significativas por el lado de la oferta, y que puedan afectar la producción global. Este indicador es compuesto con información de costos de transporte, cuellos de botella en la producción global, e información relevante sobre la producción manufacturera. Utiliza data del Baltic Dry Index (BDI), Harpex index, y del U.S. Bureau of Labor Statistics. Este índice también usa componentes de las encuestas PMI (Purchasing-Managers' Index) de China, Japón, la zona euro, Corea del Sur, Taiwán, Reino Unido y Estados Unidos.
                             ''')
@@ -1118,7 +1118,7 @@ with tabs[0]:
 
     with main_tabs[2]:
 
-        st.subheader('Tipo de cambio')
+        st.subheader('FX')
 
 # with tabs[1]:
 
@@ -1170,105 +1170,105 @@ with tabs[1]:
 
     fed_rate_lower_latest = '{:,.2f}'.format(fed_rate_lower_latest)
 
-    st.subheader('EE.UU.: Resumen de indicadores clave')
+    st.subheader('USA: Summary of key indicators')
 
     us = st.columns(4)
 
     us[0].metric(
-        'Producto Bruto Interno',
-        str(us_gdp_latest) + '% a/a',
-        f'{delta_us_gdp:.2f}' + ' p.p. a/a'
+        'Gross Domestic Product',
+        str(us_gdp_latest) + '% y/y',
+        f'{delta_us_gdp:.2f}' + ' p.p. y/y'
     )
 
     us[1].metric(
-        'Inflación PCE',
-        str(us_pce_latest) + '% a/a',
-        f'{delta_us_pce:.2f}' + ' p.p. sobre el objetivo (2%)',
+        'PCE Inflation',
+        str(us_pce_latest) + '% y/y',
+        f'{delta_us_pce:.2f}' + ' p.p. above target (2%)',
         delta_color='inverse'
     )
 
     us[2].metric(
-        'Inflación subyacente PCE',
-        str(us_pce_core_latest) + '% a/a',
-        f'{delta_us_pce_core:.2f}' + ' p.p. sobre el objetivo (2%)',
+        'Core PCE inflation',
+        str(us_pce_core_latest) + '% y/y',
+        f'{delta_us_pce_core:.2f}' + ' p.p. above target (2%)',
         delta_color='inverse'
     )
 
     us[3].metric(
-        'Tasa de fondos federales de la Fed',
+        'Federal Funds Rate',
         str(fed_rate_lower_latest) + '-' + str(fed_rate_upper_latest) + '%',
-        f'{delta_fed_rate_upper:,.0f}' + ' p.b. vs anterior',
+        f'{delta_fed_rate_upper:,.0f}' + ' p.b. vs previous',
         delta_color='inverse'
     )
 
     # MAIN TABS
 
-    main_tabs = st.tabs(['Macroeconomía', 'Finanzas', 'Finanzas públicas', 'Indicadores avanzados'])
+    main_tabs = st.tabs(['Macroeconomics', 'Finance', 'Public finances', 'Leading indicators'])
 
     with main_tabs[0]:
-        st.subheader('Macroeconomía')
+        st.subheader('Macroeconomics')
 
-        st.write('PBI EEUU')
+        st.write('USA GDP')
         'FRED'
 
-        st.write('Componentes del PBI')
+        st.write('GDP Components')
         'FRED'
 
-        st.write('**Inflación e inflación subyacente (PCE y CPI)**')
+        st.write('**Inflation and core inflation (PCE and CPI)**')
         'FRED'
         'PCE: PCEPI'
         'Core PCE: PCEPILFE'
         'CPI: USACPIALLMINMEI'
         'Core CPI: USACPICORMINMEI'
 
-        st.write('Desempleo')
+        st.write('Unemployment')
         'FRED'
 
-        st.write('**Inventarios retail**')
+        st.write('**Retail inventories**')
         'https://fred.stlouisfed.org/series/RETAILIMSA'
 
     with main_tabs[1]:
-        st.subheader('Finanzas')
+        st.subheader('Finance')
 
-        st.write('Curva de treasury')
+        st.write('US Treasury Curve')
         'FRED'
 
-        st.write('Rendimientos de los bonos')
+        st.write('Bond yields')
         'FRED'
 
-        st.write('Spread de 3m-10 años')
+        st.write('3m-10y Spread')
         'FRED'
 
-        st.write('Spread 2-10 años')
+        st.write('2-10y Spread')
         'FRED'
 
-        st.write('Federal Funds Rate (upper and lower bound, también incluir la tasa real)')
+        st.write('Federal Funds Rate (upper and lower bound, include real rate)')
         'FRED'
 
         st.write('Fed dot plots')
         'FRED'
 
     with main_tabs[2]:
-        st.subheader('Finanzas públicas')
+        st.subheader('Public finances')
 
         st.write('**Federal Reserve Balance Sheet**')
         'https://fred.stlouisfed.org/series/WALCL'
 
-        st.write('**Deuda de EEUU**')
+        st.write('**USA debt**')
 
     with main_tabs[3]:
-        st.subheader('Indicadores adelantados')
+        st.subheader('Leading indicators')
 
-        st.write('Nóminas no agrícolas')
+        st.write('Nonfarm payrolls')
         'FRED'
 
-        st.write('Peticiones iniciales de desempleo')
+        st.write('Initial jobless claims')
         'FRED'
 
-        st.write('Peticiones continuas de desempleo')
+        st.write('Continued jobless claims')
         'FRED'
 
-        st.write('Probabilidad de recesión de NY Fed')
+        st.write('NY Fed Recession Probability')
         'Federal Reserve Bank of New York'
         'https://www.newyorkfed.org/research/capital_markets/ycfaq#/interactive'
 
@@ -1276,12 +1276,12 @@ with tabs[1]:
         'Federal Reserve Bank of New York'
         'https://www.newyorkfed.org/survey/empire/empiresurvey_overview'
 
-        st.write('GDPNow Proyección de GDP de la Federal Reserve Bank of Atlanta')
+        st.write('GDPNow: Federal Reserve Bank of Atlanta GDP forecast')
         'Federal Reserve Bank of Atlanta'
 
 with tabs[2]:
 
-    st.subheader('Perú: Resumen de indicadores clave')
+    st.subheader('Peru: Summary of key indicators')
 
     # DELTA PBI
 
@@ -1310,46 +1310,46 @@ with tabs[2]:
     per1 = st.columns(4)
 
     per1[0].metric(
-        'Producto Bruto Interno',
-        pbi_peru_delta[0] + '% a/a',
-        pbi_peru_delta[1] + ' p.p. a/a'
+        'Gross Domestic Product',
+        pbi_peru_delta[0] + '% y/y',
+        pbi_peru_delta[1] + ' p.p. y/y'
     )
 
     per1[1].metric(
-        'Inflación',
-        str(inflacion_delta[0]) + '% a/a',
-        inflacion_delta[1] + ' p.p. sobre el rango meta',
+        'Inflation',
+        str(inflacion_delta[0]) + '% y/y',
+        inflacion_delta[1] + ' p.p. above target',
         delta_color='inverse'
     )
 
     per1[2].metric(
-        'Inflación ex. alimentos y energía',
-        str(core_inflacion_delta[0]) + '% a/a',
-        core_inflacion_delta[1] + ' p.p. sobre el rango meta',
+        'Inflation ex. food & energy',
+        str(core_inflacion_delta[0]) + '% y/y',
+        core_inflacion_delta[1] + ' p.p. above target',
         delta_color='inverse'
     )
 
     per1[3].metric(
-        'Tasa de referencia del BCRP',
+        'BCRP reference rate',
         str(tasa_bcrp_delta[0]) + '%',
-        tasa_bcrp_delta[1] + ' puntos básicos m/m',
+        tasa_bcrp_delta[1] + ' bps m/m',
         delta_color='inverse'
     )
 
     # BODY
 
-    main_tabs = st.tabs(['Macroeconomía', 'Finanzas', 'Finanzas públicas', 'Indicadores adelantados'])
+    main_tabs = st.tabs(['Macroeconomics', 'Finance', 'Public finances', 'Leading indicators'])
 
     with main_tabs[0]:
-        st.subheader('Macroeconomía')
+        st.subheader('Macroeconomics')
 
-        st.markdown('**Producto Bruto Interno**')
+        st.markdown('**Gross Domestic Product**')
 
         fig_pbi_peru = go.Figure()
 
         fig_pbi_peru.add_trace(
             go.Bar(
-                name='PBI (var. % a/a)',
+                name='GDP (% var. y/y)',
                 x=pbi_peru['date'],
                 y=pbi_peru['Var. % a/a'],
                 marker_color=color_azul,
@@ -1360,7 +1360,7 @@ with tabs[2]:
 
         fig_pbi_peru.add_trace(
             go.Line(
-                name='Expectativas PBI 12 meses (%)',
+                name='12-month GDP expectations (%)',
                 x=exp_pbi_peru['date'],
                 y=exp_pbi_peru['Expectativas PBI (%)'],
                 line=dict(color=color_rojo),
@@ -1413,23 +1413,23 @@ with tabs[2]:
         )
 
         fig_pbi_peru.update_xaxes(
-            title='Fecha',
+            title='Date',
             # rangeslider_visible=True,
             rangeselector=dict(
                 buttons=list([
                     dict(count=6, label='6M', step='month', stepmode='backward'),
                     dict(count=1, label='YTD', step='year', stepmode='todate'),
-                    dict(count=1, label='1A', step='year', stepmode='backward'),
-                    dict(count=5, label='5A', step='year', stepmode='backward'),
-                    dict(label='Máx.', step='all')
+                    dict(count=1, label='1Y', step='year', stepmode='backward'),
+                    dict(count=5, label='5Y', step='year', stepmode='backward'),
+                    dict(label='Max.', step='all')
                 ]))
         )
 
         st.plotly_chart(fig_pbi_peru, use_container_width=True)
 
-        with st.expander('Más información'):
+        with st.expander('More information'):
             st.write('''
-            Fuente: Banco Central de Reserva del Perú.
+            Source: Banco Central de Reserva del Perú.
 
             PBI peruano
 
@@ -1441,13 +1441,13 @@ with tabs[2]:
         per2 = st.columns(2)
 
         with per2[0]:
-            st.markdown('**Inflación**')
+            st.markdown('**Inflation**')
 
             fig_inflacion = go.Figure()
 
             fig_inflacion.add_trace(
                 go.Line(
-                    name='Inflación (Var % a/a)',
+                    name='Inflation (% var. y/y)',
                     x=inflacion_peru['date'],
                     y=inflacion_peru['Var. % a/a'],
                     line=dict(color=color_rojo),
@@ -1457,7 +1457,7 @@ with tabs[2]:
 
             fig_inflacion.add_trace(
                 go.Line(
-                    name='Inflación ex. alimentos y energía (Var % a/a)',
+                    name='Inflation ex. food & energy (% var. y/y)',
                     x=inflacion_peru_sub['date'],
                     y=inflacion_peru_sub['Var. % a/a'],
                     line=dict(color=color_azul),
@@ -1467,7 +1467,7 @@ with tabs[2]:
 
             fig_inflacion.add_trace(
                 go.Line(
-                    name='Expectativas de inflación a 12 meses (%)',
+                    name='12-month inflation expectations (%)',
                     x=inflacion_peru_exp['date'],
                     y=inflacion_peru_exp['Expectativas'],
                     line=dict(color=color_gris),
@@ -1506,27 +1506,27 @@ with tabs[2]:
                     buttons=list([
                         dict(count=6, label='6M', step='month', stepmode='backward'),
                         dict(count=1, label='YTD', step='year', stepmode='todate'),
-                        dict(count=1, label='1A', step='year', stepmode='backward'),
-                        dict(count=5, label='5A', step='year', stepmode='backward'),
-                        dict(label='Máx.', step='all')
+                        dict(count=1, label='1Y', step='year', stepmode='backward'),
+                        dict(count=5, label='5Y', step='year', stepmode='backward'),
+                        dict(label='Max.', step='all')
                     ]))
             )
 
             st.plotly_chart(fig_inflacion, use_container_width=True)
 
-            with st.expander('Más información'):
+            with st.expander('More information'):
                 st.write('''
-                Fuente: Banco Central de Reserva del Perú.
+                Source: Banco Central de Reserva del Perú.
                 ''')
 
         with per2[1]:
-            st.markdown('**Tasa de referencia de la política monetaria del BCRP**')
+            st.markdown('**BCRP monetary policy reference rate**')
 
             fig_tasa_bcrp = go.Figure()
 
             fig_tasa_bcrp.add_trace(
                 go.Line(
-                    name='Tasa de referencia BCRP',
+                    name='BCRP reference rate',
                     x=tasa_bcrp['date'],
                     y=tasa_bcrp['Tasa %'],
                     line=dict(color=color_azul),
@@ -1555,7 +1555,7 @@ with tabs[2]:
             )
 
             fig_tasa_bcrp.update_xaxes(
-                title='Fecha',
+                title='Date',
                 # rangeslider_visible=True,
                 rangeselector=dict(
                     buttons=list([
@@ -1569,18 +1569,18 @@ with tabs[2]:
 
             st.plotly_chart(fig_tasa_bcrp, use_container_width=True)
 
-            with st.expander('Más información'):
+            with st.expander('More information'):
                 st.write('''
-                Fuente: Banco Central de Reserva del Perú.
+                Source: Banco Central de Reserva del Perú.
                 ''')
 
-        st.markdown('**Expectativas de la economía peruana a 3 y 12 meses**')
+        st.markdown('**3 and 12 month expectations on the economy**')
 
         fig_exp_eco = go.Figure()
 
         fig_exp_eco.add_trace(
             go.Line(
-                name='A 3 meses',
+                name='3 months ahead',
                 x=exp_eco_3m['date'],
                 y=exp_eco_3m['Expectativas a 3 meses'],
                 line=dict(color=color_azul),
@@ -1590,7 +1590,7 @@ with tabs[2]:
 
         fig_exp_eco.add_trace(
             go.Line(
-                name='A 12 meses',
+                name='12 months ahead',
                 x=exp_eco_12m['date'],
                 y=exp_eco_12m['Expectativas a 12 meses'],
                 line=dict(color=color_rojo),
@@ -1609,7 +1609,7 @@ with tabs[2]:
         fig_exp_eco.add_hline(
             y=50,
             line_width=1,
-            annotation_text='Tramo optimista',
+            annotation_text='Optimism',
             annotation_position='top left'
         )
 
@@ -1626,43 +1626,43 @@ with tabs[2]:
         )
 
         fig_exp_eco.update_xaxes(
-            title='Fecha',
+            title='Date',
             # rangeslider_visible=True,
             rangeselector=dict(
                 buttons=list([
                     dict(count=6, label='6M', step='month', stepmode='backward'),
                     dict(count=1, label='YTD', step='year', stepmode='todate'),
-                    dict(count=1, label='1A', step='year', stepmode='backward'),
-                    dict(count=5, label='5A', step='year', stepmode='backward'),
-                    dict(label='Máx.', step='all')
+                    dict(count=1, label='1Y', step='year', stepmode='backward'),
+                    dict(count=5, label='5Y', step='year', stepmode='backward'),
+                    dict(label='Max.', step='all')
                 ]))
         )
 
         st.plotly_chart(fig_exp_eco, use_container_width=True)
 
-        with st.expander('Más información'):
+        with st.expander('More information'):
             st.write('''
-            Fuente: Banco Central de Reserva del Perú.
+            Source: Banco Central de Reserva del Perú.
             ''')
 
-        st.markdown('**Desempleo**')
+        st.markdown('**Unemployment**')
         'BCRP'
 
     with main_tabs[1]:
 
-        st.subheader('Finanzas')
+        st.subheader('Finance')
 
-        st.markdown('**6. Tasa de referencia de la política monetaria**')
+        st.markdown('**BCRP monetary policy reference rate**')
         'BCRP'
 
-        st.write('**7. Rendimiento del bono a 10 años PEN**')
+        st.write('**Yield of the PEN 10 year bond**')
 
-        st.write('**8. Rendimiento del bono a 10 años USD**')
+        st.write('**Yield of the USD 10 year bond**')
 
     with main_tabs[2]:
 
-        st.subheader('Indicadores avanzados de coyuntura económica')
+        st.subheader('Leading indicators')
 
 with tabs[3]:
 
-    st.subheader('Noticias')
+    st.subheader('News')
