@@ -39,4 +39,4 @@ Main development has been done by me. Many thanks to [@capm](https://github.com/
 # Disclaimer
 You need a valid api key to get financial information from Alpha Vantage (see [here](https://www.alphavantage.co/)) and the Federal Reserve Bank of St. Louis (see [here](https://fred.stlouisfed.org/docs/api/fred/).
 
-Please, do note that I don't own any of the financial data, I only created a dashboard to follow current macrofinancial conditions from different sources, properly cited in the dashboard.
+Please, do note that I don't own any of the financial data, I only created a dashboard to follow current macrofinancial conditions from different sources, and are properly cited in the dashboard.
