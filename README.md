@@ -34,9 +34,9 @@ streamlit run Dashboard.py
 Data is taken from official sources such as the Federal Reserve Bank of St. Louis, the Federal Reserve Bank of New York, the Ministry of Economy and Finance of Peru, the Central Reserve Bank of Peru, Yahoo! Finance and Alpha Vantage. I don't own any of this information, I am just consolidating it as a way to better analyze macrofinancial information.
 
 # Authors
-Main development has been done by me. Many thanks to @capm for his help and feedback. If you have questions or comments, please contact me (see my contact info on my github profile).
+Main development has been done by me. Many thanks to [@capm](https://github.com/capm) for his help and feedback. If you have questions or comments, please contact me (see my contact info on my github profile).
 
 # Disclaimer
-You need a valid api key to get financial information from Alpha Vantage (see [https://www.alphavantage.co/](here)) and the Federal Reserve Bank of St. Louis (see [https://fred.stlouisfed.org/docs/api/fred/](here).
+You need a valid api key to get financial information from Alpha Vantage (see [here](https://www.alphavantage.co/)) and the Federal Reserve Bank of St. Louis (see [here](https://fred.stlouisfed.org/docs/api/fred/).
 
 Please, do note that I don't own any of the financial data, I only created a dashboard to follow current macrofinancial conditions from different sources, properly cited in the dashboard.
