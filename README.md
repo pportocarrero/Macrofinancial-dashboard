@@ -35,3 +35,8 @@ Data is taken from official sources such as the Federal Reserve Bank of St. Loui
 
 # Authors
 Main development has been done by me. Many thanks to @capm for his help and feedback. If you have questions or comments, please contact me (see my contact info on my github profile).
+
+# Disclaimer
+You need a valid api key to get financial information from Alpha Vantage and the Federal Reserve Bank of St. Louis.
+
+Please, do note that I don't own any of the financial data, I only created a dashboard to follow current macrofinancial conditions from different sources, properly cited in the dashboard.
