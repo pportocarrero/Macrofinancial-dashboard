@@ -29,6 +29,8 @@ def fin_inf(nombre, ticker, period, interval, group_by):
 
     y.reset_index(level=0, inplace=True)
 
+    y['Date'] = y['Date'].dt.tz_localize(None)
+
     y['SMA50'] = y['Close'].rolling(50).mean()
 
     y['SMA100'] = y['Close'].rolling(100).mean()
@@ -107,3 +109,5 @@ def fx_info(currency_1: str, currency_2: str, name: str):
     return data_df.to_excel(name + '.xlsx')
 
 
+
+#%%
