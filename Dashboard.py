@@ -1156,7 +1156,7 @@ with tabs[1]:
 
     fed_rate_upper_latest = fed_rate_upper['value'].iloc[-1]
 
-    fed_rate_upper_t2 = fed_rate_upper['value'].iloc[-2]  # CHANGE ACCORDINGLY
+    fed_rate_upper_t2 = fed_rate_upper['value'].iloc[-3]  # CHANGE ACCORDINGLY
 
     delta_fed_rate_upper = (fed_rate_upper_latest - fed_rate_upper_t2) * 100
 
@@ -1164,7 +1164,7 @@ with tabs[1]:
 
     fed_rate_lower_latest = fed_rate_lower['value'].iloc[-1]
 
-    fed_rate_lower_t2 = fed_rate_lower['value'].iloc[-2]
+    fed_rate_lower_t2 = fed_rate_lower['value'].iloc[-3]
 
     delta_fed_rate_lower = fed_rate_lower_latest - fed_rate_lower_t2
 
