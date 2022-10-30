@@ -242,7 +242,7 @@ def delta_1d(dataframe):
 
 st.title('Macrofinancial information')
 
-tabs = st.tabs([
+tabs1 = st.tabs([
     'Summary',
     # 'S&P 500 Snapshot',
     'United States',
@@ -250,7 +250,7 @@ tabs = st.tabs([
     'News'
 ])
 
-with tabs[0]:
+with tabs1[0]:
 
     # RESUMEN
 
@@ -1124,7 +1124,7 @@ with tabs[0]:
 
 #    st.subheader('S&P 500 snapshot')
 
-with tabs[1]:
+with tabs1[1]:
 
     # DELTA PBI USA
 
@@ -1279,7 +1279,7 @@ with tabs[1]:
         st.write('GDPNow: Federal Reserve Bank of Atlanta GDP forecast')
         'Federal Reserve Bank of Atlanta'
 
-with tabs[2]:
+with tabs1[2]:
 
     st.subheader('Peru: Summary of key indicators')
 
@@ -1663,6 +1663,6 @@ with tabs[2]:
 
         st.subheader('Leading indicators')
 
-with tabs[3]:
+with tabs1[3]:
 
     st.subheader('News')
