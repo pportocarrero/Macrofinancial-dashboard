@@ -35,7 +35,7 @@ sp_500 = pd.read_feather('mercados/sp_500')  # S&P 500
 
 dji_index = pd.read_feather('mercados/dji_index')  # DOW JONES
 
-nasdaq_100 = pd.read_feather('mercados/nasdaq_100')  # NASDAQ 100
+nasdaq_comp = pd.read_feather('mercados/nasdaq_comp')  # NASDAQ COMPOSITE
 
 russell_2000 = pd.read_feather('mercados/russell_2000')  # RUSSELL 2000
 
@@ -258,9 +258,9 @@ with tabs1[0]:
 
     dji_delta = delta_2d(dji_index)
 
-    # DELTA NASDAQ 100
+    # DELTA NASDAQ COMPOSITE
 
-    nasdaq_delta = delta_2d(nasdaq_100)
+    nasdaq_delta = delta_2d(nasdaq_comp)
 
     # DELTA VIX
 
@@ -299,7 +299,7 @@ with tabs1[0]:
     )
 
     kpi1[2].metric(
-        'Nasdaq 100',
+        'Nasdaq Composite',
         str(nasdaq_delta[0]) + ' pts',
         str(nasdaq_delta[2]) + ' (' + str(nasdaq_delta[1].replace('.', ',')) + ' pts)'
     )
@@ -785,14 +785,14 @@ with tabs1[0]:
 
         with eq1[0]:
 
-            two_chart('Nasdaq 100', nasdaq_100, 'Points', decimals=0, us_recession=True)
+            two_chart('Nasdaq Composite', nasdaq_comp, 'Points', decimals=0, us_recession=True)
 
             with st.expander('More information:'):
 
                 st.write('''
                 Source: Yahoo! Finance.
                     
-                El Nasdaq 100 es un índice basado en una canasta de 100 acciones de las empresas que más actividad tienen en la bolsa de valores Nasdaq. El índice incluye empresas de varios sectores, a excepción de las financieras. El índice se calcula en base a la ponderación de la capitalización de las empresas.
+                El Nasdaq Composite es un índice basado en una canasta de 100 acciones de las empresas que más actividad tienen en la bolsa de valores Nasdaq. El índice incluye empresas de varios sectores, a excepción de las financieras. El índice se calcula en base a la ponderación de la capitalización de las empresas.
                 ''')
 
         with eq1[1]:
