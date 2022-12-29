@@ -16,6 +16,15 @@ def working_folder(folder: str):
 
         return os.chdir('/Users/pportocarrero/OneDrive/Projects/Macrofinancial-dashboard/' + folder + '/')
 
+def wd_default(folder='Macrofinancial-dashboard'):
+
+    if platform.system() == 'Windows':
+
+        return os.chdir('C:/Users/pport/OneDrive/Projects/' + folder + '/')
+
+    if platform.system() == 'Darwin':
+
+        return os.chdir('/Users/pportocarrero/OneDrive/Projects/' + folder + '/')
 
 def fin_inf(nombre, ticker, period, interval, group_by):
 
