@@ -1,15 +1,13 @@
 # IMPORT CONFIGURATIONS
 
 import streamlit as st
-# import plotly.express as px
 import pandas as pd
 import plotly.graph_objects as go
-# import os
+import os
 # import hydralit_components as hc
 # from plotly.subplots import make_subplots
 # from plotly_resampler import register_plotly_resampler
-# import locale
-# import platform
+import platform
 from io import BytesIO
 # from pyxlsb import open_workbook as open_xlsb
 
@@ -19,119 +17,132 @@ st.set_page_config(
     page_icon=''
 )
 
-# locale.setlocale(locale.LC_TIME, 'es_ES')
+@st.cache_data
+def working_dir(folder='Macrofinancial-dashboard'):
 
-# if platform.system() == 'Windows':
+    if platform.system() == 'Windows':
 
-#    os.chdir('C:/Users/pport/OneDrive/Projects/Macrofinancial-dashboard/')
+        return os.chdir('C:/Users/pport/OneDrive/Projects/' + folder)
 
-# if platform.system() == 'Darwin':
+    elif platform.system() == 'Darwin':
 
-#    os.chdir('/Users/pportocarrero/OneDrive/Projects/Macrofinancial-dashboard/')
+        return os.chdir('/Users/pportocarrero/OneDrive/Projects/' + folder)
+
+
+def load_data(filename: str, format='feather'):
+
+    if format == 'excel':
+
+        return pd.read_excel(filename + '.xlsx')
+    
+    if format == 'feather':
+
+        return pd.read_feather(filename)
+
 
 # FIRE UP MARKET DATA
 
-sp_500 = pd.read_feather('mercados/sp_500')  # S&P 500
+sp_500 = load_data('mercados/sp_500')  # S&P 500
 
-dji_index = pd.read_feather('mercados/dji_index')  # DOW JONES
+dji_index = load_data('mercados/dji_index')  # DOW JONES
 
-nasdaq_comp = pd.read_feather('mercados/nasdaq_comp')  # NASDAQ COMPOSITE
+nasdaq_comp = load_data('mercados/nasdaq_comp')  # NASDAQ COMPOSITE
 
-russell_2000 = pd.read_feather('mercados/russell_2000')  # RUSSELL 2000
+russell_2000 = load_data('mercados/russell_2000')  # RUSSELL 2000
 
-russell_3000 = pd.read_feather('mercados/russell_3000')  # RUSSELL 3000
+russell_3000 = load_data('mercados/russell_3000')  # RUSSELL 3000
 
-ftse_100 = pd.read_feather('mercados/ftse_100')  # FTSE 100
+ftse_100 = load_data('mercados/ftse_100')  # FTSE 100
 
-nikkei_225 = pd.read_feather('mercados/nikkei_225')  # NIKKEI 225
+nikkei_225 = load_data('mercados/nikkei_225')  # NIKKEI 225
 
-shanghai_comp = pd.read_feather('mercados/shanghai_comp')  # SHANGHAI COMPOSITE
+shanghai_comp = load_data('mercados/shanghai_comp')  # SHANGHAI COMPOSITE
 
-vix_index = pd.read_feather('mercados/vix_index')  # VIX
+vix_index = load_data('mercados/vix_index')  # VIX
 
-move_index = pd.read_feather('mercados/move_index')  # MOVE Index
+move_index = load_data('mercados/move_index')  # MOVE Index
 
-bvl_gen = pd.read_excel("mercados/bvl_gen.xlsx")  # ÍNDICE GENERAL DE LA BVL
+bvl_gen = load_data('mercados/bvl_gen', format='excel')  # ÍNDICE GENERAL DE LA BVL
 
-wti_crude = pd.read_feather('mercados/wti_crude')  # WTI CRUDE
+wti_crude = load_data('mercados/wti_crude')  # WTI CRUDE
 
-brent_crude = pd.read_feather('mercados/brent_crude')  # BRENT CRUDE
+brent_crude = load_data('mercados/brent_crude')  # BRENT CRUDE
 
-copper_fut = pd.read_feather('mercados/copper_futures')  # COPPER FUTURES
+copper_fut = load_data('mercados/copper_futures')  # COPPER FUTURES
 
-gold_fut = pd.read_feather('mercados/gold_futures')  # GOLD FUTURES
+gold_fut = load_data('mercados/gold_futures')  # GOLD FUTURES
 
-silver_fut = pd.read_feather('mercados/silver_futures')  # SILVER FUTURES
+silver_fut = load_data('mercados/silver_futures')  # SILVER FUTURES
 
-wheat_fut = pd.read_feather('mercados/wheat_futures')  # WHEAT FUTURES
+wheat_fut = load_data('mercados/wheat_futures')  # WHEAT FUTURES
 
-soybean_fut = pd.read_feather('mercados/soybean_futures')  # SOYBEAN FUTURES
+soybean_fut = load_data('mercados/soybean_futures')  # SOYBEAN FUTURES
 
-corn_fut = pd.read_feather('mercados/corn_futures')  # CORN FUTURES
+corn_fut = load_data('mercados/corn_futures')  # CORN FUTURES
 
-gscpi = pd.read_feather('mercados/gscpi_data')  # GLOBAL SUPPLY CHAIN PRESSURE INDEX
+gscpi = load_data('mercados/gscpi_data')  # GLOBAL SUPPLY CHAIN PRESSURE INDEX
 
-usd_pen = pd.read_excel('mercados/usd_pen.xlsx')  # USD/PEN
+usd_pen = load_data('mercados/usd_pen', format='excel')  # USD/PEN
 
 # USA DATA
 
-ust1m = pd.read_excel('mercados/ust1m.xlsx')  # US TREASURY 1 MONTH
+ust1m = load_data('mercados/ust1m', format='excel')  # US TREASURY 1 MONTH
 
-ust3m = pd.read_excel('mercados/ust3m.xlsx')  # US TREASURY 3 MONTHS
+ust3m = load_data('mercados/ust3m', format='excel')  # US TREASURY 3 MONTHS
 
-ust6m = pd.read_excel('mercados/ust6m.xlsx')  # US TREASURY 6 MONTHS
+ust6m = load_data('mercados/ust6m', format='excel')  # US TREASURY 6 MONTHS
 
-ust1y = pd.read_excel('mercados/ust1y.xlsx')  # US TREASURY 1 YEAR
+ust1y = load_data('mercados/ust1y', format='excel')  # US TREASURY 1 YEAR
 
-ust2y = pd.read_excel('mercados/ust2y.xlsx')  # US TREASURY 2 YEARS
+ust2y = load_data('mercados/ust2y', format='excel')  # US TREASURY 2 YEARS
 
-ust3y = pd.read_excel('mercados/ust3y.xlsx')  # US TREASURY 3 YEARS
+ust3y = load_data('mercados/ust3y', format='excel')  # US TREASURY 3 YEARS
 
-ust5y = pd.read_excel('mercados/ust5y.xlsx')  # US TREASURY 5 YEARS
+ust5y = load_data('mercados/ust5y', format='excel')  # US TREASURY 5 YEARS
 
-ust7y = pd.read_excel('mercados/ust7y.xlsx')  # US TREASURY 7 YEARS
+ust7y = load_data('mercados/ust7y', format='excel')  # US TREASURY 7 YEARS
 
-ust10y = pd.read_excel('mercados/ust10y.xlsx')  # US TREASURY 10 YEARS
+ust10y = load_data('mercados/ust10y', format='excel')  # US TREASURY 10 YEARS
 
-ust20y = pd.read_excel('mercados/ust20y.xlsx')  # US TREASURY 20 YEARS
+ust20y = load_data('mercados/ust20y', format='excel')  # US TREASURY 20 YEARS
 
-ust30y = pd.read_excel('mercados/ust30y.xlsx')  # US TREASURY 30 YEARS
+ust30y = load_data('mercados/ust30y', format='excel')  # US TREASURY 30 YEARS
 
-ust_curve = pd.read_excel('mercados/ust_curve.xlsx')  # UST CURVE
+ust_curve = load_data('mercados/ust_curve', format='excel')  # UST CURVE
 
-us_gdp = pd.read_excel('mercados/us_gdp.xlsx')  # US QUATERLY GDP YOY
+us_gdp = load_data('mercados/us_gdp', format='excel')  # US QUATERLY GDP YOY
 
-us_pce = pd.read_excel('mercados/us_pce.xlsx')  # US PCE INFLATION
+us_pce = load_data('mercados/us_pce', format='excel')  # US PCE INFLATION
 
-us_core_pce = pd.read_excel('mercados/us_core_pce.xlsx')  # US CORE PCE INFLATION
+us_core_pce = load_data('mercados/us_core_pce', format='excel')  # US CORE PCE INFLATION
 
-fed_rate_upper = pd.read_excel('mercados/fed_rate_upper.xlsx')  # FEDERAL FUNDS RATE UPPER
+fed_rate_upper = load_data('mercados/fed_rate_upper', format='excel')  # FEDERAL FUNDS RATE UPPER
 
-fed_rate_lower = pd.read_excel('mercados/fed_rate_lower.xlsx')  # FEDERAL FUNDS RATE LOWER
+fed_rate_lower = load_data('mercados/fed_rate_lower', format='excel')  # FEDERAL FUNDS RATE LOWER
 
 # PERU DATA
 
-bvl_gen = pd.read_feather('mercados/bvl_gen')  # ÍNDICE GENERAL DE LA BVL
+bvl_gen = load_data('mercados/bvl_gen')  # ÍNDICE GENERAL DE LA BVL
 
-pbi_peru = pd.read_feather('mercados/pbi_peru')  # PBI PERÚ
+pbi_peru = load_data('mercados/pbi_peru')  # PBI PERÚ
 
-pbi_peru_des = pd.read_feather('mercados/pbi_peru_des')  # PBI PERÚ DESESTACIONALIZADO
+pbi_peru_des = load_data('mercados/pbi_peru_des')  # PBI PERÚ DESESTACIONALIZADO
 
-pbi_peru_des_prom = pd.read_feather('mercados/pbi_peru_des_prom')  # PBI PERÚ DESESTACIONALIZADO PROMEDIO MÓVIL 3 MESES
+pbi_peru_des_prom = load_data('mercados/pbi_peru_des_prom')  # PBI PERÚ DESESTACIONALIZADO PROMEDIO MÓVIL 3 MESES
 
-exp_pbi_peru = pd.read_feather('mercados/expectativas_pbi_peru')  # EXPECTATIVAS PBI PERÚ
+exp_pbi_peru = load_data('mercados/expectativas_pbi_peru')  # EXPECTATIVAS PBI PERÚ
 
-inflacion_peru = pd.read_feather('mercados/inflacion_peru')  # INFLACIÓN PERÚ
+inflacion_peru = load_data('mercados/inflacion_peru')  # INFLACIÓN PERÚ
 
-inflacion_peru_sub = pd.read_feather('mercados/inflacion_peru_sub')  # INFLACIÓN PERÚ SIN ALIMENTOS Y ENERGÍA
+inflacion_peru_sub = load_data('mercados/inflacion_peru_sub')  # INFLACIÓN PERÚ SIN ALIMENTOS Y ENERGÍA
 
-inflacion_peru_exp = pd.read_feather('mercados/inflacion_peru_exp')  # EXPECTATIVAS DE INFLACION A 12 MESES
+inflacion_peru_exp = load_data('mercados/inflacion_peru_exp')  # EXPECTATIVAS DE INFLACION A 12 MESES
 
-tasa_bcrp = pd.read_feather('mercados/tasa_bcrp')  # TASA DE REFERENCIA DEL BCRP
+tasa_bcrp = load_data('mercados/tasa_bcrp')  # TASA DE REFERENCIA DEL BCRP
 
-exp_eco_3m = pd.read_feather('mercados/expectativas_eco_3m')  # EXPECTATIVAS DE LA ECONOMÍA A 3 MESES
+exp_eco_3m = load_data('mercados/expectativas_eco_3m')  # EXPECTATIVAS DE LA ECONOMÍA A 3 MESES
 
-exp_eco_12m = pd.read_feather('mercados/expectativas_eco_12m')  # EXPECTATIVAS DE LA ECONOMÍA A 12 MESES
+exp_eco_12m = load_data('mercados/expectativas_eco_12m')  # EXPECTATIVAS DE LA ECONOMÍA A 12 MESES
 
 # COLORS AND CONFIGS
 
@@ -151,13 +162,15 @@ color_dorado = 'rgb(218,186,77)'
 color_azul_gris = 'rgb(85,119,137)'
 color_verde_oscuro = 'rgb(49,142,62)'
 color_blanco = 'rgb(255,255,255)'
+color_transparente = 'rgba(0,0,0,0)'
+color_bloomberg = 'rgb(255,160,40)'
+bl_colors = ['#1d6a9c', '#2a9c68', '#9c2a2a', '#9c812a', '#6c2a9c']
 
 font_name = 'arial'
 text_size = 14
 
 # SIDEBAR
 
-# ACÁ HAY QUE INCLUIR UNA OPCIÓN PARA QUE EL USUARIO CAMBIE DE IDIOMA
 
 # FUNCIONES
 
@@ -237,6 +250,9 @@ def delta_1d(dataframe):
     delta_pct = '{:,.2%}'.format(delta_pct)
 
     return latest, delta, delta_pct
+
+############
+
 
 # MAIN TABS
 
@@ -357,7 +373,7 @@ with tabs1[0]:
                     name=name,
                     x=ticker_id['Date'],
                     y=ticker_id['Close'],
-                    line=dict(color='blue'),
+                    line=dict(color=bl_colors[0]),
                     fill='tozeroy'
                 )
             )
@@ -371,9 +387,14 @@ with tabs1[0]:
             )
 
             fig.update_layout(
+                {'plot_bgcolor': color_transparente, 'paper_bgcolor': color_transparente},
                 margin=dict(l=0, r=0, t=0, b=0),
                 hovermode='x unified',
                 yaxis=dict(tickformat=',.' + str(decimals) + 'f'),
+                hoverlabel=dict(bgcolor='white', font_size=14, font_family='arial',font_color='black'),
+                xaxis_rangeselector_font_color='white',
+                xaxis_rangeselector_activecolor=bl_colors[0],
+                xaxis_rangeselector_bgcolor=color_transparente
             )
 
             fig.update_xaxes(
@@ -386,7 +407,7 @@ with tabs1[0]:
                         dict(count=6, label='6M', step='month', stepmode='backward'),
                         dict(count=1, label='YTD', step='year', stepmode='todate'),
                         dict(count=1, label='1A', step='year', stepmode='backward'),
-                        dict(label='Max.', step='all')
+                        dict(label='MAX', step='all')
                     ]))
             )
 
@@ -403,15 +424,20 @@ with tabs1[0]:
                     name=name,
                     x=ticker_id['Date'],
                     y=ticker_id['Close'],
-                    line=dict(color='blue'),
+                    line=dict(color=bl_colors[0]),
                     fill='tozeroy'
                 )
             )
 
             fig.update_layout(
+                {'plot_bgcolor': color_transparente, 'paper_bgcolor': color_transparente},
                 margin=dict(l=0, r=0, t=0, b=0),
                 hovermode='x unified',
+                hoverlabel=dict(bgcolor='white', font_size=14, font_family='arial', font_color='black'),
                 yaxis=dict(tickformat=',.' + str(decimals) + 'f'),
+                xaxis_rangeselector_font_color='white',
+                xaxis_rangeselector_activecolor=bl_colors[0],
+                xaxis_rangeselector_bgcolor=color_transparente
             )
 
             fig.update_xaxes(
@@ -424,8 +450,9 @@ with tabs1[0]:
                         dict(count=6, label='6M', step='month', stepmode='backward'),
                         dict(count=1, label='YTD', step='year', stepmode='todate'),
                         dict(count=1, label='1Y', step='year', stepmode='backward'),
-                        dict(label='Máx.', step='all')
-                    ]))
+                        dict(label='MAX', step='all')
+                    ])),
+                    rangeslider=dict(visible=True)
             )
 
             fig.update_yaxes(title_text=y_axis)
@@ -462,8 +489,8 @@ with tabs1[0]:
                     low=ticker_id['Low'],
                     close=ticker_id['Close'],
                     name=name,
-                    increasing_line_color='green',
-                    decreasing_line_color='red',
+                    increasing_line_color=bl_colors[1],
+                    decreasing_line_color=bl_colors[2],
                     showlegend=False
                 ),
                 row=1,
@@ -528,9 +555,14 @@ with tabs1[0]:
             fig.update(layout_xaxis_rangeslider_visible=False)
 
             fig.update_layout(
+                {'plot_bgcolor': color_transparente, 'paper_bgcolor': color_transparente},
                 margin=dict(l=0, r=0, t=0, b=0),
                 hovermode='x unified',
                 yaxis=dict(tickformat=',.' + str(decimals) + 'f'),
+                hoverlabel=dict(bgcolor='white', font_size=14, font_family='arial', font_color='black'),
+                xaxis_rangeselector_font_color='white',
+                xaxis_rangeselector_activecolor=bl_colors[0],
+                xaxis_rangeselector_bgcolor=color_transparente
             )
 
             fig.update_xaxes(
@@ -543,7 +575,7 @@ with tabs1[0]:
                         dict(count=6, label='6M', step='month', stepmode='backward'),
                         dict(count=1, label='YTD', step='year', stepmode='todate'),
                         dict(count=1, label='1Y', step='year', stepmode='backward'),
-                        dict(label='Max.', step='all')
+                        dict(label='MAX', step='all')
                     ]))
             )
 
@@ -567,8 +599,8 @@ with tabs1[0]:
                     low=ticker_id['Low'],
                     close=ticker_id['Close'],
                     name=name,
-                    increasing_line_color='green',
-                    decreasing_line_color='red',
+                    increasing_line_color=bl_colors[1],
+                    decreasing_line_color=bl_colors[2],
                     showlegend=False
                 ),
                 row=1,
@@ -625,9 +657,14 @@ with tabs1[0]:
             fig.update(layout_xaxis_rangeslider_visible=False)
 
             fig.update_layout(
+                {'plot_bgcolor': color_transparente, 'paper_bgcolor': color_transparente},
                 margin=dict(l=0, r=0, t=0, b=0),
                 hovermode='x unified',
                 yaxis=dict(tickformat=',.' + str(decimals) + 'f'),
+                hoverlabel=dict(bgcolor='white', font_size=14, font_family='arial', font_color='black'),
+                xaxis_rangeselector_font_color='white',
+                xaxis_rangeselector_activecolor=bl_colors[0],
+                xaxis_rangeselector_bgcolor=color_transparente
             )
 
             fig.update_xaxes(
@@ -640,7 +677,7 @@ with tabs1[0]:
                         dict(count=6, label='6M', step='month', stepmode='backward'),
                         dict(count=1, label='YTD', step='year', stepmode='todate'),
                         dict(count=1, label='1Y', step='year', stepmode='backward'),
-                        dict(label='Max.', step='all')
+                        dict(label='MAX', step='all')
                     ]))
             )
 
@@ -747,11 +784,11 @@ with tabs1[0]:
 
     # ÍNDICES BURSÁTILES Y DE RENTA FIJA
 
-    main_tabs = st.tabs(['Equities and fixed income', 'Commodities', 'FX'])  # AÑADIR UN EQUITY SNAPSHOT POR SECTOR DEL S&P 500 EN BASE AL CRECIMIENTO DE ACA ACCIÓN
+    main_tabs = st.tabs(['Equities', 'Fixed income', 'Commodities', 'Currencies'])  # AÑADIR UN EQUITY SNAPSHOT POR SECTOR DEL S&P 500 EN BASE AL CRECIMIENTO DE ACA ACCIÓN
 
     with main_tabs[0]:
 
-        st.subheader('Equities and fixed income')
+        st.subheader('Equities')
 
         # S&P 500 y DJI
 
