@@ -364,6 +364,8 @@ with tabs1[0]:
 
         import streamlit as st
 
+        colors = ["#1d6a9c", "#2a8ab8", "#3b8fad"]
+
         if us_recession is True:
 
             fig = go.Figure()
