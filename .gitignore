@@ -8,3 +8,4 @@ scripts/configs.ipynb
 .vs/PythonSettings.json
 .vs/slnx.sqlite
 .vs/VSWorkspaceState.json
+/test.ipynb
