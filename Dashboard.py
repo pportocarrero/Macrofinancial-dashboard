@@ -20,19 +20,6 @@ st.set_page_config(
     page_icon=''
 )
 
-######## LOADING THE CONFIG FILE TO AUTHENTICATE USERS
-with open('config.yaml') as file:
-
-    config = yaml.load(file, Loader=SafeLoader)
-
-authenticator = stauth.Authenticate(
-    config['credentials'],
-    config['cookie']['name'],
-    config['cookie']['key'],
-    config['cookie']['expiry_days'],
-    config['preauthorized']
-)
-
 ########
 
 @st.cache_data
@@ -273,11 +260,6 @@ def delta_1d(dataframe):
 
 ######## LOGIN MODULE
 
-name, authentication_status, username = authenticator.login('Login', 'main')
-
-if authentication_status:
-
-    authenticator.logout('Logout', 'main', key='unique_key')
 
 ############
 
