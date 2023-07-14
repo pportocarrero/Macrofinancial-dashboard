@@ -4,9 +4,6 @@ import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 import os
-import streamlit_authenticator as stauth
-import yaml
-from yaml.loader import SafeLoader
 # import hydralit_components as hc
 # from plotly.subplots import make_subplots
 # from plotly_resampler import register_plotly_resampler
@@ -732,7 +729,7 @@ with tabs1[0]:
 
                     worksheet.set_column('A:A', None, format1)
 
-                    writer.save()
+                    writer.close()
 
                     processed_data = output.getvalue()
 
@@ -776,7 +773,7 @@ with tabs1[0]:
 
                     worksheet.set_column('A:A', None, format1)
 
-                    writer.save()
+                    writer.close()
 
                     processed_data = output.getvalue()
 
@@ -970,7 +967,7 @@ with tabs1[0]:
 
                     worksheet.set_column('A:A', None, format1)
 
-                    writer.save()
+                    writer.close()
 
                     processed_data = output.getvalue()
 
@@ -1135,7 +1132,7 @@ with tabs1[0]:
 
                     worksheet.set_column('A:A', None, format1)
 
-                    writer.save()
+                    writer.close()
 
                     processed_data = output.getvalue()
 
